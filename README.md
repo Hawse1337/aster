@@ -1,126 +1,138 @@
-# antopt
+<p align="center">
+  <img src="assets/banner.svg" alt="antopt — an antenna design bench, evidence first" width="100%">
+</p>
 
-**Physics-guided antenna design and optimisation, with measured runs as first-class evidence.**
+<p align="center">
+  <a href="https://github.com/Hawse1337/antopt/actions/workflows/ci.yml"><img alt="tests" src="https://github.com/Hawse1337/antopt/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/Hawse1337/antopt/releases/latest"><img alt="release" src="https://img.shields.io/github/v/release/Hawse1337/antopt?color=e4572e"></a>
+  <a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-2a9d8f"></a>
+  <img alt="python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-23262b">
+</p>
 
-`antopt` is a Python library for simulation-driven antenna studies: it defines a design space,
-evaluates candidates (dry models or real AEDT solves through a guarded runner), keeps the raw
-measurements, and lets the objective function change later without re-solving.
+# Keep the measurement. Change the target.
 
-This repository is the **design-side library**. The web GUI / desktop packaging is still under
-validation and is intentionally **not** part of this release. Real AEDT execution is delegated to
-the companion guard system, [ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp).
+`antopt` is a design bench for antenna studies. You describe a parameter space and what "good"
+means, the library drives candidates through a guarded AEDT session, and every solve leaves its raw
+artifacts behind. When the requirement changes — a different band, a tighter ripple, a flatter
+elevation cut — you re-judge the history instead of burning another night of solver time.
 
-**Version 1.51.0** · Python **3.10+** · [User guide](user_doc/README.md) · [Examples](examples/) ·
-[Changelog](CHANGELOG.md)
+> **中文简介**：[README.zh-CN.md](README.zh-CN.md)  
+> The web GUI / desktop application is under validation and is **not** part of this repository.
+> This release is the design-side library plus its agent skill.
 
-## Why antopt?
+![The five-station loop](assets/loop.svg)
 
-A real antenna solve can take tens of minutes and produces much more than one number: an S11 curve,
-far-field cuts, native reports. `antopt` separates *what was measured* from *how it is scored*:
+## The bench
 
-```mermaid
-flowchart LR
-    P["Design parameters"] --> R["Guarded AEDT run"]
-    R --> D["Raw artifacts + metrics"]
-    D --> C["Current acceptance rules"]
-    P --> S["Surrogate model"]
-    S --> C
-    C --> N["Next candidates"]
-    N --> R
-```
+Four verbs, one loop:
 
-- **Keep the measurements.** Runs are archived with their parameters, artifacts and status, so a
-  revised target can be re-evaluated from history instead of re-solved.
-- **Compose the loop in Python.** Parameter spaces, constraints, objectives, surrogates, acquisition
-  and acceptance checks are ordinary classes you wire together in a campaign recipe.
-- **Acceptance is explicit.** Bandwidth, ripple, axial leakage and other acceptance rules live in
-  code (`band_acceptance`, `pattern_acceptance`, `acceptance`) and produce readable verdicts.
+- **Design** — `ParamSpec` / `ParamSpace` describe the knobs, `Objective` / `Constraint` describe the
+  target. Nothing here knows about AEDT.
+- **Solve** — a candidate becomes a real run through the companion guard
+  ([ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp)). Sessions are addressed explicitly;
+  budgets are spent, not assumed.
+- **Keep** — S11 Touchstone, far-field grids and native report images stay with the run record. A
+  number without its artifact is a rumour.
+- **Judge** — acceptance rules are code (`band_acceptance`, `pattern_acceptance`, `acceptance`), so a
+  verdict can be recomputed, compared and challenged.
 
-## Install
+The archive is the point. A *campaign* is just a Python recipe over that loop; swap the evaluator
+(dry model or real solve) and the same recipe still runs.
+
+## What it refuses to hide
+
+| risk | how antopt handles it |
+|---|---|
+| "the result looks great" | every measured run keeps `result.s1p`, `farfield_views.json` and the native report PNGs |
+| "we changed the target, re-run everything" | records are re-scored; the solver is not called again unless you ask |
+| "the surrogate says it is good" | dry/surrogate results are labelled `PREDICTED`; validation state is explicit |
+| "the solve died, we lost the point" | failed runs are recorded as failed, with the reason, not dropped |
+| "which AEDT session was that?" | the guard requires one explicit PID or gRPC port per call |
+
+## Try it in one minute
 
 ```powershell
 py -3.10 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -U pip
 .\.venv\Scripts\python.exe -m pip install -e ".[optimizer,surrogate,plot]"
-```
 
-Optional extras:
-
-| extra | supplies |
-|---|---|
-| `optimizer` | `pymoo`, `scipy` (NSGA-II and numeric utilities) |
-| `surrogate` | `scikit-learn` (Gaussian-process surrogates) |
-| `acquisition` | `torch`, `botorch`, `gpytorch` (BoTorch acquisition) |
-| `plot` | `matplotlib` (result plots) |
-| `dev` | `pytest` |
-
-## Try it without AEDT
-
-```powershell
 python -m antopt version
-python -m antopt cases
 python -m antopt dry-demo --samples 64
 ```
 
-`dry-demo` runs a Latin-hypercube study on an analytic objective and prints the Pareto archive, so
-the loop can be exercised on a machine without a solver. The same flow is in
-[`examples/dry_run_demo.py`](examples/dry_run_demo.py).
+`dry-demo` is a complete study on an analytic objective — Latin-hypercube design, Pareto archive,
+no AEDT required. The same shape in code:
 
 ```python
-from antopt.core import ParamSpec, ParamSpace, latin_hypercube
+from antopt.core import Objective, ParamSpace, ParamSpec, latin_hypercube
 from antopt.optimize import Evaluation, pareto_archive
 
 space = ParamSpace([
-    ParamSpec("radius", "mm", 30.0, 70.0, 50.0),
-    ParamSpec("height", "mm", 1.0, 12.0, 6.0),
+    ParamSpec("ring_radius", "mm", 20.0, 60.0, 40.0),
+    ParamSpec("ring_height", "mm",  1.0, 10.0,  4.0),
 ])
-candidates = latin_hypercube(space, 32, seed=7)
-evaluations = [Evaluation("c%02d" % i, "demo", params,
-                          metrics={"peak_gain": f(params)}, feasible=True)
-               for i, params in enumerate(candidates)]
+objectives = [Objective("gain", "peak_gain", "maximize"),
+              Objective("bw", "s11_bandwidth", "maximize")]
+
+runs = [Evaluation("c%02d" % i, "ring", p,
+                   metrics={"peak_gain": predict_gain(p),
+                            "s11_bandwidth": predict_bw(p)}, feasible=True)
+        for i, p in enumerate(latin_hypercube(space, 32, seed=1))]
+front = pareto_archive(runs, objectives)
 ```
 
-## Real AEDT runs
+## Real studies
 
-The measured path talks to an AEDT session through the guard system:
+1. Install the guard system and its virtual environment (PyAEDT 1.10.0, AEDT 2026 R1).
+2. Point `ANTOPT_AEDT_EXE`, `ANTOPT_GUARD_REPO`, `ANTOPT_VENV_PYTHON`,
+   `ANTOPT_REFERENCE_PROJECT`, `ANTOPT_CAMPAIGN_ROOT` at your machine.
+3. Run the worker against a campaign directory; each candidate gets its own run folder and archive
+   row.
 
-1. Install [ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp) and its `.venv`
-   (PyAEDT 1.10.0, AEDT 2026 R1).
-2. Start or attach to an AEDT gRPC session (explicit PID or port — the guard refuses implicit
-   sessions).
-3. Configure `reference_project`, `campaign_root`, `guard_repo` and `venv_python` through the
-   `ANTOPT_*` environment variables or a config file.
-4. Run a campaign: each candidate is copied, parameters applied, solved, exported and scored by the
-   current acceptance rules; artifacts stay under the campaign directory.
+The contract, the run lifecycle and the artifact layout are in
+[user_doc/aedt_integration.md](user_doc/aedt_integration.md), with a walkthrough in
+[examples/aedt_campaign.md](examples/aedt_campaign.md).
 
-See [user_doc/aedt_integration.md](user_doc/aedt_integration.md) and
-[user_doc/workflow.md](user_doc/workflow.md) for the contract and a walkthrough.
+## Drop it into an agent
 
-## Package layout
+The repository ships an agent skill at [`SKILL.md`](SKILL.md). To use it in a skill-based agent
+(for example DeepSeek Harness), copy the file into the agent's skill directory:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\antopt" | Out-Null
+Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\antopt\SKILL.md"
+```
+
+The skill teaches the agent when to use the bench, where the core APIs live, and which evidence rules
+to follow. It deliberately does **not** cover the GUI, which is not published.
+
+## Repository map
 
 ```text
-antopt/
-├── core.py            parameter spaces, objectives, constraints
-├── optimize.py        evaluations, dominance, Pareto archive
-├── campaign.py        campaign recipes and scheduling
-├── worker.py          measured-run worker (calls the guarded runner)
-├── runtime/runner.py   real-run manager (formerly the GUI runner backend)
-├── runtime/store.py   run archive / SQLite job store
-├── farfield.py        far-field export, pattern views
-├── band_acceptance.py S11 band checks from Touchstone
-├── pattern_acceptance.py  ring/directivity acceptance rules
-├── benchmark, cases, parametric, interop, optimizer, physics, surrogate, topology
-└── tests/             offline test suite
+assets/        banner + loop illustrations
+antopt/        the library
+  core.py        parameter spaces, objectives, constraints
+  optimize.py    evaluations, dominance, Pareto archive
+  campaign.py    campaign recipes
+  runtime/       measured-run manager + job store (no web server)
+  worker.py      command-line measured campaign worker
+  aedt_host.py   AEDT process helpers
+  cases/         reference design cases (project paths left empty)
+  benchmark/  interop/  optimizer/  parametric/  physics/  surrogate/  topology/
+user_doc/      installation, architecture, workflow, AEDT integration, validation
+examples/      dry study + measured-campaign walkthrough
+tests/         offline suite (no AEDT needed)
+SKILL.md       agent skill
 ```
 
-## Status and claims
+## Status
 
-- Offline suite in this checkout: **778 passed, 80 subtests** (no AEDT required).
-- The measured path is exercised against AEDT 2026 R1 via the guard; solver results depend on the
-  project, mesh and machine, and are recorded per run as evidence rather than claimed globally.
-- The web GUI/desktop app, its HTTP API and packaging are **not** included; they remain under
-  validation.
+- Offline suite: **778 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
+- Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
+  study must be accompanied by its run artifacts.
+- Wheel and sdist: [v1.51.0 release](https://github.com/Hawse1337/antopt/releases/tag/v1.51.0).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). If you build a study on top of this bench, keep the artifacts; a bench
+without evidence is just furniture.

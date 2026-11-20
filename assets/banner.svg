@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-label="antopt — an antenna design bench, evidence first">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="0.55" stop-color="#121a22"/>
+      <stop offset="1" stop-color="#0b1418"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#2a9d8f" stop-opacity="0.35"/>
+      <stop offset="0.55" stop-color="#2a9d8f" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#2a9d8f" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e4572e" stop-opacity="0.15"/>
+      <stop offset="0.35" stop-color="#e4572e" stop-opacity="0.95"/>
+      <stop offset="0.7" stop-color="#f4a261" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#2a9d8f" stop-opacity="0.2"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="340" fill="url(#bg)"/>
+  <rect width="1200" height="340" fill="url(#grid)"/>
+  <rect width="1200" height="340" fill="url(#glow)"/>
+
+  <!-- ring / torus motif: the flat doughnut a good omni ring antenna aims at -->
+  <g transform="translate(935 170)" fill="none" stroke-linecap="round">
+    <ellipse cx="0" cy="0" rx="188" ry="70" stroke="#e4572e" stroke-opacity="0.16" stroke-width="1"/>
+    <ellipse cx="0" cy="0" rx="154" ry="57" stroke="url(#ring)" stroke-width="2.2"/>
+    <ellipse cx="0" cy="0" rx="120" ry="44" stroke="#2a9d8f" stroke-opacity="0.55" stroke-width="1.3"/>
+    <ellipse cx="0" cy="0" rx="86" ry="31" stroke="#f4a261" stroke-opacity="0.35" stroke-width="1"/>
+    <path d="M -196 0 L 196 0" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 6"/>
+    <path d="M 0 -88 L 0 88" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3 6"/>
+    <!-- elevation beam ticks -->
+    <g stroke="#e4572e" stroke-opacity="0.75" stroke-width="1.5">
+      <path d="M -196 0 L -214 -14"/><path d="M -196 0 L -214 14"/>
+      <path d="M 196 0 L 214 -14"/><path d="M 196 0 L 214 14"/>
+    </g>
+    <circle cx="0" cy="0" r="4.5" fill="#f4a261" stroke="none"/>
+    <circle cx="0" cy="0" r="12" stroke="#f4a261" stroke-opacity="0.35" stroke-width="1"/>
+  </g>
+
+  <!-- wordmark -->
+  <g transform="translate(78 118)">
+    <text x="0" y="0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#f4f1ea" letter-spacing="-2">antopt</text>
+    <text x="4" y="42" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#9fb3c8" letter-spacing="0.5">an antenna design bench — evidence first</text>
+    <g transform="translate(2 78)" font-family="Consolas, SFMono-Regular, Menlo, monospace" font-size="13.5" fill="#7d8fa3">
+      <text x="0" y="0">design space  /  guarded solve  /  artifacts kept  /  targets changeable</text>
+    </g>
+    <g transform="translate(2 118)">
+      <rect x="0" y="0" width="132" height="30" rx="15" fill="#e4572e" fill-opacity="0.14" stroke="#e4572e" stroke-opacity="0.7"/>
+      <text x="66" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#f4a261">python 3.10+</text>
+      <rect x="146" y="0" width="116" height="30" rx="15" fill="#2a9d8f" fill-opacity="0.14" stroke="#2a9d8f" stroke-opacity="0.7"/>
+      <text x="204" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#7fd1c7">v1.51.0</text>
+      <rect x="276" y="0" width="128" height="30" rx="15" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.22"/>
+      <text x="340" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#c6d2de">MIT licensed</text>
+    </g>
+  </g>
+</svg>

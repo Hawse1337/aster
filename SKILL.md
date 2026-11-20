@@ -1,12 +1,25 @@
 ---
 name: antopt
-description: Physics-guided antenna design and optimisation library. Use when an agent must define a parameterized antenna design space, run dry or real AEDT-backed design studies through a guarded solver, keep measured artifacts as evidence, apply explicit bandwidth/pattern acceptance rules, or re-score recorded runs without re-solving. The web GUI is not included; real runs require the ansys-aedt-mcp guard plus AEDT 2026 R1.
+description: Physics-guided antenna design and optimisation library and agent skill. Use when an agent must define a parameterized antenna design space, run dry or real AEDT-backed design studies through a guarded solver, keep measured artifacts as evidence, apply explicit bandwidth/pattern acceptance rules, or re-score recorded runs without re-solving. The web GUI is not included; real runs require the ansys-aedt-mcp guard plus AEDT 2026 R1.
 ---
 
 # antopt
 
-`antopt` is the design-side library of a guarded antenna optimisation stack. It is a Python package,
-a command line entry point and a repository-level agent skill.
+`antopt` is a design bench for antenna studies, packaged in this repository as a Python library, a
+command-line entry point and this agent skill. The bench keeps every solve's artifacts so that a
+changed requirement re-judges history instead of re-solving it.
+
+Hero and loop diagrams live in [`assets/`](assets/): `banner.svg`, `loop.svg`.
+
+## Install as a skill
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\antopt" | Out-Null
+Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\antopt\SKILL.md"
+```
+
+For other agents, use the same `SKILL.md` convention (YAML front matter with `name` and
+`description`, Markdown body) and place it in the agent's skill directory.
 
 ## When to use this skill
 
@@ -18,7 +31,7 @@ a command line entry point and a repository-level agent skill.
 
 Do **not** use it for GUI/HTTP work: the GUI is under validation and is not part of this release.
 
-## Install
+## Install the library
 
 ```powershell
 py -3.10 -m venv .venv
