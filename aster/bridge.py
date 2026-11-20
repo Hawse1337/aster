@@ -13,6 +13,8 @@ Both expose the same four calls used by the optimisation loop.
 """
 from __future__ import annotations
 
+from contextlib import contextmanager
+
 import json
 import os
 import subprocess
@@ -38,16 +40,26 @@ class GuardBridge(Protocol):
 _GUARD_CODE_ENV = "AEDT_MCP_ALLOW_ARBITRARY_CODE"
 
 
-def _enable_trusted_bridge_code() -> None:
-    """Allow modelling snippets for aster's own trusted broker.
+@contextmanager
+def _trusted_bridge_code():
+    """Temporarily allow modelling snippets for aster's own trusted broker.
 
     The guard denies ``run_python_code`` by default so an agent cannot use it as a
     forge/recovery hatch. aster is the operator's local design tool: its measured-run bridge
-    must execute modelling snippets, so the trusted process sets the operator opt-in for its
-    own guard broker only. This does **not** change the environment of the DSH/Codex MCP
-    servers, which keep the default-deny gate.
+    must execute modelling snippets. The opt-in is scoped to this call (the broker worker
+    spawns during it and inherits the flag) and restored afterwards. DSH/Codex MCP servers are
+    separate processes and keep the default-deny gate; do not co-host aster with them in one
+    Python process.
     """
-    os.environ.setdefault(_GUARD_CODE_ENV, "1")
+    previous = os.environ.get(_GUARD_CODE_ENV)
+    os.environ[_GUARD_CODE_ENV] = "1"
+    try:
+        yield
+    finally:
+        if previous is None:
+            os.environ.pop(_GUARD_CODE_ENV, None)
+        else:
+            os.environ[_GUARD_CODE_ENV] = previous
 
 
 class InProcessBridge:
@@ -83,13 +95,16 @@ class InProcessBridge:
         """Run a modelling snippet in the guarded broker (never a solve)."""
         import asyncio  # noqa: PLC0415
 
-        _enable_trusted_bridge_code()
-
-        coro = self._mcp.run_python_code(code=code, pid=pid, port=port,
-                                        **({"timeout": timeout} if timeout is not None else {}))
-        if asyncio.iscoroutine(coro):
-            return asyncio.run(coro)
-        return coro
+        with _trusted_bridge_code():
+            coro = self._mcp.run_python_code(
+                code=code,
+                pid=pid,
+                port=port,
+                **({"timeout": timeout} if timeout is not None else {}),
+            )
+            if asyncio.iscoroutine(coro):
+                return asyncio.run(coro)
+            return coro
 
     def connect(self, *, pid: int | None = None, port: int | None = None) -> dict[str, Any]:
         import asyncio  # noqa: PLC0415

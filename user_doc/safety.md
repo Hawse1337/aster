@@ -25,9 +25,12 @@ guard repository under `examples/clients/` (DeepSeek Harness MCP bundle and Code
 ## aster's trusted bridge
 
 `aster` executes its modelling snippets through the guard, which refuses `run_python_code` by
-default. The aster bridge therefore enables `AEDT_MCP_ALLOW_ARBITRARY_CODE` in its own process/
-broker environment only; DSH and Codex MCP servers stay default-deny. This is an operator-side
-trusted-tool decision, not something an agent should enable for a client session.
+default. The aster bridge therefore enables `AEDT_MCP_ALLOW_ARBITRARY_CODE` only for the duration
+of its own trusted broker call (the child broker inherits it and the environment is restored
+afterwards); DSH and Codex MCP servers are separate processes and stay default-deny. Do not
+co-host aster and DSH/Codex in one Python process: that would share the environment and defeat
+the scoping. This is an operator-side trusted-tool decision, not something an agent should enable
+for a client session.
 
 ## Residual risk
 

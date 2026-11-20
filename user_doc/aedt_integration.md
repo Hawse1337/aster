@@ -16,10 +16,11 @@ enforces managed-only sessions (unmanaged AEDT is refused and reported), denies 
 code by default, and binds run tokens to project/design/setup when `AEDT_GUARD_ENFORCE=1`.
 See [runtime safety](safety.md) for the boundary.
 
-aster's own trusted bridge enables the guard's arbitrary-code opt-in **for its own broker**
-(`InProcessBridge`/`StdioBridge` set `AEDT_MCP_ALLOW_ARBITRARY_CODE=1` locally) because measured
-runs execute modelling snippets. The DSH/Codex MCP server processes are separate and keep the
-guard's default-deny gate; run aster only from a trusted operator account. PyAEDT documentation:
+aster's own trusted bridge enables the guard's arbitrary-code opt-in **for its own broker call**
+(`InProcessBridge` sets it only while calling the broker and restores it; `StdioBridge` injects it
+into the child environment) because measured runs execute modelling snippets. The DSH/Codex MCP
+server processes are separate and keep the guard's default-deny gate; do not co-host them with
+aster in one process, and run aster only from a trusted operator account. PyAEDT documentation:
 <https://aedt.docs.pyansys.com/version/stable/index.html>.
 
 ## Configuration
