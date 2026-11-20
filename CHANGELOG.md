@@ -2,6 +2,10 @@
 
 ## 1.54.0 — 2026-11-20
 
+**2026-11-21 — same-version asset rebuild.** The v1.54.0 wheel/sdist were rebuilt from main
+after the bridge fix (aster now enables the guard's arbitrary-code opt-in only for its own broker
+call and restores the environment; see `user_doc/safety.md`). Version/tag unchanged.
+
 - Security integration: real AEDT runs are documented as guard-only (ansys-aedt-mcp v0.3.2+),
   with managed-session refusal, arbitrary-code default-off, run-token scope and audit.
 - New docs page `user_doc/safety.md` (boundary, client fail-closed rule, residual risk), linked
