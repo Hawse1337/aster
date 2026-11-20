@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.53.0 — 2026-11-20
+
+- Three-layer packaging: Python library/CLI, agent skill, docs site + GitHub releases.
+- Skill engineering: canonical `skills/aster/` (SKILL.md + references + scripts), mirrored into the
+  package so `aster skill install` works from a wheel.
+- CLI: `aster doctor` (AEDT/guard/PyAEDT environment check) and `aster skill install|path|show`.
+- Documentation site (MkDocs Material) deployed to GitHub Pages.
+- Offline suite extended with skill-bundle consistency tests.
+
 按阶段标签整理；详细说明见 `docs/status.md` 与 `docs/final_report.md`。
 
 ## 1.52.0 — 2026-11-20

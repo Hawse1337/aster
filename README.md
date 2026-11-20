@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/Hawse1337/aster/actions/workflows/ci.yml"><img alt="tests" src="https://github.com/Hawse1337/aster/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://github.com/Hawse1337/aster/releases/latest"><img alt="release" src="https://img.shields.io/github/v/release/Hawse1337/aster?color=e4572e"></a>
+  <a href="https://hawse1337.github.io/aster/"><img alt="docs" src="https://img.shields.io/badge/docs-online-2a9d8f"></a>
   <a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-2a9d8f"></a>
   <img alt="python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-23262b">
 </p>
@@ -14,7 +15,6 @@
 > **aster** was previously published as **antopt**. The package import, CLI and
 > environment prefix are now `aster` / `ASTER_*`; the old repository URL redirects.
 
-
 `aster` is a design bench for antenna studies. You describe a parameter space and what "good"
 means, the library drives candidates through a guarded AEDT session, and every solve leaves its raw
 artifacts behind. When the requirement changes — a different band, a tighter ripple, a flatter
@@ -22,9 +22,16 @@ elevation cut — you re-judge the history instead of burning another night of s
 
 > **中文简介**：[README.zh-CN.md](README.zh-CN.md)  
 > The web GUI / desktop application is under validation and is **not** part of this repository.
-> This release is the design-side library plus its agent skill.
 
 ![The five-station loop](assets/loop.svg)
+
+## Three forms, one bench
+
+| form | how you get it | use it when |
+|---|---|---|
+| **Python library + CLI** | wheel/sdist from [Releases](https://github.com/Hawse1337/aster/releases), then `aster doctor` | you script your own loop, run CI, or work in a notebook |
+| **Agent skill** | `aster skill install` (or copy `skills/aster/`) | an AI agent should run design studies with evidence rules |
+| **Docs + releases** | [hawse1337.github.io/aster](https://hawse1337.github.io/aster/) | you want the contract, the workflow and pinned artifacts |
 
 ## The bench
 
@@ -60,8 +67,9 @@ py -3.10 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -U pip
 .\.venv\Scripts\python.exe -m pip install -e ".[optimizer,surrogate,plot]"
 
-python -m aster version
-python -m aster dry-demo --samples 64
+aster version
+aster doctor              # what is missing before a real campaign
+aster dry-demo --samples 64
 ```
 
 `dry-demo` is a complete study on an analytic objective — Latin-hypercube design, Pareto archive,
@@ -99,16 +107,16 @@ The contract, the run lifecycle and the artifact layout are in
 
 ## Drop it into an agent
 
-The repository ships an agent skill at [`SKILL.md`](SKILL.md). To use it in a skill-based agent
-(for example DeepSeek Harness), copy the file into the agent's skill directory:
+The skill lives in [`skills/aster/`](skills/aster/): `SKILL.md` plus `references/` (API map, AEDT
+contract, evidence rules) and a runnable `scripts/dry_demo.py`. Install it with one command:
 
 ```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\aster" | Out-Null
-Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\aster\SKILL.md"
+aster skill install            # → %USERPROFILE%\.dsh\skills\aster
+aster skill path               # print the destination
 ```
 
-The skill teaches the agent when to use the bench, where the core APIs live, and which evidence rules
-to follow. It deliberately does **not** cover the GUI, which is not published.
+Or copy `skills/aster/` into your agent's skill directory by hand. The skill does **not** cover the
+GUI, which is not published.
 
 ## Repository map
 
@@ -121,20 +129,23 @@ aster/        the library
   runtime/       measured-run manager + job store (no web server)
   worker.py      command-line measured campaign worker
   aedt_host.py   AEDT process helpers
-  cases/         reference design cases (project paths left empty)
-  benchmark/  interop/  optimizer/  parametric/  physics/  surrogate/  topology/
-user_doc/      installation, architecture, workflow, AEDT integration, validation
+  skills/aster/  bundled skill (mirrored from skills/aster at build time)
+  cases/  benchmark/  interop/  optimizer/  parametric/  physics/  surrogate/  topology/
+skills/aster/  canonical agent skill (SKILL.md + references + scripts)
+tools/         sync_skill_bundle.py (mirror the skill into the package)
+user_doc/      installation, architecture, workflow, AEDT integration, skill, validation
 examples/      dry study + measured-campaign walkthrough
 tests/         offline suite (no AEDT needed)
-SKILL.md       agent skill
+mkdocs.yml     documentation site
 ```
 
 ## Status
 
-- Offline suite: **778 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
+- Offline suite: **782 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
-- Wheel and sdist: [v1.52.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.52.0).
+- Wheel and sdist: [v1.53.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.53.0);
+  documentation: [hawse1337.github.io/aster](https://hawse1337.github.io/aster/).
 
 ## License
 

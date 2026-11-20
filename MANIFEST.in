@@ -1,0 +1,3 @@
+recursive-include aster/skills *
+include skills/aster/**/*
+include assets/*.svg

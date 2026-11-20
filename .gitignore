@@ -12,3 +12,4 @@ batch.log
 *.aedt
 *.aedtresults/
 *.lock
+site/

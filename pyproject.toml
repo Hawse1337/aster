@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aster"
-version = "1.52.0"
+version = "1.53.0"
 description = "Physics-guided antenna design and optimisation library (design side, no GUI)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -32,8 +32,12 @@ aster = "aster.cli:main"
 packages = [
     "aster", "aster.benchmark", "aster.cases", "aster.interop",
     "aster.optimizer", "aster.parametric", "aster.physics",
-    "aster.runtime", "aster.surrogate", "aster.topology",
+    "aster.runtime", "aster.skills", "aster.surrogate", "aster.topology",
 ]
+
+[tool.setuptools.package-data]
+"aster.skills" = ["**/*"]
+aster = ["skills/**/*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

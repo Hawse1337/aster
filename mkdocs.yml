@@ -1,0 +1,58 @@
+site_name: aster
+site_description: An antenna design bench — evidence first.
+site_url: https://hawse1337.github.io/aster/
+repo_url: https://github.com/Hawse1337/aster
+repo_name: Hawse1337/aster
+docs_dir: user_doc
+edit_uri: edit/main/user_doc/
+exclude_docs: |
+  README.md
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+nav:
+  - Home: index.md
+  - Install: installation.md
+  - Architecture: architecture.md
+  - Workflow: workflow.md
+  - AEDT integration: aedt_integration.md
+  - Agent skill: skill.md
+  - Validation: validation.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+
+extra_css:
+  - assets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Hawse1337/aster

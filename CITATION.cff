@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use aster in a study, cite this repository."
 title: aster
 abstract: Physics-guided antenna design and optimisation library with guarded measured runs.
-version: 1.52.0
+version: 1.53.0
 date-released: 2026-11-20
 license: MIT
 authors:
