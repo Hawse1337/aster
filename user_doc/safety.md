@@ -22,6 +22,13 @@ available, **stop**. Do not launch `ansysedt.exe`, do not import PyAEDT, and do 
 files. Ask the operator to enable the guard. Ready-to-use fail-closed configurations live in the
 guard repository under `examples/clients/` (DeepSeek Harness MCP bundle and Codex config/AGENTS).
 
+## aster's trusted bridge
+
+`aster` executes its modelling snippets through the guard, which refuses `run_python_code` by
+default. The aster bridge therefore enables `AEDT_MCP_ALLOW_ARBITRARY_CODE` in its own process/
+broker environment only; DSH and Codex MCP servers stay default-deny. This is an operator-side
+trusted-tool decision, not something an agent should enable for a client session.
+
 ## Residual risk
 
 The guard is not an OS sandbox. A same-user process with unrestricted shell can still start AEDT

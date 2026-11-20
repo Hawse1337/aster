@@ -14,7 +14,12 @@ solve budget and the evidence trail.
 The guard pins PyAEDT **1.10.0** and is validated on AEDT 2026 R1. From guard **v0.3.2** it also
 enforces managed-only sessions (unmanaged AEDT is refused and reported), denies arbitrary broker
 code by default, and binds run tokens to project/design/setup when `AEDT_GUARD_ENFORCE=1`.
-See [runtime safety](safety.md) for the boundary. PyAEDT documentation:
+See [runtime safety](safety.md) for the boundary.
+
+aster's own trusted bridge enables the guard's arbitrary-code opt-in **for its own broker**
+(`InProcessBridge`/`StdioBridge` set `AEDT_MCP_ALLOW_ARBITRARY_CODE=1` locally) because measured
+runs execute modelling snippets. The DSH/Codex MCP server processes are separate and keep the
+guard's default-deny gate; run aster only from a trusted operator account. PyAEDT documentation:
 <https://aedt.docs.pyansys.com/version/stable/index.html>.
 
 ## Configuration

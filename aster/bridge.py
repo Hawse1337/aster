@@ -35,6 +35,21 @@ class GuardBridge(Protocol):
     def connect(self, *, pid: int | None = None, port: int | None = None) -> dict[str, Any]: ...
 
 
+_GUARD_CODE_ENV = "AEDT_MCP_ALLOW_ARBITRARY_CODE"
+
+
+def _enable_trusted_bridge_code() -> None:
+    """Allow modelling snippets for aster's own trusted broker.
+
+    The guard denies ``run_python_code`` by default so an agent cannot use it as a
+    forge/recovery hatch. aster is the operator's local design tool: its measured-run bridge
+    must execute modelling snippets, so the trusted process sets the operator opt-in for its
+    own guard broker only. This does **not** change the environment of the DSH/Codex MCP
+    servers, which keep the default-deny gate.
+    """
+    os.environ.setdefault(_GUARD_CODE_ENV, "1")
+
+
 class InProcessBridge:
     """Imports the installed guard package (``AEDT_MCP_REPO/mcp_server.py``)."""
 
@@ -67,6 +82,8 @@ class InProcessBridge:
                      port: int | None = None, timeout: float | None = None) -> dict[str, Any]:
         """Run a modelling snippet in the guarded broker (never a solve)."""
         import asyncio  # noqa: PLC0415
+
+        _enable_trusted_bridge_code()
 
         coro = self._mcp.run_python_code(code=code, pid=pid, port=port,
                                         **({"timeout": timeout} if timeout is not None else {}))
@@ -109,6 +126,7 @@ class StdioBridge:
         self.command = command or os.environ.get("AEDT_MCP_PYTHON") or sys.executable
         self.args = args or [os.path.join(repo, "mcp_server.py")]
         self.env = dict(os.environ)
+        self.env.setdefault(_GUARD_CODE_ENV, "1")
         self.env.update(env or {})
         self._session = None
         self._client = None
