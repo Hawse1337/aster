@@ -1,0 +1,29 @@
+{
+  "params": {
+    "a_mm": 22.86,
+    "b_mm": 10.16,
+    "p_mm": 10.0,
+    "h_mm": 2.0,
+    "g_mm": 0.5,
+    "n_units": 20,
+    "a1": 0.0,
+    "a2": 0.0
+  },
+  "setup": {
+    "region": true,
+    "radiation": true,
+    "port_in": "err:TypeError:Hfss.wave_port() got an unexpected keyword argument 'signal'",
+    "port_out": "err:GrpcApiError:Failed to execute gRPC AEDT command: CreateRectangle",
+    "setup": "err:KeyError:'HFSS Terminal Network'",
+    "validated": "err:GrpcApiError:Failed to execute gRPC AEDT command: ValidateDesign"
+  },
+  "solve": {
+    "analyzed": true,
+    "touchstone": "err:GrpcApiError:Failed to execute gRPC AEDT command: ExportNetworkData",
+    "s11_db": "err:AttributeError:Error in Executing Method."
+  },
+  "theory": {
+    "beta_minus_over_k0": -0.09849495721960896,
+    "beam_angle_deg": -5.6525100077760175
+  }
+}

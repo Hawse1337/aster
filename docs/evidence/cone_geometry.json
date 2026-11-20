@@ -1,0 +1,67 @@
+{
+  "objects": [
+    "disc",
+    "cone_up",
+    "cone_dn",
+    "coax_diel",
+    "coax_outer",
+    "coax_inner",
+    "Region",
+    "port_disc"
+  ],
+  "cone_dn": {
+    "solve_inside": false,
+    "bounding_box": [
+      -24.0,
+      -24.0,
+      -5.8,
+      24.0,
+      24.0,
+      -1.0
+    ]
+  },
+  "cone_up": {
+    "solve_inside": false,
+    "bounding_box": [
+      -24.0,
+      -24.0,
+      1.0,
+      24.0,
+      24.0,
+      5.8
+    ]
+  },
+  "coax_outer": {
+    "solve_inside": false,
+    "bounding_box": [
+      -2.0,
+      -2.0,
+      -20.0,
+      2.0,
+      2.0,
+      -1.0
+    ]
+  },
+  "coax_diel": {
+    "solve_inside": true,
+    "bounding_box": [
+      -1.2,
+      -1.2,
+      -20.0,
+      1.2,
+      1.2,
+      -1.0
+    ]
+  },
+  "disc": {
+    "solve_inside": false,
+    "bounding_box": [
+      -70.0,
+      -70.0,
+      -2.7,
+      70.0,
+      70.0,
+      2.7
+    ]
+  }
+}

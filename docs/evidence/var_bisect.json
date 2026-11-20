@@ -1,0 +1,42 @@
+{
+  "coax": {
+    "run_id": "20261112T073523884028",
+    "status": "COMPLETED",
+    "info": {
+      "boundaries": [
+        "rad_region",
+        "1"
+      ],
+      "field_setups": [
+        "InfiniteSphere1"
+      ],
+      "validated": false
+    },
+    "metrics": {
+      "bandwidth": 2.0,
+      "bw_obj": 2.0,
+      "gain_obj": 6.30079649458933,
+      "peak_gain": 6.30079649458933
+    }
+  },
+  "bowls": {
+    "run_id": "20261112T075350230070",
+    "status": "COMPLETED",
+    "info": {
+      "boundaries": [
+        "rad_region",
+        "1"
+      ],
+      "field_setups": [
+        "InfiniteSphere1"
+      ],
+      "validated": false
+    },
+    "metrics": {
+      "bandwidth": 0.0,
+      "bw_obj": 0.0,
+      "gain_obj": 6.73546895902818,
+      "peak_gain": 6.73546895902818
+    }
+  }
+}

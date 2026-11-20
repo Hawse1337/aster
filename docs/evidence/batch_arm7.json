@@ -1,0 +1,32 @@
+{
+  "batch": {
+    "batch_id": "batch-20261113T140331",
+    "case": "lens28_var",
+    "state": "DONE",
+    "total": 1,
+    "done": 1,
+    "run_ids": [
+      "real-20261113T140331-00"
+    ],
+    "created_utc": "2026-11-13T14:03:31Z"
+  },
+  "seconds": 1260.0,
+  "rows": [
+    {
+      "run_id": "real-20261113T140331-00",
+      "params": {
+        "ring_outer": 2.45
+      },
+      "status": "COMPLETED",
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.16780276326829,
+        "ripple": 1.7102883995279994
+      },
+      "error": null
+    }
+  ],
+  "rings": [
+    2.45
+  ]
+}

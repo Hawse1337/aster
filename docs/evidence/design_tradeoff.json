@@ -1,0 +1,361 @@
+{
+  "source": "completed real runs only (phase_seed + phase_refine); default from phase_b4",
+  "default": {
+    "s11_bandwidth": 2.0,
+    "peak_gain": 6.05135926700057,
+    "directivity_horiz_db": 6.747040462799045,
+    "ripple": 1.8192959273688194,
+    "beam_theta": 90.0
+  },
+  "constraints": {
+    "s11_bandwidth": [
+      ">=",
+      3.0
+    ],
+    "peak_gain": [
+      ">=",
+      6.0
+    ],
+    "directivity_horiz_db": [
+      ">=",
+      7.0
+    ],
+    "ripple": [
+      "<=",
+      3.0
+    ]
+  },
+  "designs": [
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-03",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 11.4,
+        "SOLVING": 850.19,
+        "POSTPROCESS": 6.46
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.36802440054018,
+      "directivity_horiz_db": 6.798449409995424,
+      "ripple": 1.4283140248937105,
+      "beam_theta": 92.0,
+      "sll": -2.95180542879159,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T214036-00",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 11.51,
+        "SOLVING": 1250.28,
+        "POSTPROCESS": 6.54
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 5.88126498061051,
+      "directivity_horiz_db": 6.909306142818998,
+      "ripple": 1.6307113113642906,
+      "beam_theta": 90.0,
+      "sll": -1.7187927060279398,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": false,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T214036-01",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 11.36,
+        "SOLVING": 1230.27,
+        "POSTPROCESS": 6.32
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.0546070500638,
+      "directivity_horiz_db": 6.876150469418013,
+      "ripple": 1.62299397071991,
+      "beam_theta": 90.0,
+      "sll": -1.7167074311284702,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-00",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.4,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 9.38,
+        "MODEL": 14.65,
+        "SOLVING": 920.23,
+        "POSTPROCESS": 6.54
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 5.9776228223708,
+      "directivity_horiz_db": 6.933842864711889,
+      "ripple": 1.6106466509975101,
+      "beam_theta": 90.0,
+      "sll": -2.2775841679868503,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": false,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-01",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.4,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 10.97,
+        "SOLVING": 1220.3,
+        "POSTPROCESS": 6.48
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.29385065959271,
+      "directivity_horiz_db": 7.086701653798554,
+      "ripple": 1.57521035150344,
+      "beam_theta": 90.0,
+      "sll": -1.99855363689856,
+      "meets": {
+        "bandwidth": false,
+        "directivity": true,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-02",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 11.01,
+        "SOLVING": 810.17,
+        "POSTPROCESS": 6.4
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.17028845359689,
+      "directivity_horiz_db": 6.978882413172906,
+      "ripple": 1.5777154725039395,
+      "beam_theta": 92.0,
+      "sll": -2.53214438684899,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    {
+      "campaign": "refine",
+      "run_id": "queued-20261115T222345-00",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.95,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.5,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 8.88,
+        "MODEL": 16.14,
+        "SOLVING": 1000.21,
+        "POSTPROCESS": 6.51
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.40079233279684,
+      "directivity_horiz_db": 7.109338353187979,
+      "ripple": 1.30481727130599,
+      "beam_theta": 90.0,
+      "sll": -2.81643983569476,
+      "meets": {
+        "bandwidth": false,
+        "directivity": true,
+        "gain": true,
+        "ripple": true
+      }
+    }
+  ],
+  "feasible_count": 0,
+  "options": {
+    "bandwidth_priority": {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-03",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 11.4,
+        "SOLVING": 850.19,
+        "POSTPROCESS": 6.46
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.36802440054018,
+      "directivity_horiz_db": 6.798449409995424,
+      "ripple": 1.4283140248937105,
+      "beam_theta": 92.0,
+      "sll": -2.95180542879159,
+      "meets": {
+        "bandwidth": false,
+        "directivity": false,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    "directivity_priority": {
+      "campaign": "seed",
+      "run_id": "queued-20261115T201110-01",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.4,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 0.2,
+        "MODEL": 10.97,
+        "SOLVING": 1220.3,
+        "POSTPROCESS": 6.48
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.29385065959271,
+      "directivity_horiz_db": 7.086701653798554,
+      "ripple": 1.57521035150344,
+      "beam_theta": 90.0,
+      "sll": -1.99855363689856,
+      "meets": {
+        "bandwidth": false,
+        "directivity": true,
+        "gain": true,
+        "ripple": true
+      }
+    },
+    "gain_leader": {
+      "campaign": "refine",
+      "run_id": "queued-20261115T222345-00",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.95,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.5,
+        "ring_shift": 0.0
+      },
+      "timings": {
+        "CONNECTING": 8.88,
+        "MODEL": 16.14,
+        "SOLVING": 1000.21,
+        "POSTPROCESS": 6.51
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.40079233279684,
+      "directivity_horiz_db": 7.109338353187979,
+      "ripple": 1.30481727130599,
+      "beam_theta": 90.0,
+      "sll": -2.81643983569476,
+      "meets": {
+        "bandwidth": false,
+        "directivity": true,
+        "gain": true,
+        "ripple": true
+      }
+    }
+  },
+  "tradeoff": {
+    "bandwidth_needs_ring_height": 0.6,
+    "directivity_needs_ring_height": 0.5,
+    "measured_conflict": true,
+    "sidelobe_range_dbc": [
+      -2.95180542879159,
+      -1.7167074311284702
+    ]
+  },
+  "structure_change_required": {
+    "directivity_and_3ghz_together": true,
+    "low_sidelobes": true,
+    "reasons": [
+      "ring_height 0.6 gives 3.0 GHz but directivity ~6.8-6.9 dBi",
+      "ring_height 0.5 gives directivity 7.11 dBi but bandwidth 2.0 GHz",
+      "every measured point has sidelobes between -1.7 and -3.0 dBc"
+    ]
+  }
+}

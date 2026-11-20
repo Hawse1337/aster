@@ -1,0 +1,298 @@
+{
+  "planned": 11,
+  "completed": 5,
+  "failed": 0,
+  "pending": 6,
+  "feasible": 0,
+  "feasible_run_ids": [],
+  "failure_codes": [],
+  "spread": {
+    "s11_bandwidth": {
+      "min": 2.0,
+      "median": 2.0,
+      "max": 3.0,
+      "n": 5
+    },
+    "peak_gain": {
+      "min": 5.88126498061051,
+      "median": 6.17028845359689,
+      "max": 6.36802440054018,
+      "n": 5
+    },
+    "directivity_horiz_db": {
+      "min": 6.798449409995424,
+      "median": 6.933842864711889,
+      "max": 7.086701653798554,
+      "n": 5
+    },
+    "beam_theta": {
+      "min": 90.0,
+      "median": 90.0,
+      "max": 92.0,
+      "n": 5
+    },
+    "ripple": {
+      "min": 1.4283140248937105,
+      "median": 1.5777154725039395,
+      "max": 1.6307113113642906,
+      "n": 5
+    },
+    "sll": {
+      "min": -2.95180542879159,
+      "median": -2.2775841679868503,
+      "max": -1.7187927060279398,
+      "n": 5
+    }
+  },
+  "best": {
+    "s11_bandwidth": {
+      "run_id": "queued-20261115T201110-03",
+      "value": 3.0,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      }
+    },
+    "peak_gain": {
+      "run_id": "queued-20261115T201110-03",
+      "value": 6.36802440054018,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      }
+    },
+    "directivity_horiz_db": {
+      "run_id": "queued-20261115T201110-01",
+      "value": 7.086701653798554,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.4,
+        "ring_shift": 0.0
+      }
+    },
+    "beam_theta": {
+      "run_id": "queued-20261115T201110-02",
+      "value": 92.0,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      }
+    },
+    "ripple": {
+      "run_id": "queued-20261115T214036-00",
+      "value": 1.6307113113642906,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      }
+    },
+    "sll": {
+      "run_id": "queued-20261115T214036-00",
+      "value": -1.7187927060279398,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      }
+    }
+  },
+  "constraint_pass_rate": {
+    "s11_bandwidth": 0.4,
+    "peak_gain": 0.6,
+    "directivity_horiz_db": 0.2,
+    "beam_theta": 1.0,
+    "ripple": 1.0
+  },
+  "lowest_sll": {
+    "run_id": "queued-20261115T201110-03",
+    "value": -2.95180542879159,
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    }
+  },
+  "parameter_effect": {
+    "directivity_horiz_db": [
+      {
+        "parameter": "tip_offset",
+        "gap": -0.1564,
+        "low_mean": 7.0103,
+        "high_mean": 6.8539
+      },
+      {
+        "parameter": "disc_radial",
+        "gap": -0.1564,
+        "low_mean": 7.0103,
+        "high_mean": 6.8539
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": -0.1564,
+        "low_mean": 7.0103,
+        "high_mean": 6.8539
+      },
+      {
+        "parameter": "ring_height",
+        "gap": -0.1564,
+        "low_mean": 7.0103,
+        "high_mean": 6.8539
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": -0.1564,
+        "low_mean": 7.0103,
+        "high_mean": 6.8539
+      },
+      {
+        "parameter": "disc_factor",
+        "gap": 0.1093,
+        "low_mean": 6.8887,
+        "high_mean": 6.998
+      },
+      {
+        "parameter": "ring_outer",
+        "gap": -0.0138,
+        "low_mean": 6.9564,
+        "high_mean": 6.9426
+      }
+    ],
+    "peak_gain": [
+      {
+        "parameter": "ring_outer",
+        "gap": 0.257,
+        "low_mean": 6.074,
+        "high_mean": 6.3309
+      },
+      {
+        "parameter": "disc_factor",
+        "gap": -0.1816,
+        "low_mean": 6.2692,
+        "high_mean": 6.0876
+      },
+      {
+        "parameter": "tip_offset",
+        "gap": -0.0111,
+        "low_mean": 6.1357,
+        "high_mean": 6.1246
+      },
+      {
+        "parameter": "disc_radial",
+        "gap": -0.0111,
+        "low_mean": 6.1357,
+        "high_mean": 6.1246
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": -0.0111,
+        "low_mean": 6.1357,
+        "high_mean": 6.1246
+      },
+      {
+        "parameter": "ring_height",
+        "gap": -0.0111,
+        "low_mean": 6.1357,
+        "high_mean": 6.1246
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": -0.0111,
+        "low_mean": 6.1357,
+        "high_mean": 6.1246
+      }
+    ],
+    "s11_bandwidth": [
+      {
+        "parameter": "tip_offset",
+        "gap": 1.0,
+        "low_mean": 2.0,
+        "high_mean": 3.0
+      },
+      {
+        "parameter": "disc_radial",
+        "gap": 1.0,
+        "low_mean": 2.0,
+        "high_mean": 3.0
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": 1.0,
+        "low_mean": 2.0,
+        "high_mean": 3.0
+      },
+      {
+        "parameter": "ring_height",
+        "gap": 1.0,
+        "low_mean": 2.0,
+        "high_mean": 3.0
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": 1.0,
+        "low_mean": 2.0,
+        "high_mean": 3.0
+      },
+      {
+        "parameter": "ring_outer",
+        "gap": 0.5,
+        "low_mean": 2.0,
+        "high_mean": 2.5
+      },
+      {
+        "parameter": "disc_factor",
+        "gap": 0.0,
+        "low_mean": 2.5,
+        "high_mean": 2.5
+      }
+    ]
+  },
+  "default_design": {
+    "s11_bandwidth": 2.0,
+    "peak_gain": 6.05135926700057,
+    "directivity_horiz_db": 6.747040462799045,
+    "beam_theta": 90.0,
+    "ripple": 1.8192959273688194,
+    "sll": null
+  },
+  "best_beats_default": {
+    "s11_bandwidth": true,
+    "peak_gain": true,
+    "directivity_horiz_db": true,
+    "beam_theta": true,
+    "ripple": false,
+    "sll": false
+  },
+  "verdict": "5 of 11 completed; none meet every constraint yet; horizontal directivity spans 6.80-7.09 dBi"
+}

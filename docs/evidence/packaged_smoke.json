@@ -1,0 +1,27 @@
+{
+  "exe": "D:\\AntennaDesignSystem\\dist\\AntennaOptimizer\\AntennaOptimizer.exe",
+  "exe_mb": 68.8,
+  "command": [
+    "D:\\AntennaDesignSystem\\dist\\AntennaOptimizer\\AntennaOptimizer.exe",
+    "--no-browser",
+    "--port",
+    "8981",
+    "--campaign",
+    "D:\\AntennaDesignSystem\\dist\\smoke_campaign"
+  ],
+  "checks": {
+    "page_answers": true,
+    "about": {
+      "about": "antopt 1.47.1 (python 3.14)"
+    },
+    "cases": 2,
+    "queue": true,
+    "batch_route": true
+  },
+  "batch_status": 503,
+  "startup_seconds": 1.1,
+  "stdout_tail": [
+    "launching through C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
+  ],
+  "ok": true
+}

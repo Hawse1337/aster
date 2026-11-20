@@ -1,0 +1,113 @@
+{
+  "case": "lens28_var",
+  "count": 10,
+  "seed": 0,
+  "points": [
+    {
+      "tip_offset": 1.3,
+      "disc_factor": 0.95,
+      "disc_radial": 0.9,
+      "ring_inner": 1.9,
+      "ring_outer": 3.0,
+      "ring_height": 1.0,
+      "ring_shift": 0.6
+    },
+    {
+      "tip_offset": 1.3,
+      "disc_factor": 1.15,
+      "disc_radial": 0.8,
+      "ring_inner": 1.7,
+      "ring_outer": 2.8,
+      "ring_height": 1.2,
+      "ring_shift": 0.4
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 0.9,
+      "ring_inner": 1.5,
+      "ring_outer": 3.6,
+      "ring_height": 0.4,
+      "ring_shift": 0.3
+    },
+    {
+      "tip_offset": 1.2,
+      "disc_factor": 1.2,
+      "disc_radial": 1.0,
+      "ring_inner": 1.6,
+      "ring_outer": 4.4,
+      "ring_height": 0.2,
+      "ring_shift": 0.2
+    },
+    {
+      "tip_offset": 1.1,
+      "disc_factor": 1.15,
+      "disc_radial": 0.6,
+      "ring_inner": 1.2,
+      "ring_outer": 2.4,
+      "ring_height": 0.5,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.1,
+      "disc_factor": 1.05,
+      "disc_radial": 0.7,
+      "ring_inner": 1.4,
+      "ring_outer": 3.8,
+      "ring_height": 0.7,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.85,
+      "disc_radial": 0.7,
+      "ring_inner": 2.0,
+      "ring_outer": 2.0,
+      "ring_height": 0.5,
+      "ring_shift": -0.6
+    },
+    {
+      "tip_offset": 0.9,
+      "disc_factor": 1.0,
+      "disc_radial": 0.5,
+      "ring_inner": 1.5,
+      "ring_outer": 4.4,
+      "ring_height": 1.0,
+      "ring_shift": -0.2
+    },
+    {
+      "tip_offset": 1.4,
+      "disc_factor": 0.95,
+      "disc_radial": 0.8,
+      "ring_inner": 1.3,
+      "ring_outer": 3.4,
+      "ring_height": 0.6,
+      "ring_shift": -0.2
+    },
+    {
+      "tip_offset": 1.2,
+      "disc_factor": 1.3,
+      "disc_radial": 0.6,
+      "ring_inner": 1.8,
+      "ring_outer": 4.8,
+      "ring_height": 0.9,
+      "ring_shift": -0.5
+    }
+  ],
+  "measured": 0,
+  "planned": 10,
+  "skipped": [],
+  "estimated_hours": 4.2,
+  "hashes": [
+    "5902a15aa30f2eaa",
+    "1239e471384ab8cf",
+    "5bddf7cac89c136f",
+    "65181e4ffdb23394",
+    "b885a9dd4a908f4a",
+    "c98c3a56321ade32",
+    "3f77b4d78d5cf473",
+    "6b991d6ffb0b79f5",
+    "ee030ad336782d94",
+    "402795e8a2b3fa92"
+  ]
+}

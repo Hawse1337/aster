@@ -1,0 +1,128 @@
+{
+  "source": "user migration package 04_运行模板/R01_Lens30.aedt; design FeedIdeal; setup F28",
+  "what": "stepped-bicone coaxial feed + corrugated metal lens (Lens30, 29 annular ridges), air +-84/84/34 mm",
+  "band_ghz": [
+    24.0,
+    32.0
+  ],
+  "measured": "2026-11-17, clean desktop (all AEDT instances killed before the probe), real solve",
+  "s11_db": {
+    "24": -11.16,
+    "25": -14.13,
+    "26": -14.85,
+    "27": -13.78,
+    "28": -8.66,
+    "29": -8.16,
+    "31": -9.31,
+    "32": -3.82,
+    "30": "missing from the export"
+  },
+  "metrics": {
+    "s11_bandwidth": 3.0,
+    "beam_theta": 42.0,
+    "directivity_horiz_db": 1.38,
+    "peak_gain": 2.64,
+    "ripple": 6.62,
+    "sll": -0.05
+  },
+  "timings": {
+    "CONNECTING": 13.84,
+    "MODEL": 3.94,
+    "SOLVING": 3080.74,
+    "POSTPROCESS": 2.83
+  },
+  "conclusion": [
+    "the shipped integrated template is not the broadband 5-8 dBi antenna in the user's screenshots",
+    "3.0 GHz contiguous bandwidth, 2.64 dBi peak gain, beam at theta=42 deg, 6.6 dB azimuth ripple",
+    "the user's migration notes already state that the new feed + disc integration had no qualified radiation result yet"
+  ],
+  "measurement_defect_found_and_fixed": [
+    "AEDT identifies projects by name and the pipeline copies every template to lens28_var.aedt",
+    "when the previous campaign's lens28_var was still open, later probes solved that stale project and two different geometries produced identical S11/patterns",
+    "the probe now kills every AEDT instance and starts from an empty desktop, pinned to the new PID",
+    "the R01 number above reproduces within 0.02 dB after the fix, so it is a real measurement of that template"
+  ],
+  "builder_loop": {
+    "status": "works when AEDT attaches cleanly",
+    "validated_projects": [
+      "AstraFeedCheck (ideal port)",
+      "AstraCoaxFeedMesh (coax + 3-sector support + 1.5 mm air mesh)"
+    ],
+    "blocked_by": "AEDT gRPC attach is intermittent when instances are restarted between build and measure",
+    "parameters_exposed": [
+      "flare_scale",
+      "radial_scale",
+      "inner_step_offset",
+      "port_width",
+      "coax_length",
+      "support_wall_mm",
+      "support_sectors",
+      "metal_lens_candidate"
+    ]
+  },
+  "lens_screen": {
+    "source": "01_工程与原有结果/AstraBB_LensScreen_20261027_1730.aedt, design FeedIdeal",
+    "band_ghz": [
+      24.0,
+      32.0
+    ],
+    "metrics": {
+      "s11_bandwidth": 3.0,
+      "beam_theta": 42.0,
+      "directivity_horiz_db": 1.13,
+      "peak_gain": 2.71,
+      "ripple": 6.78,
+      "sll": -0.08
+    },
+    "timings": {
+      "CONNECTING": 13.5,
+      "MODEL": 4.97,
+      "SOLVING": 2730.6,
+      "POSTPROCESS": 5.5
+    },
+    "conclusion": "second available integrated candidate behaves like R01: 3 GHz, 2.7 dBi, beam 42 deg"
+  },
+  "available_integrated_projects": [
+    "R01_Lens30 (04 template): 3.0 GHz, 2.64 dBi",
+    "AstraBB_LensScreen FeedIdeal: 3.0 GHz, 2.71 dBi"
+  ],
+  "feed_sweep": {
+    "band_ghz": [
+      24.0,
+      32.0
+    ],
+    "config": "coax wave port, 3-sector support wall 0.4 mm, 1.5 mm air mesh, passes 12",
+    "variants": {
+      "Flare1.00_Radial1.00": {
+        "s11_db": {
+          "24": -3.98,
+          "25": -4.37,
+          "26": -4.73,
+          "27": -5.13,
+          "28": -5.6,
+          "29": -6.15,
+          "30": -6.76,
+          "31": -7.45,
+          "32": -8.25
+        },
+        "s11_bandwidth": 0.0
+      },
+      "Flare1.65_Radial1.375": {
+        "s11_db": {
+          "24": -8.93,
+          "25": -10.06,
+          "26": -11.0,
+          "27": -11.49,
+          "28": -11.2,
+          "29": -10.22,
+          "30": -9.03,
+          "31": -7.99,
+          "32": -7.19
+        },
+        "s11_bandwidth": 4.0
+      }
+    },
+    "documented_reference": "Flare1.65 at 28 GHz = -20.90 dB in the user's migration notes (different machine/support/mesh)",
+    "integrated_attempt": "Lens30 + Flare1.65 built and validated, but the 24-32 GHz discrete-sweep solve stalled in SOLVING; stopped after 37 min without progress"
+  }
+}

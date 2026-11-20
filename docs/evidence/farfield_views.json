@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-15",
+  "kind": "existing_HFSS_solution_native_report_and_GUI_validation",
+  "aedt_version": "2026.1",
+  "pyaedt_version": "1.9.0",
+  "new_solve_started": false,
+  "original_project": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_y14\\projects\\LensFinal_ref.aedt",
+  "validation_project": "C:\\Users\\Administrator\\Documents\\Codex\\2026-11-15\\md\\work\\native_reports\\validation_project\\LensFinal_ref.aedt",
+  "design": "f24g05",
+  "solution": "P4 : LastAdaptive",
+  "sphere": "InfiniteSphere1",
+  "sample_count": 6643,
+  "samples_unchanged_by_report_generation": true,
+  "available_frequencies_ghz": [
+    28.0
+  ],
+  "legacy_csv_comparison": {
+    "points": 164,
+    "max_abs_error_db": 4.440892098500626e-14
+  },
+  "e_plane": "phi=0 deg; theta=-180..180 deg",
+  "h_plane": "theta=90 deg; phi=0..360 deg",
+  "native_reports": {
+    "sets": [
+      {
+        "frequency_ghz": 28.0,
+        "names": [
+          "ANTOPT_3D_Gain_28GHz",
+          "ANTOPT_E_Plane_28GHz",
+          "ANTOPT_H_Plane_28GHz",
+          "ANTOPT_EH_Overlay_28GHz"
+        ],
+        "images": [
+          "native_reports/gain3d_28.png",
+          "native_reports/e_28.png",
+          "native_reports/h_28.png",
+          "native_reports/eh_28.png"
+        ],
+        "radial_scale_db": [
+          -40,
+          10
+        ],
+        "image_errors": []
+      }
+    ],
+    "opened_reports": [
+      "ANTOPT_3D_Gain_28GHz",
+      "ANTOPT_E_Plane_28GHz",
+      "ANTOPT_H_Plane_28GHz",
+      "ANTOPT_EH_Overlay_28GHz"
+    ],
+    "saved": true,
+    "plane_convention": "z_axis_E_phi0_H_theta90",
+    "e_phi_deg": 0,
+    "h_theta_deg": 90,
+    "definition": "Z-axis antenna: E phi=0 theta=-180..180; H theta=90 phi=0..360"
+  },
+  "ui_verified": [
+    "four_plots_visible",
+    "native_3D_image_visible",
+    "correct_horizontal_H_cut",
+    "shared_E_H_overlay_radial_scale",
+    "open_reports_button_success"
+  ],
+  "native_reopen_verified": [
+    "saved_and_closed_validation_copy",
+    "all_four_reports_reopened",
+    "second_open_reused_same_GUI_pid",
+    "ordinary_Save_did_not_disable_launcher"
+  ],
+  "python_tests": {
+    "full_suite": 765,
+    "result": "OK",
+    "seconds": 57.689
+  },
+  "javascript_tests": {
+    "command": "node tests/test_farfield_ui.js",
+    "result": "OK"
+  },
+  "limitations": [
+    "existing saved results; no fresh solve",
+    "legacy installer not rebuilt",
+    "ordinary .aedt open does not restore report windows; use companion or software button",
+    "launcher opens current saved project reports, not a historical geometry reconstruction",
+    "requires saved Theta-Phi far fields; ambiguous multiple original spheres rejected",
+    "E/H cuts follow this project's convention, not all antenna polarizations"
+  ],
+  "source_sha256": {
+    "antopt/farfield.py": "dda25fa848e43b6094a3690f9e6708c19c213bad7005bdecc1b505e67a475f91",
+    "antopt/open_reports.py": "a7d5a27de88b1d4cf4cceab19e6511140b799310f8f479958413cfe8da4f6bb8",
+    "antopt/gui/runner.py": "63e5f01d0726952487482c7d2ec18638e91b41eedf5cab5a52c59d0de9fab61d",
+    "antopt/gui/server.py": "92ccdab9732d30df6697f09ab2996b13dc2a71c757db44f8ce661b2b3d0d1305",
+    "antopt/gui/static/index.html": "fab3f5911fc6733e7b3dbcca470be691adbe95936d2f3a6fe482dff50e4b90f1",
+    "antopt/bridge.py": "c349013247c892d05107ec70bc5c0b16a4667c51c438e0aad08c73468338e02a"
+  }
+}

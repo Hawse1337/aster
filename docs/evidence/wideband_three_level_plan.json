@@ -1,0 +1,90 @@
+{
+  "case": "lens28_var",
+  "band_ghz": [
+    24.0,
+    32.0
+  ],
+  "structure": "B: three-level collar (wedding-cake)",
+  "points": [
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.0,
+      "ring_height": 0.6,
+      "ring_mid": 2.0,
+      "ring_height_outer": 0.8,
+      "ring_height_mid_delta": 0.15,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.0,
+      "ring_height": 0.9,
+      "ring_mid": 2.0,
+      "ring_height_outer": 0.5,
+      "ring_height_mid_delta": -0.2,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.6,
+      "ring_height": 0.8,
+      "ring_mid": 2.2,
+      "ring_height_outer": 0.9,
+      "ring_height_mid_delta": 0.0,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 4.2,
+      "ring_height": 1.0,
+      "ring_mid": 2.4,
+      "ring_height_outer": 0.7,
+      "ring_height_mid_delta": -0.2,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.0,
+      "ring_height": 0.6,
+      "ring_mid": 1.8,
+      "ring_height_outer": 1.0,
+      "ring_height_mid_delta": 0.2,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.6,
+      "ring_height": 0.7,
+      "ring_mid": 1.8,
+      "ring_height_outer": 0.85,
+      "ring_height_mid_delta": 0.15,
+      "ring_shift": 0.0
+    }
+  ],
+  "hashes": [
+    "2903924d4237e253",
+    "e3d5400c74c56918",
+    "af18776389acb4ee",
+    "b13816ff4b9af845",
+    "d90520feeebd468e",
+    "99b421fb03da5bc8"
+  ]
+}

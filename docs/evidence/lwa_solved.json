@@ -1,0 +1,10 @@
+{
+  "design": "LWA_FINAL",
+  "validated": true,
+  "analyzed": true,
+  "s11_magnitude": 0.72813553,
+  "s11_db": -2.76,
+  "frequency_ghz": 28.0,
+  "objects": 27,
+  "note": "quick validation model: 3 passes, MaxDeltaS 0.05, ridge height 2 mm"
+}

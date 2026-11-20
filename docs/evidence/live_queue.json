@@ -1,0 +1,31 @@
+{
+  "exe": "D:\\AntennaDesignSystem\\dist\\AntennaOptimizer\\AntennaOptimizer.exe",
+  "campaign": "D:\\AntennaDesignSystem\\dist\\live_queue_check",
+  "version": "1.45.0",
+  "app_ready": true,
+  "batch_post": {
+    "status": 202,
+    "batch": {
+      "batch_id": "batch-20261115T193746",
+      "case": "lens28_var",
+      "state": "RUNNING",
+      "total": 1,
+      "done": 0,
+      "run_ids": [
+        "real-20261115T193746-00"
+      ],
+      "created_utc": "2026-11-15T19:37:46Z"
+    }
+  },
+  "visible_while_running": [
+    {
+      "run_id": "real-20261115T193746-00",
+      "status": "RUNNING",
+      "stage": "",
+      "after_s": 0.0
+    }
+  ],
+  "seconds_until_visible": 0.0,
+  "ok": true,
+  "orphans_left": 0
+}

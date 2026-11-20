@@ -1,0 +1,733 @@
+{
+  "stage": "done",
+  "solutions": [
+    "P4 : LastAdaptive"
+  ],
+  "summary": {
+    "versions": {
+      "pyaedt": "1.9.0",
+      "aedt": "ANSYSEM_ROOT261"
+    },
+    "categories": {
+      "Far Fields": {
+        "answered": 5,
+        "failed": 0,
+        "quantities": [
+          "GainTotal",
+          "GainPhi",
+          "GainTheta",
+          "GainX",
+          "GainY",
+          "GainZ",
+          "GainLHCP",
+          "GainRHCP",
+          "GainL3X",
+          "GainL3Y",
+          "GainCoPolar",
+          "GainCrossPolar",
+          "DirTotal",
+          "DirPhi",
+          "DirTheta",
+          "DirX",
+          "DirY",
+          "DirZ",
+          "DirLHCP",
+          "DirRHCP",
+          "DirL3X",
+          "DirL3Y",
+          "DirCoPolar",
+          "DirCrossPolar",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)",
+          "RealizedGainTotal",
+          "RealizedGainPhi",
+          "RealizedGainTheta",
+          "RealizedGainX",
+          "RealizedGainY",
+          "RealizedGainZ",
+          "RealizedGainLHCP",
+          "RealizedGainRHCP",
+          "RealizedGainL3X",
+          "RealizedGainL3Y",
+          "RealizedGainCoPolar",
+          "RealizedGainCrossPolar"
+        ],
+        "errors": []
+      },
+      "Fields": {
+        "answered": 2,
+        "failed": 0,
+        "quantities": [
+          "Volume(coax_diel)",
+          "Volume(coax_outer)",
+          "Volume(coax_inner)",
+          "Area(port_disc)",
+          "Volume(Region)",
+          "Volume(cone_dn)",
+          "Volume(cone_up)",
+          "Volume(disc)",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "errors": []
+      },
+      "Antenna Parameters": {
+        "answered": 5,
+        "failed": 0,
+        "quantities": [
+          "PeakDirectivity",
+          "PeakGain",
+          "PeakRealizedGain",
+          "PeakSystemGain",
+          "BeamArea",
+          "RadiatedPower",
+          "AcceptedPower",
+          "IncidentPower",
+          "RadiationEfficiency",
+          "TotalEfficiency",
+          "SystemEfficiency",
+          "MaxU",
+          "ArrayFactor",
+          "DecayFactor",
+          "FrontToBackRatio",
+          "MaxrETotal",
+          "MaxrETotalAtPhi",
+          "MaxrETotalAtTheta",
+          "MaxrEXComp",
+          "MaxrEXCompAtPhi",
+          "MaxrEXCompAtTheta",
+          "MaxrEYComp",
+          "MaxrEYCompAtPhi",
+          "MaxrEYCompAtTheta",
+          "MaxrEZComp",
+          "MaxrEZCompAtPhi",
+          "MaxrEZCompAtTheta",
+          "MaxrEPhiComp",
+          "MaxrEPhiCompAtPhi",
+          "MaxrEPhiCompAtTheta",
+          "MaxrEThetaComp",
+          "MaxrEThetaCompAtPhi",
+          "MaxrEThetaCompAtTheta",
+          "MaxrELHCPComp",
+          "MaxrELHCPCompAtPhi",
+          "MaxrELHCPCompAtTheta",
+          "MaxrERHCPComp",
+          "MaxrERHCPCompAtPhi",
+          "MaxrERHCPCompAtTheta",
+          "MaxrELudwig3XComp",
+          "MaxrELudwig3XCompAtPhi",
+          "MaxrELudwig3XCompAtTheta",
+          "MaxrELudwig3YComp",
+          "MaxrELudwig3YCompAtPhi",
+          "MaxrELudwig3YCompAtTheta",
+          "MaxrECoPolar",
+          "MaxrECoPolarAtPhi",
+          "MaxrECoPolarAtTheta",
+          "MaxrECrossPolar",
+          "MaxrECrossPolarAtPhi",
+          "MaxrECrossPolarAtTheta",
+          "DirTotal",
+          "DirPhi",
+          "DirTheta",
+          "DirX",
+          "DirY",
+          "DirZ",
+          "DirLHCP",
+          "DirRHCP",
+          "DirL3X",
+          "DirL3Y",
+          "DirCoPolar",
+          "DirCrossPolar",
+          "GainTotal",
+          "GainPhi",
+          "GainTheta",
+          "GainX",
+          "GainY",
+          "GainZ",
+          "GainLHCP",
+          "GainRHCP",
+          "GainL3X",
+          "GainL3Y",
+          "GainCoPolar",
+          "GainCrossPolar",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)",
+          "RealizedGainTotal",
+          "RealizedGainPhi",
+          "RealizedGainTheta",
+          "RealizedGainX",
+          "RealizedGainY",
+          "RealizedGainZ",
+          "RealizedGainLHCP",
+          "RealizedGainRHCP",
+          "RealizedGainL3X",
+          "RealizedGainL3Y",
+          "RealizedGainCoPolar",
+          "RealizedGainCrossPolar"
+        ],
+        "errors": []
+      },
+      "S-parameters": {
+        "answered": 2,
+        "failed": 0,
+        "quantities": [
+          "S(1,1)",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "errors": []
+      },
+      "Modal Solution Data": {
+        "answered": 2,
+        "failed": 0,
+        "quantities": [
+          "S(1,1)",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "errors": []
+      },
+      "Terminal Solution Data": {
+        "answered": 2,
+        "failed": 0,
+        "quantities": [
+          "St(1,1)",
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "errors": []
+      }
+    },
+    "categories_with_quantities": [
+      "Far Fields",
+      "Fields",
+      "Antenna Parameters",
+      "S-parameters",
+      "Modal Solution Data",
+      "Terminal Solution Data"
+    ],
+    "directivity_or_efficiency_quantities": [
+      "PeakDirectivity",
+      "RadiationEfficiency",
+      "SystemEfficiency",
+      "TotalEfficiency"
+    ],
+    "supports_efficiency": true,
+    "records": [
+      {
+        "category": "Far Fields",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "GainTotal",
+          "GainPhi",
+          "GainTheta",
+          "GainX",
+          "GainY",
+          "GainZ",
+          "GainLHCP",
+          "GainRHCP",
+          "GainL3X",
+          "GainL3Y",
+          "GainCoPolar",
+          "GainCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Far Fields",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "DirTotal",
+          "DirPhi",
+          "DirTheta",
+          "DirX",
+          "DirY",
+          "DirZ",
+          "DirLHCP",
+          "DirRHCP",
+          "DirL3X",
+          "DirL3Y",
+          "DirCoPolar",
+          "DirCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Far Fields",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "GainTotal",
+          "GainPhi",
+          "GainTheta",
+          "GainX",
+          "GainY",
+          "GainZ",
+          "GainLHCP",
+          "GainRHCP",
+          "GainL3X",
+          "GainL3Y",
+          "GainCoPolar",
+          "GainCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Far Fields",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Far Fields",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Far Fields",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "RealizedGainTotal",
+          "RealizedGainPhi",
+          "RealizedGainTheta",
+          "RealizedGainX",
+          "RealizedGainY",
+          "RealizedGainZ",
+          "RealizedGainLHCP",
+          "RealizedGainRHCP",
+          "RealizedGainL3X",
+          "RealizedGainL3Y",
+          "RealizedGainCoPolar",
+          "RealizedGainCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Volume(coax_diel)",
+          "Volume(coax_outer)",
+          "Volume(coax_inner)",
+          "Area(port_disc)",
+          "Volume(Region)",
+          "Volume(cone_dn)",
+          "Volume(cone_up)",
+          "Volume(disc)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Fields",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "PeakDirectivity",
+          "PeakGain",
+          "PeakRealizedGain",
+          "PeakSystemGain",
+          "BeamArea",
+          "RadiatedPower",
+          "AcceptedPower",
+          "IncidentPower",
+          "RadiationEfficiency",
+          "TotalEfficiency",
+          "SystemEfficiency",
+          "MaxU",
+          "ArrayFactor",
+          "DecayFactor",
+          "FrontToBackRatio",
+          "MaxrETotal",
+          "MaxrETotalAtPhi",
+          "MaxrETotalAtTheta",
+          "MaxrEXComp",
+          "MaxrEXCompAtPhi",
+          "MaxrEXCompAtTheta",
+          "MaxrEYComp",
+          "MaxrEYCompAtPhi",
+          "MaxrEYCompAtTheta",
+          "MaxrEZComp",
+          "MaxrEZCompAtPhi",
+          "MaxrEZCompAtTheta",
+          "MaxrEPhiComp",
+          "MaxrEPhiCompAtPhi",
+          "MaxrEPhiCompAtTheta",
+          "MaxrEThetaComp",
+          "MaxrEThetaCompAtPhi",
+          "MaxrEThetaCompAtTheta",
+          "MaxrELHCPComp",
+          "MaxrELHCPCompAtPhi",
+          "MaxrELHCPCompAtTheta",
+          "MaxrERHCPComp",
+          "MaxrERHCPCompAtPhi",
+          "MaxrERHCPCompAtTheta",
+          "MaxrELudwig3XComp",
+          "MaxrELudwig3XCompAtPhi",
+          "MaxrELudwig3XCompAtTheta",
+          "MaxrELudwig3YComp",
+          "MaxrELudwig3YCompAtPhi",
+          "MaxrELudwig3YCompAtTheta",
+          "MaxrECoPolar",
+          "MaxrECoPolarAtPhi",
+          "MaxrECoPolarAtTheta",
+          "MaxrECrossPolar",
+          "MaxrECrossPolarAtPhi",
+          "MaxrECrossPolarAtTheta"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "DirTotal",
+          "DirPhi",
+          "DirTheta",
+          "DirX",
+          "DirY",
+          "DirZ",
+          "DirLHCP",
+          "DirRHCP",
+          "DirL3X",
+          "DirL3Y",
+          "DirCoPolar",
+          "DirCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "GainTotal",
+          "GainPhi",
+          "GainTheta",
+          "GainX",
+          "GainY",
+          "GainZ",
+          "GainLHCP",
+          "GainRHCP",
+          "GainL3X",
+          "GainL3Y",
+          "GainCoPolar",
+          "GainCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Antenna Parameters",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "RealizedGainTotal",
+          "RealizedGainPhi",
+          "RealizedGainTheta",
+          "RealizedGainX",
+          "RealizedGainY",
+          "RealizedGainZ",
+          "RealizedGainLHCP",
+          "RealizedGainRHCP",
+          "RealizedGainL3X",
+          "RealizedGainL3Y",
+          "RealizedGainCoPolar",
+          "RealizedGainCrossPolar"
+        ],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "S(1,1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "S-parameters",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "S(1,1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Modal Solution Data",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "St(1,1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "Directivity",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "Power",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [
+          "Pacc",
+          "Pacc(1)",
+          "Pref",
+          "Pref(1)",
+          "Pinc",
+          "Pinc(1)"
+        ],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "Efficiency",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      },
+      {
+        "category": "Terminal Solution Data",
+        "quantity_category": "Realized Gain",
+        "solution": "P4 : LastAdaptive",
+        "ok": true,
+        "quantities": [],
+        "error": ""
+      }
+    ],
+    "verdict": "a directivity or efficiency quantity is enumerable in this context"
+  },
+  "close_error": "TypeError: Design.close_project() got an unexpected keyword argument 'save_project'"
+}

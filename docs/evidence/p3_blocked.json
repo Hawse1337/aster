@@ -1,0 +1,27 @@
+{
+  "goal": "P3/P2 - run the GUI batch path and the yadof session against the real solver",
+  "state": "blocked",
+  "blocking_condition": {
+    "symptom": "every job started through RealRunManager fails with WorkerRemoteError: backend_error: Failed to execute gRPC AEDT command: InsertFrequencySweep, and the manager's own sweep call reports 'Failed to start new AEDT gRPC session on port 0'",
+    "interpretation": "the bridge used by the manager is not attached to the running AEDT session, so the guard tries to launch a new one on port 0; the standalone runner (scripts/run_var_case.py) connects first and works",
+    "same_for": [
+      "reuse_project=True",
+      "reuse_project=False",
+      "with sweep retries",
+      "with an explicit bridge.connect(pid=pid) in _run_job"
+    ]
+  },
+  "verified_before_the_blocker": [
+    "the sweep code itself is correct: run directly against a fresh copy it returns {'sweeps': ['ANT_Band']}",
+    "solver settings stick: MaximumPasses 4 -> 8 and MaxDeltaS 0.02 on a live AEDT",
+    "the variable model applies (ok + validated) on the GUI path",
+    "the design spec is accepted and the guard starts the job",
+    "the same model and parameters succeed through scripts/run_var_case.py (3.0 GHz / 5.881 dBi / 1.631 dB), twice, to three decimals"
+  ],
+  "rounds_spent": ["9", "10", "11", "12"],
+  "next_step": [
+    "make RealRunManager share one connected bridge across jobs (it currently builds a fresh InProcessBridge per job) and verify the MCP layer keeps the pid->session mapping",
+    "or drive the GUI through the same helper scripts/run_var_case.py uses, which is proven",
+    "then re-run scripts/p3_reuse_experiment.py and scripts/compare_yadof_batch.py"
+  ]
+}

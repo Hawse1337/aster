@@ -1,0 +1,75 @@
+{
+  "goal": "P1.2 - radiation efficiency from real HFSS far fields",
+  "state": "blocked by the solver, not by our code",
+  "root_cause": {
+    "probe": "create_report(expressions=['dB(DirectivityTotal)'], report_category='Far Fields', setup_sweep_name='P4 : ANT_Band', primary_sweep_variable='Theta', variations={'Phi': ['0deg'], 'Freq': ['28GHz']})",
+    "result": "GrpcApiError: Failed to execute gRPC AEDT command: CreateReport",
+    "aftermath": "the failed PyAEDT command poisons the worker session: every later call in that worker returns GetSetups errors or 'Failed to start new AEDT gRPC session on port 0'"
+  },
+  "consequences_observed": [
+    {
+      "run": "20261113T033813061037",
+      "outcome": "COMPLETED without the efficiency metric; the far-field CSVs contain only dB(GainTotal)"
+    },
+    {
+      "run": "20261113T041631940363",
+      "outcome": "FAILED at export: sweep ANT_Band has 1 row - the poisoned session also broke the touchstone export"
+    }
+  ],
+  "code_state": [
+    "the flag evaluation.include_directivity travels spec -> runner -> adapter -> backend (guard v1.17.0) and the backend exports the directivity as its own report file when it works (v1.18.0)",
+    "a failed directivity report is recorded as directivity_error and no longer fails the run (v1.18.1)",
+    "the design system only asks for it when build_case(include_efficiency=True) (case v1.4.0)",
+    "the default report continues to carry dB(GainTotal) only, which is why every other run in this goal completed"
+  ],
+  "verdict": "the metric cannot be produced on this design today: AEDT rejects the expression. The code path is in place and unit-tested on both sides; reopening it needs either a valid directivity expression for this report or a different quantity (e.g. the field-summary powers) to derive eta.",
+  "next_step": [
+    "check whether the design needs a theta/phi range report for DirectivityTotal, or whether the quantity is spelled differently in this project",
+    "alternatively compute eta from the HFSS field summary (radiated vs accepted power), which does not need a far-field report at all"
+  ],
+  "available_quantities": {
+    "Far Fields": [
+      "GainTotal",
+      "GainPhi",
+      "GainTheta",
+      "GainX",
+      "GainY",
+      "GainZ",
+      "GainLHCP",
+      "GainRHCP",
+      "GainL3X",
+      "GainL3Y",
+      "GainCoPolar",
+      "GainCrossPolar"
+    ],
+    "Fields": [
+      "Volume(coax_diel)",
+      "Volume(coax_outer)",
+      "Volume(coax_inner)",
+      "Area(port_disc)",
+      "Volume(Region)",
+      "Volume(cone_dn)",
+      "Volume(cone_up)",
+      "Volume(disc)"
+    ],
+    "S-parameters": [
+      "S(1,1)"
+    ]
+  },
+  "conclusion": "the design reports only Gain* far-field quantities and geometric Fields; there is no Directivity or power quantity to derive eta from, which is why create_report rejects the expression",
+  "sphere_grid_attempt": {
+    "what": "export a full theta/phi grid (Phi=All) and integrate it for the directivity",
+    "code": "aedt_guard.pattern + sphere_grid cut + antopt.physics.directivity, both unit-tested against analytic patterns",
+    "runs": [
+      {
+        "run": "20261113T044713271171",
+        "outcome": "FAILED immediately: export_farfield() got multiple values for argument cuts (our bug, fixed)"
+      },
+      {
+        "run": "20261113T051046326758",
+        "outcome": "FAILED at the touchstone export with one row - the grid report creation failed and poisoned the worker session"
+      }
+    ],
+    "conclusion": "the grid request is not safe on this design yet; the metric stays refused and the code stays in place, unused by default"
+  }
+}

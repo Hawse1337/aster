@@ -1,0 +1,30 @@
+{
+  "run_id": "20261112T081146979616",
+  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_var_cal3",
+  "geometry": "bowls with ring collar + 20 drilled holes, disc scaled, coax untouched",
+  "metrics": {
+    "s11_bandwidth": 2.0,
+    "peak_gain": 5.615,
+    "ripple": 1.765
+  },
+  "reference_measured": {
+    "run_id": "20261110T142952497786",
+    "s11_bandwidth": 3.0,
+    "peak_gain": 6.44,
+    "ripple": 1.3
+  },
+  "progress": "bandwidth 0.0 -> 2.0 GHz after adding the collar and the hole arrays, so the bisection diagnosis was right: those features are what the rebuild was missing",
+  "remaining_gap": [
+    "hole positions/counts are still guesses (4 small + 6 rim per bowl); the reference has 3 subtract operations per bowl, so some holes are missing or misplaced",
+    "gain dropped to 5.62 dBi, which suggests the hole geometry now removes more metal than the reference does"
+  ],
+  "next": "parse every subtract operation of cone_dn/cone_up (blank part, tool cylinders with x/y/z/radius/height) instead of guessing the arrays",
+  "hole_analysis": {
+    "reference_bowl_volume": 1848.43,
+    "plain_revolve_volume": 1892.55,
+    "missing_removal_mm3": 44.12,
+    "small_holes_estimate_mm3": 4.974,
+    "conclusion": "the six/eight small holes account for only ~5 of the 44 mm3, so a larger cut exists (most likely the coax aperture / counterbore through the bowl face); the hole arrays alone cannot close the gap",
+    "tool_geometry": "the subtract tool ids are not stored as GeometryPart blocks in the .aedt, so the tools cannot be recovered by parsing the file - the geometry has to be read from AEDT (face centres/radii) instead"
+  }
+}

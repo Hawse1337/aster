@@ -1,0 +1,126 @@
+{
+  "measured_designs": 16,
+  "with_bandwidth": 7,
+  "max_bandwidth_ghz": 3.0,
+  "seeds": [
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\packaged_real",
+      "run_id": "real-20261113T213025",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.2,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 5.88122809916541,
+      "directivity_horiz_db": null,
+      "ripple": 1.6307168625498596
+    },
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+      "run_id": "real-20261114T100345-00",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.05457135027426,
+      "directivity_horiz_db": null,
+      "ripple": 1.62294639791733
+    },
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+      "run_id": "real-20261114T102409-01",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.35,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.10876445232545,
+      "directivity_horiz_db": null,
+      "ripple": 1.4981108269689303
+    },
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+      "run_id": "prior-215",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.15,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.25979,
+      "directivity_horiz_db": null,
+      "ripple": 1.65295
+    },
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+      "run_id": "prior-225",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.25,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.07182,
+      "directivity_horiz_db": null,
+      "ripple": 1.75689
+    },
+    {
+      "campaign": "D:\\AgentAEDT_Collab\\phase_b3",
+      "run_id": "real-20261115T144215",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 3.0,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.05135921877366,
+      "directivity_horiz_db": null,
+      "ripple": 1.8192691295687302
+    },
+    {
+      "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+      "run_id": "prior-205",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.05,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.19154,
+      "directivity_horiz_db": null,
+      "ripple": 1.63067
+    }
+  ]
+}

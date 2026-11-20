@@ -1,0 +1,69 @@
+{
+  "runs_with_timings": 6,
+  "failure_rate": 0.222,
+  "run_ids": [
+    "real-20261114T121640-00",
+    "real-20261114T123749-00",
+    "real-20261114T100345-00",
+    "real-20261114T102409-01",
+    "real-20261114T104755-00",
+    "real-20261114T104755-01"
+  ],
+  "fitted": true,
+  "samples": 6,
+  "spread_seconds": 23.4,
+  "median_seconds": 1006.0,
+  "leave_one_out": {
+    "mean_error_seconds": 150.8,
+    "mean_absolute_error_seconds": 438.1,
+    "mean_absolute_error_minutes": 7.3,
+    "worst_absolute_minutes": 15.7
+  },
+  "candidate": {
+    "tip_offset": 1.0,
+    "disc_factor": 1.1694,
+    "disc_radial": 1.0,
+    "ring_inner": 1.2,
+    "ring_outer": 2.1973,
+    "ring_height": 0.6,
+    "ring_shift": 0.0
+  },
+  "candidate_estimate": {
+    "seconds": 1063.4,
+    "minutes": 17.7,
+    "spread_seconds": 23.4,
+    "samples": 6,
+    "method": "ridge",
+    "failure_rate": 0.222
+  },
+  "candidate_note": "this is the design that failed the convergence gate; the guard stopped it at 27 minutes, so a cost estimate that lands near that would have been useful before submitting it",
+  "real_machine_check": {
+    "candidate": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.1694,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.1973,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    "predicted_minutes": 17.7,
+    "predicted_spread_minutes": 0.4,
+    "observed": [
+      {
+        "run": "20261114T134920340022",
+        "passes": 12,
+        "outcome": "guard stopped it at the 50 minute limit",
+        "observed_minutes": 50.0
+      },
+      {
+        "run": "20261114T144054246935",
+        "passes": 8,
+        "outcome": "SOLVED after 27 minutes, then failed the convergence gate",
+        "observed_minutes": 27.2
+      }
+    ],
+    "error_minutes": 9.5,
+    "verdict": "the estimate was 9.5 minutes optimistic for this design, inside the leave-one-out worst case of 15.7 minutes; the failure-rate signal (22%) was the more important half of the answer"
+  }
+}

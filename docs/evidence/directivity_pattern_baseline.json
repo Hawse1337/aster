@@ -1,0 +1,72 @@
+{
+  "target": {
+    "shape": "flat donut concentrated at theta = 90 deg (equatorial plane)",
+    "reference": "docs/evidence/reference_pattern/ (user-provided 3D/cut images)",
+    "reference_peak_gain_dbi": [
+      6.08,
+      7.78
+    ],
+    "acceptance_definition": {
+      "horizon_peak_gain_dbi": ">= 6.0 near theta=90 deg",
+      "horizon_to_axial_db": ">= 15 dB (suppress radiation toward +-Z)",
+      "near_axis_max_dbi": "<= -5 dB (both poles)",
+      "horizon_ripple_db": "<= 2.0 dB around phi",
+      "power_fraction_theta_60_120": ">= 0.85"
+    }
+  },
+  "baseline_measured": {
+    "AstraBR130_radial1p30_pitch1.0": {
+      "peak_gain_dbi": 4.49,
+      "horizon_max_dbi": 1.95,
+      "horizon_min_dbi": 0.56,
+      "horizon_ripple_db": 1.4,
+      "axial_max_dbi": 4.49,
+      "near_axis_max_dbi": 3.58,
+      "horizon_to_axial_db": -2.53,
+      "donut_peak_dbi": 1.95,
+      "power_fraction_theta_60_120": 0.3017,
+      "sphere_points": 6643,
+      "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_R130\\runs\\20261117T144711281526\\artifacts\\farfield\\Plot_6VGWTY.csv"
+    },
+    "AstraP115_radial1p30_pitch1.15": {
+      "peak_gain_dbi": 5.35,
+      "horizon_max_dbi": -1.37,
+      "horizon_min_dbi": -3.03,
+      "horizon_ripple_db": 1.66,
+      "axial_max_dbi": 5.35,
+      "near_axis_max_dbi": 2.76,
+      "horizon_to_axial_db": -6.72,
+      "donut_peak_dbi": -0.35,
+      "power_fraction_theta_60_120": 0.1691,
+      "sphere_points": 6643,
+      "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_P115\\runs\\20261117T175445745861\\artifacts\\farfield\\Plot_T619ZL.csv"
+    },
+    "AstraP110_radial1p30_pitch1.10": {
+      "peak_gain_dbi": 4.17,
+      "horizon_max_dbi": 0.26,
+      "horizon_min_dbi": -1.24,
+      "horizon_ripple_db": 1.5,
+      "axial_max_dbi": 4.17,
+      "near_axis_max_dbi": 3.33,
+      "horizon_to_axial_db": -3.91,
+      "donut_peak_dbi": 1.71,
+      "power_fraction_theta_60_120": 0.2475,
+      "sphere_points": 6643,
+      "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_P11\\runs\\20261117T172129514164\\artifacts\\farfield\\Plot_90MY0W.csv"
+    },
+    "AstraBB_bore8_radial1p25": {
+      "peak_gain_dbi": 4.41,
+      "horizon_max_dbi": 1.89,
+      "horizon_min_dbi": 0.52,
+      "horizon_ripple_db": 1.38,
+      "axial_max_dbi": 4.41,
+      "near_axis_max_dbi": 3.2,
+      "horizon_to_axial_db": -2.52,
+      "donut_peak_dbi": 1.89,
+      "power_fraction_theta_60_120": 0.311,
+      "sphere_points": 6643,
+      "source": "D:\\AgentAEDT_Collab\\astra_codesign\\phase_b\\campaign_B1_rad125\\runs\\20261117T130918073520\\artifacts\\farfield\\Plot_H32CSR.csv"
+    }
+  },
+  "note": "computed from the recorded far-field sphere cuts of the real runs, not from reports"
+}

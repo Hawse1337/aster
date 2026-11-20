@@ -1,0 +1,27 @@
+[
+  {
+    "label": "solution_data RadiatedPower",
+    "ok": true,
+    "value": "False"
+  },
+  {
+    "label": "solution_data AcceptedPower",
+    "ok": true,
+    "value": "False"
+  },
+  {
+    "label": "solution_data Far Fields DirectivityTotal",
+    "ok": true,
+    "value": "False"
+  },
+  {
+    "label": "create_report Fields RadiatedPower",
+    "ok": false,
+    "error": "com_error: (-2147352567, '发生意外。', (0, None, None, None, 0, -2147024382), None)"
+  },
+  {
+    "label": "get_traces",
+    "ok": false,
+    "error": "AttributeError: 'PostProcessorHFSS' object has no attribute 'get_traces'"
+  }
+]

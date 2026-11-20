@@ -1,0 +1,58 @@
+{
+  "phase": "24-32 GHz wideband target",
+  "goal": {
+    "band_ghz": [24.0, 32.0],
+    "bandwidth_target_ghz": 8.0,
+    "other_targets": [
+      "high directivity in the theta=90 deg plane",
+      "high peak gain",
+      "azimuth omnidirectional with low ripple at theta=90 deg",
+      "sidelobes as low as possible"
+    ]
+  },
+  "achieved": {
+    "structure_A_24_30GHz": {
+      "design": "ring_outer 2.40, ring_mid 2.00, ring_height 0.50, ring_height_outer 0.60, disc_factor 0.95",
+      "s11_bandwidth_ghz": 3.0,
+      "peak_gain_dbi": 6.43,
+      "directivity_horizontal_dbi": 7.09,
+      "ripple_db": 1.40,
+      "sll_dbc": -2.93,
+      "note": "meets 3 GHz, gain>=6, directivity>=7, ripple<=3 simultaneously; nowhere near 8 GHz"
+    },
+    "structure_B": {
+      "design": "three-level collar, ring_height_mid_delta",
+      "state": "implemented and tested (941 design tests); six point 24-32 GHz batch never produced results because AEDT sessions failed between restarts"
+    },
+    "astrabb_feed_parameter_response": {
+      "baseline": {"s11_at_28ghz_db": -5.60, "bandwidth_ghz": 0.0},
+      "flare_165": {"s11_at_28ghz_db": -11.20, "bandwidth_ghz": 4.0},
+      "documented_reference": "Flare1.65 = -20.90 dB at 28 GHz on the user's other machine (different support/mesh recipe)"
+    },
+    "integrated_candidates_24_32GHz": {
+      "R01_Lens30": {"bandwidth_ghz": 3.0, "peak_gain_dbi": 2.64, "beam_theta_deg": 42.0, "ripple_db": 6.62},
+      "AstraBB_LensScreen": {"bandwidth_ghz": 3.0, "peak_gain_dbi": 2.71, "beam_theta_deg": 42.0, "ripple_db": 6.78}
+    }
+  },
+  "gap": {
+    "bandwidth_shortfall_ghz": "8.0 required; best measured 4.0 (feed only) and 3.0 (integrated)",
+    "reason": [
+      "the broadband 24-35 GHz antenna in the user's screenshots is an optimised variant of the corrugated-lens + stepped-feed family and no project or dimensions for it exist on this machine (user confirmed)",
+      "the integrated 29-ridge lens model stalls in SOLVING during a 24-32 GHz discrete sweep (37 min without progress, no solver child process)",
+      "AEDT gRPC attach is intermittent when instances restart between build and measure"
+    ]
+  },
+  "next_steps": [
+    "solve the integrated lens one frequency at a time (or with an interpolating sweep) instead of a 9 point discrete sweep",
+    "run 6-9 point optimisation of flare_scale, radial_scale, inner_step_offset and disc inner radius; feed-only first (minutes per point) to confirm the documented Flare1.65 baseline, then integrate",
+    "obtain the target antenna's key dimensions or the paper/PPT figure numbers from the user to cut the search space",
+    "settle the acceptance wording: continuous 8 GHz versus a <=0.2 GHz notch near 31 GHz; in-band gain floor"
+  ],
+  "artefacts": {
+    "tags": ["v1.46.0", "v1.46.3", "v1.46.5", "v1.46.6", "v1.47.0", "v1.47.1"],
+    "installer": "dist/AntennaOptimizer-1.47.1-setup.exe",
+    "portable": "dist/AntennaOptimizer-1.47.1-portable.zip",
+    "installed_version": "antopt 1.47.1 (verified via /api/about from a neutral cwd)",
+    "tests": {"design": 941, "guard": 459, "guard_skipped": 1}
+  }
+}

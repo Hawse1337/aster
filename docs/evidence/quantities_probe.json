@@ -1,0 +1,29 @@
+{
+  "Far Fields": [
+    "GainTotal",
+    "GainPhi",
+    "GainTheta",
+    "GainX",
+    "GainY",
+    "GainZ",
+    "GainLHCP",
+    "GainRHCP",
+    "GainL3X",
+    "GainL3Y",
+    "GainCoPolar",
+    "GainCrossPolar"
+  ],
+  "Fields": [
+    "Volume(coax_diel)",
+    "Volume(coax_outer)",
+    "Volume(coax_inner)",
+    "Area(port_disc)",
+    "Volume(Region)",
+    "Volume(cone_dn)",
+    "Volume(cone_up)",
+    "Volume(disc)"
+  ],
+  "S-parameters": [
+    "S(1,1)"
+  ]
+}

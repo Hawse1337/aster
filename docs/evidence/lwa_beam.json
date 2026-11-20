@@ -1,0 +1,11 @@
+{
+  "result": {
+    "steps": {
+      "save_fields": true,
+      "analyze": true,
+      "farfield": "err:GrpcApiError:Failed to execute gRPC AEDT command: CreateReport"
+    }
+  },
+  "theory_beam_angle_deg": -5.6525100077760175,
+  "beta_minus_over_k0": -0.09849495721960896
+}

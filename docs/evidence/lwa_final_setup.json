@@ -1,0 +1,43 @@
+{
+  "params": {
+    "a_mm": 22.86,
+    "b_mm": 10.16,
+    "p_mm": 10.0,
+    "h_mm": 2.0,
+    "g_mm": 0.5,
+    "n_units": 20,
+    "a1": 0.0,
+    "a2": 0.0
+  },
+  "insert": {
+    "inserted": true,
+    "designs": [
+      "LWA",
+      "f24_thin",
+      "rw95_g05",
+      "t8_86",
+      "f24g05",
+      "f24_thin_a"
+    ]
+  },
+  "setup": {
+    "region": true,
+    "walls": true,
+    "radiation": true,
+    "port_in": true,
+    "port_out": true,
+    "setup_kwargs": true,
+    "setups": [
+      "LWA_Setup"
+    ],
+    "validated": false,
+    "solve": {
+      "analyzed": false,
+      "s11_db": "err:TypeError:PostProcessorCommon.get_solution_data() got an unexpected keyword argument 'setup_sweeps'. Did you mean 'setup_sweep_name'?"
+    }
+  },
+  "theory": {
+    "beta_minus_over_k0": -0.09849495721960896,
+    "beam_angle_deg": -5.6525100077760175
+  }
+}

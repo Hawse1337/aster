@@ -1,0 +1,120 @@
+{
+  "goal": "P2 - multi-candidate measurements across the verified paths",
+  "state": "eight rings measured through the GUI batch path (2.05 ... 2.45)",
+  "rows": [
+    {
+      "ring_outer": 2.05,
+      "path": "gui_batch",
+      "run": "20261113T060207321272",
+      "s11_bandwidth": 2.0,
+      "peak_gain": 6.19154,
+      "ripple": 1.63067
+    },
+    {
+      "ring_outer": 2.2,
+      "path": "gui_batch",
+      "run": "real-20261112T181456-00",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 5.88119459309579,
+      "ripple": 1.6307213598741699
+    },
+    {
+      "ring_outer": 2.2,
+      "path": "standalone",
+      "run": "20261112T145151110233",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 5.88122916756663,
+      "ripple": 1.6307491569175205
+    },
+    {
+      "ring_outer": 2.2,
+      "path": "yadof_session",
+      "run": "20261112T212409485591",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 5.88122785741421
+    },
+    {
+      "ring_outer": 2.25,
+      "path": "gui_batch",
+      "run": "real-20261112T183507-01",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.07178131942632,
+      "ripple": 1.75725073790323
+    },
+    {
+      "ring_outer": 2.25,
+      "path": "gui_batch",
+      "run": "real-20261113T070141-01",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.07182170420508,
+      "ripple": 1.7568931698688104
+    },
+    {
+      "ring_outer": 2.15,
+      "path": "gui_batch",
+      "run": "real-20261113T072719-00",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.25978714219989,
+      "ripple": 1.65294585640999
+    },
+    {
+      "ring_outer": 2.3,
+      "path": "gui_batch",
+      "run": "real-20261113T103050-00",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.05461130818172,
+      "ripple": 1.6230007186887407
+    },
+    {
+      "ring_outer": 2.35,
+      "path": "gui_batch",
+      "run": "real-20261113T105113-01",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.10871174433445,
+      "ripple": 1.4980505393606798
+    },
+    {
+      "ring_outer": 2.4,
+      "path": "gui_batch",
+      "run": "real-20261113T123821-00",
+      "s11_bandwidth": 2.0,
+      "peak_gain": 5.88025918395063,
+      "ripple": 1.7291077016007002,
+      "note": "second attempt: the first (20261113T120947825117) stalled in the solve and was killed after 27 minutes"
+    },
+    {
+      "ring_outer": 2.45,
+      "path": "gui_batch",
+      "run": "real-20261113T140331-00",
+      "s11_bandwidth": 3.0,
+      "peak_gain": 6.16780276326829,
+      "ripple": 1.7102883995279994,
+      "note": "third attempt: an earlier one failed at the sweep export even with the ten-minute window, so that failure was intermittent too"
+    }
+  ],
+  "failures": [
+    {
+      "ring_outer": 2.45,
+      "run": "real-20261113T132947-00",
+      "error": "E_SWEEP_EXPORT_INCOMPLETE",
+      "resolution": "retried in a fresh campaign and completed at 3.0 GHz / 6.1678 dBi, so the sweep failure was intermittent, not structural"
+    }
+  ],
+  "conclusion": "the system measures three distinct ring diameters end to end; one candidate fails at the sweep for reasons inside the solver, with the retry policy ruled out as the cause",
+  "repeatability": {
+    "ring_outer": 2.25,
+    "first": {
+      "run": "real-20261112T183507-01",
+      "peak_gain": 6.07178131942632,
+      "ripple": 1.75725073790323
+    },
+    "second": {
+      "run": "real-20261113T070141-01",
+      "peak_gain": 6.07182170420508,
+      "ripple": 1.7568931698688104
+    },
+    "note": "two independent batch runs agree to four decimals on both gain and ripple"
+  },
+  "batch_seconds": 2180.0,
+  "retry_note": "the earlier 2.15 failure (run real-20261113T064619-00) was transient: a fresh campaign completed the same ring, so the one-row export is intermittent even with retries, not geometry-specific"
+}

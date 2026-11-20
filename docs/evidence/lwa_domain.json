@@ -1,0 +1,26 @@
+{
+  "params": {
+    "a_mm": 22.86,
+    "b_mm": 10.16,
+    "p_mm": 10.0,
+    "h_mm": 2.0,
+    "g_mm": 0.5,
+    "n_units": 20,
+    "a1": 0.0,
+    "a2": 0.0
+  },
+  "result": {
+    "domain": true,
+    "wall_x0": true,
+    "wall_xa": true,
+    "wall_y0": true,
+    "wall_yb": true,
+    "pec": true,
+    "ridges": true,
+    "port_in": true,
+    "port_out": true,
+    "setup": true,
+    "validated": false,
+    "objects": 27
+  }
+}

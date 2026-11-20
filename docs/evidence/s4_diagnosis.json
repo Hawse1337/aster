@@ -1,0 +1,210 @@
+{
+  "start": {
+    "tip_offset": 1.0,
+    "disc_factor": 1.0,
+    "ring_outer": 2.0,
+    "ring_height": 0.6,
+    "ring_shift": 0.0
+  },
+  "start_metrics": {
+    "peak_gain": 6.450000000000003,
+    "ripple": 1.33,
+    "s11_bandwidth": 2.000000000000002
+  },
+  "start_feasible": false,
+  "diagnosis": {
+    "current_problem": "hard constraint(s) failing: ['bandwidth']",
+    "failing_constraints": [
+      "bandwidth"
+    ],
+    "passing_constraints": [
+      "peak_gain",
+      "ripple"
+    ],
+    "sensitive_parameters": [
+      "disc_factor",
+      "ring_outer"
+    ],
+    "protected_metrics": [
+      "peak_gain",
+      "ripple"
+    ],
+    "recommended_strategy": "local_constrained_optimization",
+    "strategy_hint": "improve the failing metric while protecting passing ones",
+    "confidence": "medium",
+    "requires_hfss_validation": true,
+    "measured_only": true,
+    "budget_left": null,
+    "stalled_rounds": 0,
+    "violations": {
+      "peak_gain": 0.0,
+      "ripple": 0.0,
+      "bandwidth": 0.9999999999999978
+    }
+  },
+  "sensitivity": {
+    "base_params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "raw": {
+      "s11_bandwidth": {
+        "tip_offset": -1.2976441325625405,
+        "disc_factor": -23.839049574265307,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": 2.4689210724481447,
+        "ring_height": 2.0852304383468305,
+        "ring_shift": 2.085230438346754,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      },
+      "peak_gain": {
+        "tip_offset": -1.2327843838487966,
+        "disc_factor": -13.539975244958313,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": -1.6485530305572884,
+        "ring_height": -0.17615478624001907,
+        "ring_shift": -1.0428214529066393,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      },
+      "ripple": {
+        "tip_offset": -0.06632457103521014,
+        "disc_factor": 42.451443249835236,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": 0.9976681364206754,
+        "ring_height": 0.010771920722556495,
+        "ring_shift": -0.08922807927743323,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      }
+    },
+    "normalized": {
+      "s11_bandwidth": {
+        "tip_offset": -0.32441103314063474,
+        "disc_factor": -5.95976239356632,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": 3.950273715917027,
+        "ring_height": 1.0426152191734142,
+        "ring_shift": 1.2511382630080512,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      },
+      "peak_gain": {
+        "tip_offset": -0.09556468091851131,
+        "disc_factor": -1.0496104841052951,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": -0.8178867748501273,
+        "ring_height": -0.027310819572095968,
+        "ring_shift": -0.19401329356402583,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      },
+      "ripple": {
+        "tip_offset": -0.02493404926135719,
+        "disc_factor": 15.959189191667381,
+        "disc_radial": 0.0,
+        "ring_inner": 0.0,
+        "ring_outer": 2.4004045387565123,
+        "ring_height": 0.008099188513200371,
+        "ring_shift": -0.08050653769392471,
+        "ring2_outer": 0.0,
+        "ring2_height": 0.0,
+        "ring2_shift": 0.0,
+        "feed_radius": 0.0,
+        "feed_len": 0.0,
+        "feed_z0": 0.0
+      }
+    },
+    "steps": {
+      "tip_offset": 0.04999999999999993,
+      "disc_factor": 0.04999999999999993,
+      "disc_radial": 0.025000000000000022,
+      "ring_inner": 0.040000000000000036,
+      "ring_outer": 0.3200000000000003,
+      "ring_height": 0.10000000000000009,
+      "ring_shift": 0.12,
+      "ring2_outer": 0.25,
+      "ring2_height": 0.08000000000000007,
+      "ring2_shift": 0.09999999999999998,
+      "feed_radius": 0.030000000000000027,
+      "feed_len": 0.2400000000000002,
+      "feed_z0": 0.4800000000000004
+    },
+    "evaluations": 0,
+    "metric_kinds": [
+      "s11_bandwidth",
+      "peak_gain",
+      "ripple"
+    ],
+    "params": [
+      "tip_offset",
+      "disc_factor",
+      "disc_radial",
+      "ring_inner",
+      "ring_outer",
+      "ring_height",
+      "ring_shift",
+      "ring2_outer",
+      "ring2_height",
+      "ring2_shift",
+      "feed_radius",
+      "feed_len",
+      "feed_z0"
+    ]
+  },
+  "proposal": {
+    "tip_offset": 1.0,
+    "disc_factor": 0.95,
+    "ring_outer": 2.0,
+    "ring_height": 0.6,
+    "ring_shift": 0.0
+  },
+  "predicted": {
+    "peak_gain": 7.105549953632966,
+    "ripple": 0.0,
+    "s11_bandwidth": 3.131778298323004
+  },
+  "proposed_change": {
+    "disc_factor": [
+      1.0,
+      0.95
+    ]
+  }
+}

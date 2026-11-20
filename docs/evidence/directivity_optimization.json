@@ -1,0 +1,1025 @@
+{
+  "target": {
+    "horizon_max_dbi": 7.0,
+    "horizon_ripple_db": 2.0,
+    "horizon_to_axial_db": 15.0,
+    "near_axis_max_dbi": -5.0,
+    "power_fraction_theta_60_120": 0.85,
+    "s11_contiguous_ghz_min": 5.0
+  },
+  "variants": {
+    "A1_height_gradient_0p8": {
+      "tag": "A1_height_gradient_0p8",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_height_gradient": 0.8
+      },
+      "s11_db": {
+        "24": -12.72,
+        "25": -17.26,
+        "26": -10.13,
+        "27": -9.13,
+        "28": -9.74,
+        "29": -12.31,
+        "30": -15.5,
+        "31": -8.97,
+        "32": -6.41
+      },
+      "bandwidth": {
+        "value": 2.0,
+        "low_ghz": 24.0,
+        "high_ghz": 26.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 6.48,
+        "horizon_max_dbi": -10.97,
+        "horizon_min_dbi": -18.77,
+        "horizon_ripple_db": 7.79,
+        "axial_max_dbi": 4.05,
+        "near_axis_max_dbi": 3.84,
+        "horizon_to_axial_db": -15.03,
+        "donut_peak_dbi": 4.38,
+        "power_fraction_theta_60_120": 0.1434,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1_hgrad08",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1_hgrad08\\runs\\20261118T045640079137\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1_hgrad08\\runs\\20261118T045640079137\\artifacts\\farfield\\Plot_1F22CW.csv"
+      },
+      "note": "outer rings 80% taller (linear gradient), bore 8 mm, radial 1.30, pitch 1.0"
+    },
+    "A1b_height_gradient_0p45_p10": {
+      "tag": "A1b_height_gradient_0p45_p10",
+      "settings": {
+        "disc_height_gradient": 0.45
+      },
+      "s11_db": null,
+      "bandwidth": {
+        "value": null,
+        "note": "full-band export never completed"
+      },
+      "pattern": {
+        "peak_gain_dbi": 5.17,
+        "horizon_max_dbi": -11.66,
+        "horizon_min_dbi": -23.56,
+        "horizon_ripple_db": 11.9,
+        "axial_max_dbi": 5.17,
+        "near_axis_max_dbi": 5.17,
+        "horizon_to_axial_db": -16.83,
+        "donut_peak_dbi": 3.63,
+        "power_fraction_theta_60_120": 0.2293,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1b_hgrad045_p10",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1b_hgrad045_p10\\runs\\20261118T060329065425\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1b_hgrad045_p10\\runs\\20261118T060329065425\\artifacts\\farfield\\Plot_N9CYJX.csv"
+      },
+      "note": "pattern numbers are a mid-solve 28 GHz far-field snapshot, not an accepted measurement; gradient 0.45 keeps the beam near the axis (peak 5.17 dBi axial), i.e. no tilt yet",
+      "status": "NOT_COMPLETED",
+      "attempts": [
+        {
+          "passes": 6,
+          "result": "FAILED",
+          "error": "E_NOT_CONVERGED",
+          "solving_s": 1280.35
+        },
+        {
+          "passes": 10,
+          "result": "FAILED",
+          "error": "E_SWEEP_EXPORT_INCOMPLETE",
+          "solving_s": 3260.61
+        }
+      ],
+      "partial_pattern_at_28ghz": {
+        "peak_gain_dbi": 5.17,
+        "horizon_max_dbi": -11.66,
+        "horizon_min_dbi": -23.56,
+        "horizon_ripple_db": 11.9,
+        "axial_max_dbi": 5.17,
+        "near_axis_max_dbi": 5.17,
+        "horizon_to_axial_db": -16.83,
+        "donut_peak_dbi": 3.63,
+        "power_fraction_theta_60_120": 0.2293,
+        "sphere_points": 6643
+      }
+    },
+    "A1c_height_gradient_0p65_narrowband": {
+      "tag": "A1c_height_gradient_0p65_narrowband",
+      "settings": {
+        "disc_height_gradient": 0.65,
+        "band_ghz": [
+          26.0,
+          30.0
+        ],
+        "passes": 8
+      },
+      "s11_db": null,
+      "bandwidth": {
+        "value": null
+      },
+      "pattern": {
+        "peak_gain_dbi": 6.11,
+        "horizon_max_dbi": -10.16,
+        "horizon_min_dbi": -14.26,
+        "horizon_ripple_db": 4.1,
+        "axial_max_dbi": 4.61,
+        "near_axis_max_dbi": 4.61,
+        "horizon_to_axial_db": -14.77,
+        "donut_peak_dbi": 4.34,
+        "power_fraction_theta_60_120": 0.1765,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630\\runs\\20261118T072330122884\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630\\runs\\20261118T072330122884\\artifacts\\farfield\\Plot_I2AZRG.csv"
+      },
+      "note": "the intermediate 28 GHz far-field snapshot peaks at theta = 124 deg, 6.11 dBi: gradient 0.65 behaves like 0.8 (124-126 deg cone) while 0.45 stays axial, so a uniform height gradient saturates at a cone near 125 deg and cannot reach 90 deg",
+      "status": "NOT_COMPLETED",
+      "error": "E_SWEEP_EXPORT_INCOMPLETE",
+      "error_detail": "touchstone for sweep 'ANT_Band' has 1 row(s) after 3 attempt(s); adaptive solve consumed 2950 s of the run",
+      "partial_pattern_at_28ghz": {
+        "peak_gain_dbi": 6.11,
+        "horizon_max_dbi": -10.16,
+        "horizon_min_dbi": -14.26,
+        "horizon_ripple_db": 4.1,
+        "axial_max_dbi": 4.61,
+        "near_axis_max_dbi": 4.61,
+        "horizon_to_axial_db": -14.77,
+        "donut_peak_dbi": 4.34,
+        "power_fraction_theta_60_120": 0.1765,
+        "sphere_points": 6643
+      },
+      "partial_source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630\\runs\\20261118T072330122884\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_A1c_hgrad065_b2630\\runs\\20261118T072330122884\\artifacts\\farfield\\Plot_I2AZRG.csv"
+      }
+    },
+    "B1_feed_z_offset_m1": {
+      "tag": "B1_feed_z_offset_m1",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "feed_z_offset_mm": -1.0
+      },
+      "s11_db": {
+        "24": -12.11,
+        "25": -14.9,
+        "26": -19.3,
+        "27": -22.91,
+        "28": -25.32,
+        "29": -10.95,
+        "30": -10.75,
+        "31": -15.96,
+        "32": -7.19
+      },
+      "bandwidth": {
+        "value": 7.0,
+        "low_ghz": 24.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 4.8,
+        "horizon_max_dbi": 1.13,
+        "horizon_min_dbi": -0.04,
+        "horizon_ripple_db": 1.17,
+        "axial_max_dbi": 4.8,
+        "near_axis_max_dbi": 3.88,
+        "horizon_to_axial_db": -3.66,
+        "donut_peak_dbi": 2.23,
+        "power_fraction_theta_60_120": 0.3142,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B1_feedz_m1",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B1_feedz_m1\\runs\\20261118T083420651518\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B1_feedz_m1\\runs\\20261118T083420651518\\artifacts\\farfield\\Plot_ITD0U1.csv"
+      },
+      "note": "baseline disc + feed axial offset -1.0 mm, full band 6 passes"
+    },
+    "B2_feed_z_offset_m0p5": {
+      "tag": "B2_feed_z_offset_m0p5",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "feed_z_offset_mm": -0.5
+      },
+      "s11_db": {
+        "24": -12.29,
+        "25": -15.53,
+        "26": -19.97,
+        "27": -24.1,
+        "28": -26.28,
+        "29": -10.86,
+        "30": -10.95,
+        "31": -15.56,
+        "32": -7.14
+      },
+      "bandwidth": {
+        "value": 7.0,
+        "low_ghz": 24.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 4.45,
+        "horizon_max_dbi": 1.46,
+        "horizon_min_dbi": -0.08,
+        "horizon_ripple_db": 1.54,
+        "axial_max_dbi": 4.45,
+        "near_axis_max_dbi": 3.59,
+        "horizon_to_axial_db": -2.99,
+        "donut_peak_dbi": 1.66,
+        "power_fraction_theta_60_120": 0.3015,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B2_feedz_m05",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B2_feedz_m05\\runs\\20261118T091251978076\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_B2_feedz_m05\\runs\\20261118T091251978076\\artifacts\\farfield\\Plot_1PGVMJ.csv"
+      },
+      "note": "baseline disc + feed axial offset -0.5 mm, full band 6 passes"
+    },
+    "C1_thick_disc_rim": {
+      "tag": "C1_thick_disc_rim",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_base_half_thickness_mm": 2.0,
+        "disc_rim_half_thickness_mm": 2.0
+      },
+      "s11_db": {
+        "24": -18.22,
+        "25": -13.61,
+        "26": -10.88,
+        "27": -9.28,
+        "28": -8.7,
+        "29": -5.53,
+        "30": -7.17,
+        "31": -12.43,
+        "32": -8.24
+      },
+      "bandwidth": {
+        "value": 2.0,
+        "low_ghz": 24.0,
+        "high_ghz": 26.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 5.71,
+        "horizon_max_dbi": 0.04,
+        "horizon_min_dbi": -1.57,
+        "horizon_ripple_db": 1.61,
+        "axial_max_dbi": 5.71,
+        "near_axis_max_dbi": 5.71,
+        "horizon_to_axial_db": -5.67,
+        "donut_peak_dbi": 0.04,
+        "power_fraction_theta_60_120": 0.1426,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_C1_thick_rim",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_C1_thick_rim\\runs\\20261118T095501621653\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_C1_thick_rim\\runs\\20261118T095501621653\\artifacts\\farfield\\Plot_4CSI2W.csv"
+      },
+      "note": "disc base/rim half thickness 2.0 mm to open a radial rim aperture, full band 6 passes"
+    },
+    "D1_rim_ring5": {
+      "tag": "D1_rim_ring5",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_rim_half_thickness_mm": 2.0,
+        "disc_rim_ring_mm": 5.0
+      },
+      "s11_db": {
+        "24": -12.39,
+        "25": -15.3,
+        "26": -22.01,
+        "27": -24.89,
+        "28": -26.48,
+        "29": -10.83,
+        "30": -11.27,
+        "31": -15.12,
+        "32": -7.07
+      },
+      "bandwidth": {
+        "value": 7.0,
+        "low_ghz": 24.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 4.89,
+        "horizon_max_dbi": 1.41,
+        "horizon_min_dbi": 0.04,
+        "horizon_ripple_db": 1.37,
+        "axial_max_dbi": 4.89,
+        "near_axis_max_dbi": 4.15,
+        "horizon_to_axial_db": -3.48,
+        "donut_peak_dbi": 1.41,
+        "power_fraction_theta_60_120": 0.2351,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_D1_rim_ring5",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_D1_rim_ring5\\runs\\20261118T102426060185\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_D1_rim_ring5\\runs\\20261118T102426060185\\artifacts\\farfield\\Plot_R8TN1I.csv"
+      },
+      "note": "solid radial rim ring 5 mm + rim half thickness 2 mm, full band 6 passes"
+    },
+    "E3_radial_plate_gap3": {
+      "tag": "E3_radial_plate_gap3",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "radial_plate_gap_mm": 3.0,
+        "radial_plate_thickness_mm": 0.5,
+        "radial_plate_inner_mm": 8.0
+      },
+      "s11_db": {
+        "24": -6.64,
+        "25": -7.41,
+        "26": -16.51,
+        "27": -12.65,
+        "28": -10.39,
+        "29": -8.75,
+        "30": -5.69,
+        "31": -10.94,
+        "32": -8.76
+      },
+      "bandwidth": {
+        "value": 2.0,
+        "low_ghz": 26.0,
+        "high_ghz": 28.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 5.75,
+        "horizon_max_dbi": -10.64,
+        "horizon_min_dbi": -15.43,
+        "horizon_ripple_db": 4.79,
+        "axial_max_dbi": 5.75,
+        "near_axis_max_dbi": 4.84,
+        "horizon_to_axial_db": -16.39,
+        "donut_peak_dbi": 2.31,
+        "power_fraction_theta_60_120": 0.2176,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E3_radial_plate_gap3",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E3_radial_plate_gap3\\runs\\20261118T111222086780\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E3_radial_plate_gap3\\runs\\20261118T111222086780\\artifacts\\farfield\\Plot_SCX8G9.csv"
+      },
+      "note": "flat annular plate 3 mm below disc (radial parallel-plate waveguide rim aperture), full band 6 passes"
+    },
+    "E4_rim_horn25_a20": {
+      "tag": "E4_rim_horn25_a20",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "rim_horn_mm": 25.0,
+        "rim_horn_gap_mm": 2.0,
+        "rim_horn_angle_deg": 20.0,
+        "rim_horn_thickness_mm": 0.5
+      },
+      "s11_db": {
+        "24": -12.41,
+        "25": -15.76,
+        "26": -17.12,
+        "27": -25.8,
+        "28": -25.22,
+        "29": -11.36,
+        "30": -11.04,
+        "31": -15.61,
+        "32": -7.4
+      },
+      "bandwidth": {
+        "value": 7.0,
+        "low_ghz": 24.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 7.14,
+        "horizon_max_dbi": -1.12,
+        "horizon_min_dbi": -3.29,
+        "horizon_ripple_db": 2.17,
+        "axial_max_dbi": 7.14,
+        "near_axis_max_dbi": 6.55,
+        "horizon_to_axial_db": -8.26,
+        "donut_peak_dbi": 3.88,
+        "power_fraction_theta_60_120": 0.2248,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E4_rim_horn25_a20",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E4_rim_horn25_a20\\runs\\20261118T145731609064\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_E4_rim_horn25_a20\\runs\\20261118T145731609064\\artifacts\\farfield\\Plot_GPGE4W.csv"
+      },
+      "note": "conical rim horn: two 25 mm annular flanges, 20 deg half angle, 2 mm throat, full band 6 passes"
+    },
+    "F1_deep_rings": {
+      "tag": "F1_deep_rings",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_peak_height_mm": 4.5,
+        "disc_final_height_mm": 3.0
+      },
+      "s11_db": {
+        "24": -16.95,
+        "25": -8.83,
+        "26": -7.93,
+        "27": -8.87,
+        "28": -9.71,
+        "29": -10.28,
+        "30": -13.6,
+        "31": -15.97,
+        "32": -7.25
+      },
+      "bandwidth": {
+        "value": 2.0,
+        "low_ghz": 29.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 5.25,
+        "horizon_max_dbi": -5.08,
+        "horizon_min_dbi": -9.29,
+        "horizon_ripple_db": 4.22,
+        "axial_max_dbi": 5.25,
+        "near_axis_max_dbi": 4.89,
+        "horizon_to_axial_db": -10.32,
+        "donut_peak_dbi": 3.81,
+        "power_fraction_theta_60_120": 0.2741,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F1_deep_rings",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F1_deep_rings\\runs\\20261118T163734460073\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F1_deep_rings\\runs\\20261118T163734460073\\artifacts\\farfield\\Plot_UZDD8P.csv"
+      },
+      "note": "deep corrugations (peak 4.5 mm, taper end 3.0 mm) to test the slow-wave/leaky-wave angle theory, full band 6 passes"
+    },
+    "F2_flat_rim": {
+      "tag": "F2_flat_rim",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_final_height_mm": 0.1
+      },
+      "s11_db": {
+        "24": -12.44,
+        "25": -15.85,
+        "26": -20.57,
+        "27": -23.95,
+        "28": -26.6,
+        "29": -11.07,
+        "30": -11.19,
+        "31": -15.27,
+        "32": -7.25
+      },
+      "bandwidth": {
+        "value": 7.0,
+        "low_ghz": 24.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 4.26,
+        "horizon_max_dbi": 2.54,
+        "horizon_min_dbi": 1.52,
+        "horizon_ripple_db": 1.02,
+        "axial_max_dbi": 4.26,
+        "near_axis_max_dbi": 3.35,
+        "horizon_to_axial_db": -1.72,
+        "donut_peak_dbi": 2.54,
+        "power_fraction_theta_60_120": 0.2917,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F2_flat_rim",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F2_flat_rim\\runs\\20261118T172007788188\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_F2_flat_rim\\runs\\20261118T172007788188\\artifacts\\farfield\\Plot_853IZ5.csv"
+      },
+      "note": "outer ring taper flattened (final height 0.1 mm) to let the slow wave approach n_eff=1, full band 6 passes"
+    },
+    "G1_rim_slot": {
+      "tag": "G1_rim_slot",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_rim_ring_mm": 8.0,
+        "disc_rim_half_thickness_mm": 2.5,
+        "rim_slot_height_mm": 1.5,
+        "rim_slot_depth_mm": 6.0
+      },
+      "s11_db": {
+        "27": -23.61,
+        "28": -26.35,
+        "29": -11.18,
+        "30": -11.23,
+        "31": -15.17,
+        "32": -7.14
+      },
+      "bandwidth": {
+        "value": 4.0,
+        "low_ghz": 27.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 4.9,
+        "horizon_max_dbi": 1.18,
+        "horizon_min_dbi": -1.14,
+        "horizon_ripple_db": 2.33,
+        "axial_max_dbi": 4.9,
+        "near_axis_max_dbi": 4.26,
+        "horizon_to_axial_db": -3.72,
+        "donut_peak_dbi": 2.99,
+        "power_fraction_theta_60_120": 0.2295,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G1_rim_slot",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G1_rim_slot\\runs\\20261118T183631056968\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G1_rim_slot\\runs\\20261118T183631056968\\artifacts\\farfield\\Plot_YX6L3F.csv"
+      },
+      "note": "route B: thick rim ring (8 mm radial, 5 mm high) with a 1.5 mm high outward circumferential slot, 6 mm deep, full band 6 passes"
+    },
+    "G2_rim_slot_full_depth": {
+      "tag": "G2_rim_slot_full_depth",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_rim_ring_mm": 10.0,
+        "disc_rim_half_thickness_mm": 3.0,
+        "rim_slot_height_mm": 2.5,
+        "rim_slot_depth_mm": 10.0
+      },
+      "s11_db": {
+        "25": -16.1,
+        "26": -21.13,
+        "27": -24.47,
+        "28": -27.83,
+        "29": -11.08,
+        "30": -11.2,
+        "31": -15.3,
+        "32": -7.13
+      },
+      "bandwidth": {
+        "value": 6.0,
+        "low_ghz": 25.0,
+        "high_ghz": 31.0
+      },
+      "pattern": {
+        "peak_gain_dbi": 6.38,
+        "horizon_max_dbi": 1.71,
+        "horizon_min_dbi": -0.45,
+        "horizon_ripple_db": 2.15,
+        "axial_max_dbi": 6.38,
+        "near_axis_max_dbi": 4.88,
+        "horizon_to_axial_db": -4.67,
+        "donut_peak_dbi": 2.15,
+        "power_fraction_theta_60_120": 0.237,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G2_rim_slot_full",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G2_rim_slot_full\\runs\\20261118T192109330785\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G2_rim_slot_full\\runs\\20261118T192109330785\\artifacts\\farfield\\Plot_VTTH3K.csv"
+      },
+      "note": "route B fixed: rim ring 10 mm x 6 mm, slot 2.5 mm high cut 10 mm deep through the ring to r=70 so the disc radial wave feeds it, full band 6 passes"
+    },
+    "G4_wide_slot": {
+      "tag": "G4_wide_slot",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_final_height_mm": 0.1,
+        "disc_rim_ring_mm": 12.0,
+        "disc_rim_half_thickness_mm": 6.0,
+        "rim_slot_height_mm": 8.0,
+        "rim_slot_depth_mm": 12.0
+      },
+      "s11_db": {
+        "28": -27.34
+      },
+      "bandwidth": {
+        "value": 0.0,
+        "low_ghz": null,
+        "high_ghz": null
+      },
+      "pattern": {
+        "peak_gain_dbi": 5.99,
+        "horizon_max_dbi": 0.74,
+        "horizon_min_dbi": -0.84,
+        "horizon_ripple_db": 1.58,
+        "axial_max_dbi": 5.99,
+        "near_axis_max_dbi": 3.1,
+        "horizon_to_axial_db": -5.26,
+        "donut_peak_dbi": 2.38,
+        "power_fraction_theta_60_120": 0.2241,
+        "sphere_points": 6643
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot\\runs\\20261119T094736592631\\artifacts\\result.s1p",
+        "sphere_csv": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot\\runs\\20261119T094736592631\\artifacts\\farfield\\Plot_C1XO2H.csv"
+      },
+      "note": "G4 aperture height 8 mm"
+    },
+    "G4_wide_slot_8mm_salvaged": {
+      "tag": "G4_wide_slot_8mm_salvaged",
+      "measured_utc": "2026-11-19T10:51:56Z",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_final_height_mm": 0.1,
+        "disc_rim_ring_mm": 12.0,
+        "disc_rim_half_thickness_mm": 6.0,
+        "rim_slot_height_mm": 8.0,
+        "rim_slot_depth_mm": 12.0
+      },
+      "s11_bandwidth_ghz": 0.0,
+      "s11_worst_in_band_db": -27.34,
+      "s11_segments_ghz": [
+        [
+          28.0,
+          28.0
+        ]
+      ],
+      "pattern": {
+        "peak_gain_dbi": 5.99,
+        "peak_theta_deg": 36.0,
+        "horizon_max_dbi": 0.74,
+        "horizon_ripple_db": 1.58,
+        "axial_max_dbi": 5.99,
+        "near_axis_max_dbi": 3.1,
+        "horizon_to_axial_db": -5.26,
+        "power_fraction_theta_60_120": 0.2148,
+        "e_hpbw_deg": 10.0,
+        "e_sidelobe_dbi": 5.39,
+        "e_cut_phi_deg": 0.0
+      },
+      "targets_28ghz": {
+        "e_hpbw_deg": "20-30",
+        "peak_gain_dbi": "10-12",
+        "horizon_ripple_db": "<=2",
+        "horizon_to_axial_db": ">=15",
+        "near_axis_max_dbi": "<=-5",
+        "sidelobe_dbi": "<=-15",
+        "power_fraction_theta_60_120": ">=0.85",
+        "s11_contiguous_ghz": ">=5"
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot",
+        "farfield_views": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot\\runs\\20261119T094736592631\\artifacts\\farfield_views.json",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G4_wide_slot\\runs\\20261119T094736592631\\artifacts\\result.s1p"
+      },
+      "note": "G4 8mm slot: guard failed at touchstone export (ExportNetworkData gRPC); adaptive solution solved, far field salvaged from campaign project. Still a 36-deg cone."
+    },
+    "G5_wide_slot_12mm_salvaged": {
+      "tag": "G5_wide_slot_12mm_salvaged",
+      "measured_utc": "2026-11-19T11:44:59Z",
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_final_height_mm": 0.1,
+        "disc_rim_ring_mm": 14.0,
+        "disc_rim_half_thickness_mm": 8.0,
+        "rim_slot_height_mm": 12.0,
+        "rim_slot_depth_mm": 14.0
+      },
+      "s11_bandwidth_ghz": 3.0,
+      "s11_worst_in_band_db": -15.24,
+      "s11_segments_ghz": [
+        [
+          25.0,
+          28.0
+        ]
+      ],
+      "pattern": {
+        "peak_gain_dbi": 5.66,
+        "peak_theta_deg": 29.999999999999996,
+        "horizon_max_dbi": -0.11,
+        "horizon_ripple_db": 2.78,
+        "axial_max_dbi": 5.66,
+        "near_axis_max_dbi": 5.66,
+        "horizon_to_axial_db": -5.78,
+        "power_fraction_theta_60_120": 0.189,
+        "e_hpbw_deg": 14.0,
+        "e_sidelobe_dbi": 5.04,
+        "e_cut_phi_deg": 0.0
+      },
+      "targets_28ghz": {
+        "e_hpbw_deg": "20-30",
+        "peak_gain_dbi": "10-12",
+        "horizon_ripple_db": "<=2",
+        "horizon_to_axial_db": ">=15",
+        "near_axis_max_dbi": "<=-5",
+        "sidelobe_dbi": "<=-15",
+        "power_fraction_theta_60_120": ">=0.85",
+        "s11_contiguous_ghz": ">=5"
+      },
+      "source": {
+        "campaign": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G5_wide_slot_tall",
+        "farfield_views": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G5_wide_slot_tall\\runs\\20261119T111111066365\\artifacts\\farfield_views.json",
+        "s1p": "D:\\AgentAEDT_Collab\\astra_codesign\\pattern\\campaign_G5_wide_slot_tall\\runs\\20261119T111111066365\\artifacts\\result.s1p"
+      },
+      "note": "G5 12mm slot: guard daemon hung after solve; far field salvaged (F28 solved). Still cone (theta 30-38 deg), horizon -0.11 dBi. S11 export truncated to 2 points (25/28 GHz) so bandwidth value unreliable."
+    }
+  },
+  "baseline": {
+    "target": {
+      "shape": "flat donut concentrated at theta = 90 deg (equatorial plane)",
+      "reference": "docs/evidence/reference_pattern/ (user-provided 3D/cut images)",
+      "reference_peak_gain_dbi": [
+        6.08,
+        7.78
+      ],
+      "acceptance_definition": {
+        "horizon_peak_gain_dbi": ">= 6.0 near theta=90 deg",
+        "horizon_to_axial_db": ">= 15 dB (suppress radiation toward +-Z)",
+        "near_axis_max_dbi": "<= -5 dB (both poles)",
+        "horizon_ripple_db": "<= 2.0 dB around phi",
+        "power_fraction_theta_60_120": ">= 0.85"
+      }
+    },
+    "baseline_measured": {
+      "AstraBR130_radial1p30_pitch1.0": {
+        "peak_gain_dbi": 4.49,
+        "horizon_max_dbi": 1.95,
+        "horizon_min_dbi": 0.56,
+        "horizon_ripple_db": 1.4,
+        "axial_max_dbi": 4.49,
+        "near_axis_max_dbi": 3.58,
+        "horizon_to_axial_db": -2.53,
+        "donut_peak_dbi": 1.95,
+        "power_fraction_theta_60_120": 0.3017,
+        "sphere_points": 6643,
+        "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_R130\\runs\\20261117T144711281526\\artifacts\\farfield\\Plot_6VGWTY.csv"
+      },
+      "AstraP115_radial1p30_pitch1.15": {
+        "peak_gain_dbi": 5.35,
+        "horizon_max_dbi": -1.37,
+        "horizon_min_dbi": -3.03,
+        "horizon_ripple_db": 1.66,
+        "axial_max_dbi": 5.35,
+        "near_axis_max_dbi": 2.76,
+        "horizon_to_axial_db": -6.72,
+        "donut_peak_dbi": -0.35,
+        "power_fraction_theta_60_120": 0.1691,
+        "sphere_points": 6643,
+        "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_P115\\runs\\20261117T175445745861\\artifacts\\farfield\\Plot_T619ZL.csv"
+      },
+      "AstraP110_radial1p30_pitch1.10": {
+        "peak_gain_dbi": 4.17,
+        "horizon_max_dbi": 0.26,
+        "horizon_min_dbi": -1.24,
+        "horizon_ripple_db": 1.5,
+        "axial_max_dbi": 4.17,
+        "near_axis_max_dbi": 3.33,
+        "horizon_to_axial_db": -3.91,
+        "donut_peak_dbi": 1.71,
+        "power_fraction_theta_60_120": 0.2475,
+        "sphere_points": 6643,
+        "source": "D:\\AgentAEDT_Collab\\astra_codesign\\campaign_P11\\runs\\20261117T172129514164\\artifacts\\farfield\\Plot_90MY0W.csv"
+      },
+      "AstraBB_bore8_radial1p25": {
+        "peak_gain_dbi": 4.41,
+        "horizon_max_dbi": 1.89,
+        "horizon_min_dbi": 0.52,
+        "horizon_ripple_db": 1.38,
+        "axial_max_dbi": 4.41,
+        "near_axis_max_dbi": 3.2,
+        "horizon_to_axial_db": -2.52,
+        "donut_peak_dbi": 1.89,
+        "power_fraction_theta_60_120": 0.311,
+        "sphere_points": 6643,
+        "source": "D:\\AgentAEDT_Collab\\astra_codesign\\phase_b\\campaign_B1_rad125\\runs\\20261117T130918073520\\artifacts\\farfield\\Plot_H32CSR.csv"
+      }
+    },
+    "note": "computed from the recorded far-field sphere cuts of the real runs, not from reports"
+  },
+  "route_A_leaky_wave": {
+    "question": "does the cone angle follow the slow-wave phase match sin(theta)=1/n_eff when the ring depth is changed?",
+    "variants": {
+      "baseline_taper_0.5": {
+        "beam_theta_deg": 40.0,
+        "peak_gain_dbi": 4.49,
+        "horizon_max_dbi": 1.95,
+        "bandwidth_ghz": 7.0
+      },
+      "F1_deep_rings_peak4.5_final3.0": {
+        "beam_theta_deg": 32.0,
+        "peak_gain_dbi": 5.25,
+        "horizon_max_dbi": -5.08,
+        "bandwidth_ghz": 2.0
+      },
+      "F2_flat_rim_final0.1": {
+        "beam_theta_deg": 38.0,
+        "peak_gain_dbi": 4.26,
+        "horizon_max_dbi": 2.54,
+        "bandwidth_ghz": 7.0
+      }
+    },
+    "verdict": "rejected inside the ring-depth parameter range: deepening moved the cone 40->32 deg (away from 90), flattening the rim kept it at 38 deg (horizon gain only 1.95->2.54 dBi). The cone angle does not pass through 90 deg by changing ring depth/taper alone, so the n_eff->1 slow-wave route cannot produce the requested donut here.",
+    "implication": "switch to route B: a circumferential slot at the rim (thick rim ring cut by an outward-facing annular slot) whose aperture field is vertical, so symmetry gives a null on the axis and a maximum in the equatorial plane."
+  },
+  "updated_utc": "2026-11-19T11:44:59Z"
+}

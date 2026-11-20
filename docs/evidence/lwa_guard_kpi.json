@@ -1,0 +1,32 @@
+{
+  "run_id": "20261111T212203150824",
+  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_lwa_loose",
+  "design": "LWA_LOOSE",
+  "setup": "LWA_Setup",
+  "passes": 2,
+  "delta_s": 0.05,
+  "sphere": "LWA_Sphere (theta 0-180 step 5, phi 0-360 step 15)",
+  "guard_metrics": {
+    "s11": {"value": -17.989084250954257, "unit": "dB", "passed": 1},
+    "gain_h": {"value": -9.851064118057058, "unit": "dBi", "passed": 0}
+  },
+  "farfield": {
+    "file": "runs/20261111T212203150824/artifacts/farfield/Plot_FI1WTM.csv",
+    "cut": "phi = 0 deg",
+    "frequency_ghz": 28.0,
+    "samples": 37,
+    "peak_theta_deg": 5.0,
+    "peak_gain_db": 13.14587360643
+  },
+  "theory": {
+    "beta_minus_over_k0": -0.0985,
+    "beam_angle_deg": -5.6525100077760175,
+    "note": "theta is measured on 0..180 at phi=0, so the magnitude is comparable; the sign needs the opposite phi cut"
+  },
+  "angle_comparison": {
+    "measured_magnitude_deg": 5.0,
+    "theory_magnitude_deg": 5.6525100077760175,
+    "difference_deg": 0.6525100077760175
+  },
+  "finding": "the far-field sphere was not the blocker: 4 passes with MaxDeltaS 0.02 made analyze_setup return False, while 2 passes with 0.05 solves"
+}

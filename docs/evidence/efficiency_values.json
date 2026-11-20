@@ -1,0 +1,48 @@
+{
+  "stage": "done",
+  "attempts": [
+    {
+      "label": "RadiationEfficiency",
+      "ok": true,
+      "value": "False",
+      "values": []
+    },
+    {
+      "label": "RadiatedPower",
+      "ok": true,
+      "value": "False",
+      "values": []
+    },
+    {
+      "label": "AcceptedPower",
+      "ok": true,
+      "value": "False",
+      "values": []
+    },
+    {
+      "label": "GainTotal",
+      "ok": true,
+      "value": "False",
+      "values": []
+    },
+    {
+      "label": "DirTotal",
+      "ok": true,
+      "value": "False",
+      "values": []
+    }
+  ],
+  "values": {
+    "eta_direct": null,
+    "radiated_power": null,
+    "accepted_power": null,
+    "eta_power_ratio": null,
+    "gain_db": null,
+    "directivity_db": null,
+    "eta_gain_directivity": null
+  },
+  "paths_available": 0,
+  "consistent": false,
+  "verdict": "no path returned a value in this context",
+  "close_error": "TypeError: Design.close_project() got an unexpected keyword argument 'save_project'"
+}

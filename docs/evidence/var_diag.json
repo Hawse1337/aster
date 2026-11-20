@@ -1,0 +1,266 @@
+{
+  "before": {
+    "cone_dn": {
+      "type": "Solid",
+      "volume": 1848.4304,
+      "bbox": [
+        -24.0,
+        -24.0,
+        -5.8,
+        24.0,
+        24.0,
+        -1.0
+      ],
+      "material": "pec",
+      "faces": 26
+    },
+    "cone_up": {
+      "type": "Solid",
+      "volume": 1861.6329,
+      "bbox": [
+        -24.0,
+        -24.0,
+        1.0,
+        24.0,
+        24.0,
+        5.8
+      ],
+      "material": "pec",
+      "faces": 25
+    },
+    "disc": {
+      "type": "Solid",
+      "volume": 40698.9716,
+      "bbox": [
+        -70.0,
+        -70.0,
+        -2.7,
+        70.0,
+        70.0,
+        2.7
+      ],
+      "material": "pec",
+      "faces": 236
+    },
+    "coax_outer": {
+      "type": "Solid",
+      "volume": 152.8071,
+      "bbox": [
+        -2.0,
+        -2.0,
+        -20.0,
+        2.0,
+        2.0,
+        -1.0
+      ],
+      "material": "pec",
+      "faces": 4
+    },
+    "coax_diel": {
+      "type": "Solid",
+      "volume": 76.4035,
+      "bbox": [
+        -1.2,
+        -1.2,
+        -20.0,
+        1.2,
+        1.2,
+        -1.0
+      ],
+      "material": "teflon (tm)",
+      "faces": 4
+    },
+    "port_disc": {
+      "type": "Sheet",
+      "volume": 0.0,
+      "bbox": [
+        -1.2,
+        -1.2,
+        -20.0,
+        1.2,
+        1.2,
+        -20.0
+      ],
+      "material": "",
+      "faces": 1
+    }
+  },
+  "after": {
+    "cone_dn": {
+      "type": "Solid",
+      "volume": 1892.5462,
+      "bbox": [
+        -24.0,
+        -24.0,
+        -5.8,
+        24.0,
+        24.0,
+        -1.0
+      ],
+      "material": "pec",
+      "faces": 7
+    },
+    "cone_up": {
+      "type": "Solid",
+      "volume": 1892.5462,
+      "bbox": [
+        -24.0,
+        -24.0,
+        1.0,
+        24.0,
+        24.0,
+        5.8
+      ],
+      "material": "pec",
+      "faces": 7
+    },
+    "disc": {
+      "type": "Solid",
+      "volume": 40698.9716,
+      "bbox": [
+        -70.0,
+        -70.0,
+        -2.7,
+        70.0,
+        70.0,
+        2.7
+      ],
+      "material": "pec",
+      "faces": 236
+    },
+    "coax_outer": {
+      "type": "Solid",
+      "volume": 154.3904,
+      "bbox": [
+        -2.2,
+        -2.2,
+        -20.0,
+        2.2,
+        2.2,
+        -0.7
+      ],
+      "material": "pec",
+      "faces": 8
+    },
+    "coax_diel": {
+      "type": "Solid",
+      "volume": 76.4035,
+      "bbox": [
+        -1.2,
+        -1.2,
+        -20.0,
+        1.2,
+        1.2,
+        -1.0
+      ],
+      "material": "teflon (tm)",
+      "faces": 4
+    },
+    "port_disc": {
+      "type": "Sheet",
+      "volume": 0.0,
+      "bbox": [
+        -1.2,
+        -1.2,
+        -20.0,
+        1.2,
+        1.2,
+        -20.0
+      ],
+      "material": "",
+      "faces": 1
+    }
+  },
+  "diff": {
+    "cone_dn": {
+      "before": {
+        "type": "Solid",
+        "volume": 1848.4304,
+        "bbox": [
+          -24.0,
+          -24.0,
+          -5.8,
+          24.0,
+          24.0,
+          -1.0
+        ],
+        "material": "pec",
+        "faces": 26
+      },
+      "after": {
+        "type": "Solid",
+        "volume": 1892.5462,
+        "bbox": [
+          -24.0,
+          -24.0,
+          -5.8,
+          24.0,
+          24.0,
+          -1.0
+        ],
+        "material": "pec",
+        "faces": 7
+      }
+    },
+    "cone_up": {
+      "before": {
+        "type": "Solid",
+        "volume": 1861.6329,
+        "bbox": [
+          -24.0,
+          -24.0,
+          1.0,
+          24.0,
+          24.0,
+          5.8
+        ],
+        "material": "pec",
+        "faces": 25
+      },
+      "after": {
+        "type": "Solid",
+        "volume": 1892.5462,
+        "bbox": [
+          -24.0,
+          -24.0,
+          1.0,
+          24.0,
+          24.0,
+          5.8
+        ],
+        "material": "pec",
+        "faces": 7
+      }
+    },
+    "coax_outer": {
+      "before": {
+        "type": "Solid",
+        "volume": 152.8071,
+        "bbox": [
+          -2.0,
+          -2.0,
+          -20.0,
+          2.0,
+          2.0,
+          -1.0
+        ],
+        "material": "pec",
+        "faces": 4
+      },
+      "after": {
+        "type": "Solid",
+        "volume": 154.3904,
+        "bbox": [
+          -2.2,
+          -2.2,
+          -20.0,
+          2.2,
+          2.2,
+          -0.7
+        ],
+        "material": "pec",
+        "faces": 8
+      }
+    }
+  }
+}

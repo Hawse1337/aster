@@ -1,0 +1,78 @@
+{
+  "budget": {
+    "start": 8,
+    "rounds": 4,
+    "q": 2,
+    "new_evaluations_per_arm": 8
+  },
+  "initial_hypervolume": {
+    "mean": 1.8349355431238588
+  },
+  "summary": {
+    "qlogehvi": {
+      "mean": 3.9180573271559367,
+      "std": 0.7909617065438758,
+      "min": 2.6578343749702533,
+      "max": 4.632249963963109
+    },
+    "qlognehvi": {
+      "mean": 4.061398649468965,
+      "std": 0.8389916988211797,
+      "min": 2.9139903200345083,
+      "max": 5.163691419536627
+    },
+    "kriging_believer": {
+      "mean": 3.7648224884149446,
+      "std": 1.1709137208063811,
+      "min": 1.760975013037725,
+      "max": 4.873124352610602
+    },
+    "random": {
+      "mean": 2.194711678826913,
+      "std": 0.7372033946511359,
+      "min": 1.2452560476371715,
+      "max": 3.2075816379482633
+    }
+  },
+  "per_seed": {
+    "qlogehvi": [
+      4.38754320342845,
+      4.632249963963109,
+      2.97281336007313,
+      4.527846921424243,
+      4.330056139076436,
+      2.6578343749702533
+    ],
+    "qlognehvi": [
+      4.5741730843663655,
+      5.163691419536627,
+      2.9550491352471813,
+      4.40239418898764,
+      4.35909374864147,
+      2.9139903200345083
+    ],
+    "kriging_believer": [
+      4.873124352610602,
+      4.719908923074589,
+      2.683341335527005,
+      3.8407505157809902,
+      4.710834790458759,
+      1.760975013037725
+    ],
+    "random": [
+      3.2075816379482633,
+      2.8671798769968206,
+      1.2702005159798924,
+      2.2230079248872694,
+      2.35504406951206,
+      1.2452560476371715
+    ]
+  },
+  "stack": {
+    "method": "qlognehvi",
+    "available": true,
+    "torch": "2.15.0+cpu",
+    "botorch": "0.18.1"
+  },
+  "sign_bug_note": "The first two comparisons in this folder were produced with an inverted sign convention: BoTorch hypervolume improvements are maximisation-form and the Kriging believer EI likewise, while the study minimises. Both arms therefore climbed towards the worst corner (candidates pinned at x1 = 1.0 on ZDT1), which is why random search appeared to win. With the sign fixed the ordering reverses: qLogNEHVI and qLogEHVI roughly double random hypervolume and the believer roughly matches random."
+}

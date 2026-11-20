@@ -1,0 +1,29 @@
+{
+  "batch": {
+    "batch_id": "batch-20261113T132947",
+    "case": "lens28_var",
+    "state": "DONE",
+    "total": 1,
+    "done": 1,
+    "run_ids": [
+      "real-20261113T132947-00"
+    ],
+    "created_utc": "2026-11-13T13:29:47Z",
+    "last_error": "E_SWEEP_EXPORT_INCOMPLETE"
+  },
+  "seconds": 1920.0,
+  "rows": [
+    {
+      "run_id": "real-20261113T132947-00",
+      "params": {
+        "ring_outer": 2.45
+      },
+      "status": "FAILED",
+      "metrics": {},
+      "error": "E_SWEEP_EXPORT_INCOMPLETE"
+    }
+  ],
+  "rings": [
+    2.45
+  ]
+}

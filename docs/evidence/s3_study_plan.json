@@ -1,0 +1,140 @@
+[
+  {
+    "strategy": "random",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.47,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 6.2872305349490425,
+      "ripple": 1.437233513938422,
+      "s11_bandwidth": 2.197516893543372
+    }
+  },
+  {
+    "strategy": "random",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.42,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 6.719398145196139,
+      "ripple": 0.9164926215298579,
+      "s11_bandwidth": 4.165577452866678
+    }
+  },
+  {
+    "strategy": "random",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 4.15,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 7.42248169446473,
+      "ripple": 0.0,
+      "s11_bandwidth": 4.5
+    }
+  },
+  {
+    "strategy": "surrogate",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.18,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 6.398901742805207,
+      "ripple": 1.367120939722325,
+      "s11_bandwidth": 2.8129809942146715
+    }
+  },
+  {
+    "strategy": "surrogate",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.32,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 6.277523467680693,
+      "ripple": 1.481641696452554,
+      "s11_bandwidth": 2.9958336203020157
+    }
+  },
+  {
+    "strategy": "surrogate",
+    "params": {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.38,
+      "ring_height": 0.6,
+      "ring_shift": 0.0,
+      "ring2_outer": 0.0,
+      "ring2_height": 0.4,
+      "ring2_shift": -0.4,
+      "feed_radius": 0.4,
+      "feed_len": 1.6,
+      "feed_z0": -2.8
+    },
+    "predicted": {
+      "peak_gain": 6.260757908873078,
+      "ripple": 1.4392067434431275,
+      "s11_bandwidth": 3.0162352684137144
+    }
+  }
+]

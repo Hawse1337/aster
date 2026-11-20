@@ -1,0 +1,375 @@
+{
+  "target": {
+    "horizon_max_dbi": 7.0,
+    "horizon_ripple_db": 2.0,
+    "horizon_to_axial_db": 15.0,
+    "near_axis_max_dbi": -5.0,
+    "power_fraction_theta_60_120": 0.85,
+    "s11_contiguous_ghz_min": 5.0
+  },
+  "variants": [
+    {
+      "tag": "A1_height_gradient_0p8",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": -10.97,
+          "horizon_ripple_db": 7.79,
+          "horizon_to_axial_db": -15.03,
+          "near_axis_max_dbi": 3.84,
+          "power_fraction_theta_60_120": 0.1434,
+          "bandwidth_ghz": 2.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": false,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": false
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_height_gradient": 0.8
+      }
+    },
+    {
+      "tag": "A1b_height_gradient_0p45_p10",
+      "status": "NOT_COMPLETED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": -11.66,
+          "horizon_ripple_db": 11.9,
+          "horizon_to_axial_db": -16.83,
+          "near_axis_max_dbi": 5.17,
+          "power_fraction_theta_60_120": 0.2293,
+          "bandwidth_ghz": null
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": false,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": false
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "disc_height_gradient": 0.45
+      }
+    },
+    {
+      "tag": "A1c_height_gradient_0p65_narrowband",
+      "status": "NOT_COMPLETED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": -10.16,
+          "horizon_ripple_db": 4.1,
+          "horizon_to_axial_db": -14.77,
+          "near_axis_max_dbi": 4.61,
+          "power_fraction_theta_60_120": 0.1765,
+          "bandwidth_ghz": null
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": false,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": false
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "disc_height_gradient": 0.65,
+        "band_ghz": [
+          26.0,
+          30.0
+        ],
+        "passes": 8
+      }
+    },
+    {
+      "tag": "B1_feed_z_offset_m1",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": 1.13,
+          "horizon_ripple_db": 1.17,
+          "horizon_to_axial_db": -3.66,
+          "near_axis_max_dbi": 3.88,
+          "power_fraction_theta_60_120": 0.3142,
+          "bandwidth_ghz": 7.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": true,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": true
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "feed_z_offset_mm": -1.0
+      }
+    },
+    {
+      "tag": "B2_feed_z_offset_m0p5",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": 1.46,
+          "horizon_ripple_db": 1.54,
+          "horizon_to_axial_db": -2.99,
+          "near_axis_max_dbi": 3.59,
+          "power_fraction_theta_60_120": 0.3015,
+          "bandwidth_ghz": 7.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": true,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": true
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "feed_z_offset_mm": -0.5
+      }
+    },
+    {
+      "tag": "C1_thick_disc_rim",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": 0.04,
+          "horizon_ripple_db": 1.61,
+          "horizon_to_axial_db": -5.67,
+          "near_axis_max_dbi": 5.71,
+          "power_fraction_theta_60_120": 0.1426,
+          "bandwidth_ghz": 2.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": true,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": false
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_base_half_thickness_mm": 2.0,
+        "disc_rim_half_thickness_mm": 2.0
+      }
+    },
+    {
+      "tag": "D1_rim_ring5",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": 1.41,
+          "horizon_ripple_db": 1.37,
+          "horizon_to_axial_db": -3.48,
+          "near_axis_max_dbi": 4.15,
+          "power_fraction_theta_60_120": 0.2351,
+          "bandwidth_ghz": 7.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": true,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": true
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "disc_rim_half_thickness_mm": 2.0,
+        "disc_rim_ring_mm": 5.0
+      }
+    },
+    {
+      "tag": "E3_radial_plate_gap3",
+      "status": "MEASURED",
+      "score": {
+        "checks": {
+          "horizon_max_dbi": -10.64,
+          "horizon_ripple_db": 4.79,
+          "horizon_to_axial_db": -16.39,
+          "near_axis_max_dbi": 4.84,
+          "power_fraction_theta_60_120": 0.2176,
+          "bandwidth_ghz": 2.0
+        },
+        "passed": {
+          "horizon_max_dbi": false,
+          "horizon_ripple_db": false,
+          "horizon_to_axial_db": false,
+          "near_axis_max_dbi": false,
+          "power_fraction_theta_60_120": false,
+          "bandwidth_ghz": false
+        },
+        "all_passed": false
+      },
+      "settings": {
+        "feed_model": "coax",
+        "coax_length": 3.0,
+        "coax_port_type": "wave",
+        "support_wall_mm": 0.4,
+        "support_sectors": 3,
+        "sector_angle": 12.0,
+        "flare_scale": 1.5,
+        "radial_scale": 1.3,
+        "inner_step_offset": -0.25,
+        "port_width": 0.26,
+        "air_scale": 2.0,
+        "solution_ghz": 28.0,
+        "passes": 6,
+        "max_delta_s": 0.02,
+        "metal_lens_candidate": 30,
+        "disc_inner_radius_mm": 8.0,
+        "radial_plate_gap_mm": 3.0,
+        "radial_plate_thickness_mm": 0.5,
+        "radial_plate_inner_mm": 8.0
+      }
+    }
+  ],
+  "best_by_horizon": {
+    "tag": "B2_feed_z_offset_m0p5",
+    "status": "MEASURED",
+    "score": {
+      "checks": {
+        "horizon_max_dbi": 1.46,
+        "horizon_ripple_db": 1.54,
+        "horizon_to_axial_db": -2.99,
+        "near_axis_max_dbi": 3.59,
+        "power_fraction_theta_60_120": 0.3015,
+        "bandwidth_ghz": 7.0
+      },
+      "passed": {
+        "horizon_max_dbi": false,
+        "horizon_ripple_db": true,
+        "horizon_to_axial_db": false,
+        "near_axis_max_dbi": false,
+        "power_fraction_theta_60_120": false,
+        "bandwidth_ghz": true
+      },
+      "all_passed": false
+    },
+    "settings": {
+      "feed_model": "coax",
+      "coax_length": 3.0,
+      "coax_port_type": "wave",
+      "support_wall_mm": 0.4,
+      "support_sectors": 3,
+      "sector_angle": 12.0,
+      "flare_scale": 1.5,
+      "radial_scale": 1.3,
+      "inner_step_offset": -0.25,
+      "port_width": 0.26,
+      "air_scale": 2.0,
+      "solution_ghz": 28.0,
+      "passes": 6,
+      "max_delta_s": 0.02,
+      "metal_lens_candidate": 30,
+      "disc_inner_radius_mm": 8.0,
+      "feed_z_offset_mm": -0.5
+    }
+  },
+  "target_achieved": false,
+  "conclusion": [
+    "no measured variant reached the flat-donut acceptance set: the best horizon gain is about 1.95 dBi at the nominal disc, far from the 7 dBi target",
+    "measured pattern families are limited to cones near theta 40 deg and 124-142 deg; the levers tried (radial ring-height gradient, feed axial offset, disc thickness, solid rim ring, radial parallel plate) only switch between those cones or change their gain",
+    "the only lever that preserved the S11 band was the feed axial offset and the solid rim ring (7.0 GHz contiguous), but neither moved the beam to 90 deg",
+    "the reference Final pattern (donut at 90 deg, 7.78 dBi) therefore needs a radiating aperture on the equator that this disc/feed geometry does not form; the next attempt should be an explicit radial slot/horn rim (two parallel plates with an open slot), which is beyond the changed outer-ring parameters tested here"
+  ],
+  "evidence": "D:\\AntennaDesignSystem\\docs\\evidence\\directivity_optimization.json"
+}

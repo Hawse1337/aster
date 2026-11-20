@@ -1,0 +1,160 @@
+{
+  "question": "the user believes the periodic disc is compatible with 24-30 GHz and the feed is the problem",
+  "measured_here": {
+    "feed_alone_user_project": {
+      "project": "01_工程与原有结果/AstraBB_BandCheck_20261027_2150.aedt, design FeedIdeal, setup F28",
+      "band_ghz": [
+        24.0,
+        32.0
+      ],
+      "s11_db": {
+        "24": -12.68,
+        "25": -15.4,
+        "26": -19.33,
+        "27": -23.37,
+        "28": -20.61,
+        "29": -16.37,
+        "30": -13.58,
+        "31": -11.68,
+        "32": -10.28
+      },
+      "s11_bandwidth_ghz": 8.0,
+      "peak_gain_dbi": 1.25,
+      "user_audit_values": {
+        "24": -12.5491,
+        "30": -13.5942,
+        "32.2": -10.1156,
+        "36": -7.5208
+      },
+      "agreement": "within 0.15 dB at 24 and 0.02 dB at 30 GHz - the measurement pipeline reproduces the user's audit"
+    },
+    "same_feed_with_disc": {
+      "project": "04_运行模板/R01_Lens30.aedt, design FeedIdeal",
+      "s11_db": {
+        "24": -11.16,
+        "25": -14.13,
+        "26": -14.85,
+        "27": -13.78,
+        "28": -8.66,
+        "29": -8.16,
+        "31": -9.31,
+        "32": -3.82
+      },
+      "s11_bandwidth_ghz": 3.0,
+      "peak_gain_dbi": 2.64,
+      "beam_theta_deg": 42.0,
+      "ripple_db": 6.62
+    },
+    "user_own_ab_control": {
+      "source": "02_证据与参数/ga/broadband/DISC_LOADING_CONTROL.md",
+      "feed_only_28ghz_db": -20.28,
+      "feed_plus_disc_28ghz_db": -7.3,
+      "note": "two-pass screening run by the user; the disc costs about 13 dB of match"
+    },
+    "nodisc_control_same_domain": {
+      "project": "01_工程与原有结果/AstraBB_LensScreen_20261027_1730.aedt, design NoDisc, setup F28nd",
+      "what": "feed + three spacers in the same +-84 mm domain, disc deleted",
+      "band_ghz": [
+        24.0,
+        32.0
+      ],
+      "s11_db": {
+        "24": -12.72,
+        "25": -15.59,
+        "26": -19.58,
+        "27": -23.5,
+        "28": -20.28,
+        "29": -16.3,
+        "30": -13.41,
+        "31": -11.46,
+        "32": -10.11
+      },
+      "s11_bandwidth_ghz": 8.0,
+      "peak_gain_dbi": 1.99,
+      "beam_theta_deg": 104.0,
+      "ripple_db": 1.63
+    }
+  },
+  "geometry_facts": {
+    "feed_audited_parameters": {
+      "flare_scale": 1.5,
+      "radial_scale": 1.375,
+      "inner_step_offset": -0.25
+    },
+    "feed_max_radius_mm": 5.3875,
+    "disc_inner_radius_mm": 6.2001,
+    "radial_clearance_mm": 0.8126,
+    "clearance_in_lambda_at_28ghz": 0.076,
+    "legacy_note": "the disc hole was tuned for the old bicone feed, not for this stepped feed"
+  },
+  "diagnosis": [
+    "the feed alone covers 24-32 GHz with 8.0 GHz contiguous bandwidth, so the feed design is not the cause",
+    "the same feed with the disc attached drops to 3.0 GHz, matching the user's own A/B control",
+    "the failure is the feed-disc interface: the disc inner rim sits 0.81 mm (0.076 lambda) from the feed envelope and detunes it",
+    "simply re-tuning the feed alone cannot fix this; the feed exit and the disc inner region must be co-designed"
+  ],
+  "codesign_test": {
+    "goal": "keep the audited feed geometry and enlarge the disc inner bore from 6.2001 mm to 10 mm",
+    "built": {
+      "project": "AstraCoDesignbore10.aedt (from the original builders, not the template)",
+      "geometry_valid": true,
+      "feed_profile": "flare 1.5 / radial 1.375 / inner step -0.25, identical to the user's audited project",
+      "disc_rings": 29,
+      "air_half_size_mm": [
+        84.0,
+        84.0,
+        34.0
+      ]
+    },
+    "measurement_attempts": [
+      {
+        "passes": 4,
+        "max_delta_s": 0.05,
+        "outcome": "solved until mesh generation stalled (idle ansysedt, no solver child); killed"
+      },
+      {
+        "passes": 2,
+        "max_delta_s": 0.2,
+        "outcome": "solver ran 890 s then guard rejected the run with E_NOT_CONVERGED"
+      },
+      {
+        "passes": 4,
+        "max_delta_s": 0.15,
+        "outcome": "RUN_FAILED: cannot verify existing AEDT PID (session/PID flakiness, not a structural result)"
+      }
+    ],
+    "template_route_blocked": "rebuilding the disc inside R01_Lens30 through the guard fails at the gRPC Rename step (delete + create + rename sequence)",
+    "status": "unresolved by automation; needs a single-session PyAEDT build+solve+export or manual AEDT run"
+  },
+  "final_diagnosis": {
+    "feed_alone": "8.0 GHz contiguous over 24-32 GHz in two independent projects; matches the user's audit within 0.15 dB",
+    "feed_plus_disc": "3.0 GHz; 28 GHz -8.66 dB (R01) and -8.7 dB, matching the user's own two-pass screen (-7.30 dB)",
+    "verdict": "the feed design is not the problem and the disc's periodic structure is not disproven; the feed-disc interface is",
+    "mechanism": "disc inner rim at 6.2001 mm vs feed envelope 5.3875 mm leaves 0.8126 mm (0.076 lambda) clearance; the legacy bore was tuned for the old bicone feed, so the new feed is reactively loaded",
+    "implication": "re-tuning the feed alone cannot restore 24-32 GHz; the feed exit and disc inner region must be co-designed",
+    "codesign_candidates": [
+      "open the disc bore from 6.2 mm toward 8-10 mm",
+      "reduce or taper the feed exit (radial_scale below 1.375) to restore clearance",
+      "shift the feed axially relative to the disc plane",
+      "add a transition section between feed exit and disc bore"
+    ]
+  },
+  "disc_bore_scan": {
+    "bore6p2": {
+      "bandwidth_ghz": 3.0,
+      "gain_dbi": 2.64,
+      "s11_28_db": -8.66
+    },
+    "bore8": {
+      "bandwidth_ghz": 4.0,
+      "gain_dbi": 4.17,
+      "s11_28_db": -17.75
+    },
+    "bore10": {
+      "bandwidth_ghz": 4.0,
+      "gain_dbi": 3.69,
+      "s11_28_db": -15.68
+    },
+    "finding": "8 mm is the best opening so far; 29/32 GHz failures are bore-independent"
+  }
+}

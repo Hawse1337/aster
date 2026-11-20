@@ -1,0 +1,47 @@
+{
+  "build": {
+    "region": true,
+    "walls": true,
+    "pec": true,
+    "radiation": true,
+    "port_in": true,
+    "port_out": true,
+    "sphere": true,
+    "setup": true,
+    "sweep": true,
+    "validated": true
+  },
+  "solve": {
+    "analyze": true,
+    "is_solved": [
+      true
+    ]
+  },
+  "passes": 2,
+  "delta_s": 0.05,
+  "theory_beam_angle_deg": -5.6525100077760175,
+  "submitted": "20261111T212203150824",
+  "status": "COMPLETED",
+  "metrics": {
+    "gain_h": {
+      "value": -9.851064118057058,
+      "unit": "dBi",
+      "passed": 0
+    },
+    "gain_obj": {
+      "value": -9.851064118057058,
+      "unit": "",
+      "passed": 0
+    },
+    "s11": {
+      "value": -17.989084250954257,
+      "unit": "dB",
+      "passed": 1
+    },
+    "s11_obj": {
+      "value": -17.989084250954257,
+      "unit": "",
+      "passed": 1
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "batch": {
+    "batch_id": "batch-20261113T103050",
+    "case": "lens28_var",
+    "state": "DONE",
+    "total": 2,
+    "done": 2,
+    "run_ids": [
+      "real-20261113T103050-00",
+      "real-20261113T105113-01"
+    ],
+    "created_utc": "2026-11-13T10:30:50Z"
+  },
+  "seconds": 2240.0,
+  "rows": [
+    {
+      "run_id": "real-20261113T103050-00",
+      "params": {
+        "ring_outer": 2.3
+      },
+      "status": "COMPLETED",
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.05461130818172,
+        "ripple": 1.6230007186887407
+      },
+      "error": null
+    },
+    {
+      "run_id": "real-20261113T105113-01",
+      "params": {
+        "ring_outer": 2.35
+      },
+      "status": "COMPLETED",
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.10871174433445,
+        "ripple": 1.4980505393606798
+      },
+      "error": null
+    }
+  ],
+  "rings": [
+    2.3,
+    2.35
+  ]
+}

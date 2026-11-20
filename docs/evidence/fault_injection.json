@@ -1,0 +1,51 @@
+{
+  "scenarios": [
+    {
+      "name": "short_export",
+      "rows": 1,
+      "value_ghz": 0.0,
+      "invariant": "a one-row export must not produce a nonzero bandwidth",
+      "held": true
+    },
+    {
+      "name": "duplicate_frequency",
+      "rows": 6,
+      "value_ghz": 1.0,
+      "invariant": "a failing point breaks the band; duplicates take the worst value",
+      "held": true
+    },
+    {
+      "name": "mhz_units",
+      "lowest_ghz": 24.0,
+      "invariant": "an MHz file yields GHz frequencies (24, not 24000)",
+      "held": true
+    },
+    {
+      "name": "sqlite_lock",
+      "held_seconds": 2.0,
+      "waited_seconds": 2.1,
+      "recorded": "COMPLETED",
+      "invariant": "a finished run is recorded once the lock clears, not lost",
+      "held": true
+    },
+    {
+      "name": "licence_refusal",
+      "title": "许可证不可用",
+      "retryable": true,
+      "invariant": "a licence problem is an environment failure with an actionable hint",
+      "held": true
+    },
+    {
+      "name": "worker_death",
+      "attempts": 2,
+      "state": {
+        "DONE": 1
+      },
+      "invariant": "the task survives the death, is attempted twice, recorded once",
+      "held": true
+    }
+  ],
+  "total": 6,
+  "held": 6,
+  "all_held": true
+}

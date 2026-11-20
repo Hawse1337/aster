@@ -1,0 +1,22 @@
+{
+  "run_id": "20261112T083656348040",
+  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_var_cal4",
+  "geometry": "bowls with ring collar, measured hole arrays (6 x r1.0955 @4.2 mm + 12 x r1.2649 @16.75 mm per bowl), disc scaled, coax untouched",
+  "metrics": {
+    "s11_bandwidth": 3.0,
+    "peak_gain": 5.881,
+    "ripple": 1.631
+  },
+  "reference_measured": {
+    "run_id": "20261110T142952497786",
+    "s11_bandwidth": 3.0,
+    "peak_gain": 6.44,
+    "ripple": 1.3
+  },
+  "verdict": "BANDWIDTH MATCHES (3.0 GHz); gain is 0.56 dB low and ripple 0.33 dB high",
+  "remaining": [
+    "hole depths were assumed at 2.0 mm; the reference figures come from face areas and the third subtract (1 tool) is not reproduced yet",
+    "closing the gain/ripple gap then unlocks the thirty-update check"
+  ],
+  "source": "docs/evidence/bowl_faces.json (26 faces, hole radii from face areas)"
+}

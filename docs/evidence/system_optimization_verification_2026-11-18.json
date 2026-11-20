@@ -1,0 +1,109 @@
+{
+  "new_campaign": {
+    "runs": 1,
+    "completed": 1,
+    "recorded_contract_identity": "f69639bed5146485408b08780e95b4037246a0f319e1d2973972c83f1add364a",
+    "server_contract_identity": "f69639bed5146485408b08780e95b4037246a0f319e1d2973972c83f1add364a",
+    "contract_matches": true,
+    "metrics": {
+      "s11_bandwidth": 7.0,
+      "beam_theta": 40.0,
+      "directivity_horiz_db": 1.7549485888572973,
+      "peak_gain": 4.24681250969098,
+      "ripple": 1.396038997645217,
+      "sll": -0.5989857865802604
+    },
+    "timings": {
+      "CONNECTING": 1.22,
+      "MODEL": 3.92,
+      "SOLVING": 1290.3,
+      "POSTPROCESS": 2.72
+    }
+  },
+  "response_preview": {
+    "http_status": 409,
+    "error": "INSUFFICIENT_RESPONSE_EVIDENCE",
+    "source": "PREDICTED",
+    "usable_for_selection": false,
+    "diagnostics": {
+      "samples": 1,
+      "excluded": [],
+      "usable_for_selection": false,
+      "validation": "forward_completed_block",
+      "source_runs": [
+        "real-20261118T041646-4fd9d01e"
+      ],
+      "quantity": "S11_dB",
+      "thresholds": {
+        "max_mae_db": 2.0,
+        "minimum_coverage": 0.6
+      },
+      "reason": "insufficient distinct compatible measured curves"
+    }
+  },
+  "old_campaign": {
+    "runs": 1,
+    "completed": 1,
+    "compatible_flags": [
+      false
+    ],
+    "incompatible_reasons": [
+      "legacy_missing_contract"
+    ],
+    "response_preview_http_status": 409,
+    "response_preview_error": "INSUFFICIENT_RESPONSE_EVIDENCE",
+    "response_preview_excluded_sample": []
+  },
+  "recommend": {
+    "http_status": 200,
+    "keys": [
+      "batch_conservative_seconds",
+      "bounds_used",
+      "budget_seconds",
+      "diagnostics",
+      "dropped_duplicates",
+      "excluded_runs",
+      "learning_contract",
+      "method",
+      "minimum_runs",
+      "note",
+      "objectives",
+      "over_budget",
+      "over_risk",
+      "reason"
+    ],
+    "warnings": [
+      "物理失败风险证据不足，仅作限量探索"
+    ],
+    "method": "controlled_exploration",
+    "error": null
+  },
+  "identity_sensitivity": {
+    "recipe_change_changes_identity": true,
+    "objective_target_outside_identity": true,
+    "recompute_stable": true,
+    "identity": "b9eb02d85f8e2665e0a49b0752128f8faf61b6e3c7293086ff54a31e9de6487b",
+    "recipe_hash": "9a9bf2c5ea7379588c8d6da2b33ddc0dd835b7bdacdfbab29b6e29a943233cf2",
+    "structure_hash": "50d762d39c1a16a59a7fab32473a837c66fd0835a73e1e61cbed2d6860d1bc2b"
+  },
+  "reproducibility_vs_yesterday": {
+    "fresh_metrics": {
+      "s11_bandwidth": 7.0,
+      "beam_theta": 40.0,
+      "directivity_horiz_db": 1.7549485888572973,
+      "peak_gain": 4.24681250969098,
+      "ripple": 1.396038997645217,
+      "sll": -0.5989857865802604
+    },
+    "yesterday_metrics": {
+      "s11_bandwidth": 7.0,
+      "beam_theta": 40.0,
+      "directivity_horiz_db": 1.7548723356527665,
+      "peak_gain": 4.24679856367628,
+      "ripple": 1.396121350849,
+      "sll": -0.59924590650827
+    },
+    "same_bandwidth": true,
+    "note": "same design and recipe measured in a different day/session"
+  }
+}

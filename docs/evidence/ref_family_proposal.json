@@ -1,0 +1,91 @@
+{
+  "measured": [
+    {
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0
+      },
+      "metrics": {
+        "s11": -16.65,
+        "peak_gain": 6.22,
+        "ripple": 1.72,
+        "s11_bandwidth": 1.0
+      },
+      "violation": 0.0,
+      "feasible": true,
+      "run_id": "20261110T101202425058"
+    },
+    {
+      "params": {
+        "tip_offset": 1.5,
+        "disc_factor": 1.0
+      },
+      "metrics": {
+        "s11": -3.38,
+        "peak_gain": 6.82,
+        "ripple": 1.81,
+        "s11_bandwidth": 0.0
+      },
+      "violation": 3.2066666666666666,
+      "feasible": false,
+      "run_id": "20261110T102852326106"
+    },
+    {
+      "params": {
+        "tip_offset": 2.0,
+        "disc_factor": 1.0
+      },
+      "metrics": {
+        "s11": -3.01,
+        "peak_gain": 6.53,
+        "ripple": 1.46,
+        "s11_bandwidth": 0.0
+      },
+      "violation": 3.33,
+      "feasible": false,
+      "run_id": "20261110T104743561892"
+    },
+    {
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.1
+      },
+      "metrics": {
+        "s11": -0.14,
+        "peak_gain": 6.34,
+        "ripple": 4.49,
+        "s11_bandwidth": 0.0
+      },
+      "violation": 5.776666666666667,
+      "feasible": false,
+      "run_id": "20261110T112725156226"
+    }
+  ],
+  "model": {
+    "rmse": 0.001983607930086205,
+    "r2": null
+  },
+  "proposal": {
+    "params": {
+      "tip_offset": 0.9,
+      "disc_factor": 1.0
+    },
+    "predicted_violation": 3.0783333333333336,
+    "predicted_std": 2.05263481952397
+  },
+  "ei_top3": [
+    {
+      "tip_offset": 1.15,
+      "disc_factor": 1.24
+    },
+    {
+      "tip_offset": 1.14,
+      "disc_factor": 1.24
+    },
+    {
+      "tip_offset": 1.12,
+      "disc_factor": 1.24
+    }
+  ],
+  "note": "predicted values are surrogate estimates, not measurements"
+}

@@ -1,0 +1,46 @@
+{
+ "source": "C:\\Users\\Administrator\\Desktop\\lensfinal\\LensFinal.aedt",
+ "subtracts": [
+  {
+   "id": 1294,
+   "blank": 989,
+   "tool_ids": [
+    1241,
+    1250,
+    1259,
+    1268,
+    1277,
+    1286
+   ],
+   "holes": []
+  },
+  {
+   "id": 1421,
+   "blank": 989,
+   "tool_ids": [
+    1314,
+    1323,
+    1332,
+    1341,
+    1350,
+    1359,
+    1368,
+    1377,
+    1386,
+    1395,
+    1404,
+    1413
+   ],
+   "holes": []
+  },
+  {
+   "id": 1527,
+   "blank": 989,
+   "tool_ids": [
+    1519
+   ],
+   "holes": []
+  }
+ ],
+ "hole_count": 0
+}

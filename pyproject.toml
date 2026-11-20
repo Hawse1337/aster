@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "antopt"
+version = "1.51.0"
+description = "Physics-guided antenna design and optimisation library (design side, no GUI)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Hawse1337"}]
+dependencies = ["numpy>=2.0"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+
+[project.optional-dependencies]
+optimizer = ["pymoo>=0.6,<0.7", "scipy>=1.11"]
+surrogate = ["scikit-learn>=1.4"]
+acquisition = ["torch>=2.0", "botorch>=0.13", "gpytorch>=1.11"]
+plot = ["matplotlib>=3.7"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+antopt = "antopt.cli:main"
+
+[tool.setuptools]
+packages = [
+    "antopt", "antopt.benchmark", "antopt.cases", "antopt.interop",
+    "antopt.optimizer", "antopt.parametric", "antopt.physics",
+    "antopt.runtime", "antopt.surrogate", "antopt.topology",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

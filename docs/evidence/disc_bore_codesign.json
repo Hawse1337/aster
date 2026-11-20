@@ -1,0 +1,95 @@
+{
+  "motivation": "the feed alone covers 24-32 GHz (8.0 GHz) but collapses to 3.0 GHz once the 29-ridge disc is attached; the migration note says the disc inner rim (6.2001 mm) leaves 0.8126 mm around the feed envelope and must be co-designed",
+  "change": "disc inner radius 6.2001 mm -> 10.0 mm, everything else unchanged (29 ridges, +-84/84/34 mm domain, audited feed flare 1.5 / radial 1.375 / inner step -0.25, three 12-degree spacers)",
+  "measurements_24_32_ghz": {
+    "baseline_bore6p2": {
+      "project": "04_运行模板/R01_Lens30.aedt",
+      "s11_db": {
+        "24": -11.16,
+        "25": -14.13,
+        "26": -14.85,
+        "27": -13.78,
+        "28": -8.66,
+        "29": -8.16,
+        "30": null,
+        "31": -9.31,
+        "32": -3.82
+      },
+      "s11_bandwidth_ghz": 3.0,
+      "peak_gain_dbi": 2.64,
+      "directivity_horiz_dbi": 1.38,
+      "beam_theta_deg": 42.0,
+      "ripple_db": 6.62
+    },
+    "bore10": {
+      "project": "AstraCoDesignbore10.aedt (built by the original builders)",
+      "s11_db": {
+        "24": -11.58,
+        "25": -14.41,
+        "26": -17.18,
+        "27": -19.12,
+        "28": -15.68,
+        "29": -8.63,
+        "30": -12.9,
+        "31": -10.54,
+        "32": -4.22
+      },
+      "s11_bandwidth_ghz": 4.0,
+      "band_ghz": [
+        24.0,
+        28.0
+      ],
+      "peak_gain_dbi": 3.69,
+      "directivity_horiz_dbi": 2.09,
+      "beam_theta_deg": 140.0,
+      "ripple_db": 1.07,
+      "timings": {
+        "CONNECTING": 13.94,
+        "MODEL": 3.18,
+        "SOLVING": 1480.39,
+        "POSTPROCESS": 4.68
+      }
+    },
+    "bore8": {
+      "project": "AstraBore08.aedt (original builders, audited feed)",
+      "s11_db": {
+        "24": -15.0,
+        "25": -21.3,
+        "26": -28.55,
+        "27": -26.78,
+        "28": -17.75,
+        "29": -8.49,
+        "30": -10.01,
+        "31": -19.03,
+        "32": -6.05
+      },
+      "s11_bandwidth_ghz": 4.0,
+      "band_ghz": [
+        24.0,
+        28.0
+      ],
+      "peak_gain_dbi": 4.17,
+      "directivity_horiz_dbi": 1.58,
+      "beam_theta_deg": 40.0,
+      "ripple_db": 1.0,
+      "sll_dbc": -0.33,
+      "timings": {
+        "CONNECTING": 1.11,
+        "MODEL": 3.22,
+        "SOLVING": 1370.37,
+        "POSTPROCESS": 2.85
+      }
+    }
+  },
+  "conclusion": [
+    "bore 8 mm is the best tested opening: deepest match over 24-28 GHz, 31 GHz at -19 dB, peak gain 4.17 dBi",
+    "gain rises as the opening shrinks (6.2 mm 2.64, 10 mm 3.69, 8 mm 4.17 dBi), so the disc area still matters for gain",
+    "29 GHz (-8.49) and 32 GHz (-6.05) miss for every tested bore, so those points need feed-side co-tuning rather than more disc opening",
+    "the main beam stays at theta 40 deg instead of the target 90 deg, so the feed-disc focus is still wrong even where matching is good"
+  ],
+  "next": [
+    "feed-side sweep at bore 8 mm: radial_scale 1.25/1.45, flare_scale 1.65",
+    "then feed axial offset versus the disc plane to bring the beam back to theta = 90 deg",
+    "final 24-32 GHz acceptance table for the best pair"
+  ]
+}

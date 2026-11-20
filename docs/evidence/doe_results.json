@@ -1,0 +1,266 @@
+{
+  "planned": 10,
+  "completed": 8,
+  "failed": 2,
+  "feasible": 0,
+  "feasible_run_ids": [],
+  "failure_codes": [
+    "E_SWEEP_EXPORT_INCOMPLETE",
+    "RUN_FAILED"
+  ],
+  "spread": {
+    "s11_bandwidth": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0,
+      "n": 8
+    },
+    "peak_gain": {
+      "min": -1.83074907045489,
+      "median": 4.08572413239143,
+      "max": 5.50104846056668,
+      "n": 8
+    },
+    "directivity_horiz_db": {
+      "min": 0.04070546167024777,
+      "median": 4.926448182086599,
+      "max": 6.878316192926083,
+      "n": 8
+    },
+    "beam_theta": {
+      "min": 88.0,
+      "median": 97.0,
+      "max": 158.0,
+      "n": 8
+    },
+    "ripple": {
+      "min": 1.2487572067083494,
+      "median": 1.6636253778623749,
+      "max": 16.06417463520446,
+      "n": 8
+    }
+  },
+  "best": {
+    "s11_bandwidth": {
+      "run_id": "queued-20261115T163533-00",
+      "value": 0.0,
+      "params": {
+        "tip_offset": 1.3,
+        "disc_factor": 0.95,
+        "disc_radial": 0.9,
+        "ring_inner": 1.9,
+        "ring_outer": 3.0,
+        "ring_height": 1.0,
+        "ring_shift": 0.6
+      }
+    },
+    "peak_gain": {
+      "run_id": "queued-20261115T163533-02",
+      "value": 5.50104846056668,
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 0.9,
+        "disc_radial": 0.9,
+        "ring_inner": 1.5,
+        "ring_outer": 3.6,
+        "ring_height": 0.4,
+        "ring_shift": 0.3
+      }
+    },
+    "directivity_horiz_db": {
+      "run_id": "queued-20261115T163533-00",
+      "value": 6.878316192926083,
+      "params": {
+        "tip_offset": 1.3,
+        "disc_factor": 0.95,
+        "disc_radial": 0.9,
+        "ring_inner": 1.9,
+        "ring_outer": 3.0,
+        "ring_height": 1.0,
+        "ring_shift": 0.6
+      }
+    },
+    "beam_theta": {
+      "run_id": "queued-20261115T163533-03",
+      "value": 158.0,
+      "params": {
+        "tip_offset": 1.2,
+        "disc_factor": 1.2,
+        "disc_radial": 1.0,
+        "ring_inner": 1.6,
+        "ring_outer": 4.4,
+        "ring_height": 0.2,
+        "ring_shift": 0.2
+      }
+    },
+    "ripple": {
+      "run_id": "queued-20261115T163533-03",
+      "value": 16.06417463520446,
+      "params": {
+        "tip_offset": 1.2,
+        "disc_factor": 1.2,
+        "disc_radial": 1.0,
+        "ring_inner": 1.6,
+        "ring_outer": 4.4,
+        "ring_height": 0.2,
+        "ring_shift": 0.2
+      }
+    }
+  },
+  "constraint_pass_rate": {
+    "s11_bandwidth": 0.0,
+    "peak_gain": 0.0,
+    "directivity_horiz_db": 0.0,
+    "beam_theta": 0.5,
+    "ripple": 0.75
+  },
+  "parameter_effect": {
+    "directivity_horiz_db": [
+      {
+        "parameter": "disc_radial",
+        "gap": 3.2143,
+        "low_mean": 2.5841,
+        "high_mean": 5.7984
+      },
+      {
+        "parameter": "disc_factor",
+        "gap": -2.9326,
+        "low_mean": 5.6576,
+        "high_mean": 2.725
+      },
+      {
+        "parameter": "ring_height",
+        "gap": -1.7121,
+        "low_mean": 5.0473,
+        "high_mean": 3.3352
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": 0.9451,
+        "low_mean": 3.7187,
+        "high_mean": 4.6638
+      },
+      {
+        "parameter": "tip_offset",
+        "gap": 0.4217,
+        "low_mean": 3.9805,
+        "high_mean": 4.4021
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": -0.3491,
+        "low_mean": 4.3658,
+        "high_mean": 4.0167
+      },
+      {
+        "parameter": "ring_outer",
+        "gap": -0.14,
+        "low_mean": 4.2613,
+        "high_mean": 4.1213
+      }
+    ],
+    "peak_gain": [
+      {
+        "parameter": "disc_factor",
+        "gap": -4.2087,
+        "low_mean": 4.7297,
+        "high_mean": 0.521
+      },
+      {
+        "parameter": "ring_outer",
+        "gap": -1.9744,
+        "low_mean": 3.6126,
+        "high_mean": 1.6382
+      },
+      {
+        "parameter": "disc_radial",
+        "gap": 1.5642,
+        "low_mean": 1.8433,
+        "high_mean": 3.4075
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": -1.2459,
+        "low_mean": 3.2483,
+        "high_mean": 2.0024
+      },
+      {
+        "parameter": "ring_height",
+        "gap": -0.9309,
+        "low_mean": 3.0908,
+        "high_mean": 2.1599
+      },
+      {
+        "parameter": "tip_offset",
+        "gap": -0.6701,
+        "low_mean": 2.9604,
+        "high_mean": 2.2903
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": -0.3287,
+        "low_mean": 2.7897,
+        "high_mean": 2.461
+      }
+    ],
+    "s11_bandwidth": [
+      {
+        "parameter": "tip_offset",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "disc_factor",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "disc_radial",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "ring_inner",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "ring_outer",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "ring_height",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      },
+      {
+        "parameter": "ring_shift",
+        "gap": 0.0,
+        "low_mean": 0.0,
+        "high_mean": 0.0
+      }
+    ]
+  },
+  "default_design": {
+    "s11_bandwidth": 2.0,
+    "peak_gain": 6.05135926700057,
+    "directivity_horiz_db": 6.747040462799045,
+    "beam_theta": 90.0,
+    "ripple": 1.8192959273688194
+  },
+  "best_beats_default": {
+    "s11_bandwidth": false,
+    "peak_gain": false,
+    "directivity_horiz_db": true,
+    "beam_theta": true,
+    "ripple": true
+  },
+  "verdict": "8 of 10 completed; none meet every constraint yet; horizontal directivity spans 0.04-6.88 dBi"
+}

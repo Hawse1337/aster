@@ -1,0 +1,596 @@
+{
+  "full": [
+    {
+      "campaign": "campaign_feed3",
+      "run_id": "20261111T101616997684",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_flare",
+      "run_id": "20261111T085616699166",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_joint1",
+      "run_id": "20261111T105355265272",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_lensref2",
+      "run_id": "20261110T112725156226",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_lensref5",
+      "run_id": "20261110T123134007563",
+      "rows": 7,
+      "bandwidth": 1.0,
+      "ring_outer": null,
+      "tip_offset": 0.9,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_lowq",
+      "run_id": "20261111T091435423074",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_prop1",
+      "run_id": "20261111T125544804332",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": 2.4,
+      "tip_offset": 1.05,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_radial",
+      "run_id": "20261110T125019303572",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_refband2",
+      "run_id": "20261110T101202425058",
+      "rows": 7,
+      "bandwidth": 1.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_ring2",
+      "run_id": "20261110T135503662243",
+      "rows": 7,
+      "bandwidth": 2.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_ring20",
+      "run_id": "20261111T113913725965",
+      "rows": 7,
+      "bandwidth": 2.0,
+      "ring_outer": 2.0,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ring21",
+      "run_id": "20261111T121953381688",
+      "rows": 7,
+      "bandwidth": 2.0,
+      "ring_outer": 2.1,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ring225",
+      "run_id": "20261111T131525262664",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.25,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ring23",
+      "run_id": "20261111T123736466339",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.3,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ring235b",
+      "run_id": "20261111T141202375370",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.35,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ringdims",
+      "run_id": "20261111T075132060926",
+      "rows": 7,
+      "bandwidth": 1.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.3,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ringdims2",
+      "run_id": "20261111T080854766284",
+      "rows": 7,
+      "bandwidth": 1.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": -0.3
+    },
+    {
+      "campaign": "campaign_ringscan2",
+      "run_id": "20261110T142952497786",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_step2",
+      "run_id": "20261111T083417044433",
+      "rows": 7,
+      "bandwidth": 2.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_tipring",
+      "run_id": "20261111T120147808728",
+      "rows": 7,
+      "bandwidth": 2.0,
+      "ring_outer": 2.2,
+      "tip_offset": 0.9,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_tipscan",
+      "run_id": "20261110T102852326106",
+      "rows": 7,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.5,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_tworing2",
+      "run_id": "20261111T073356067170",
+      "rows": 7,
+      "bandwidth": 3.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_full",
+      "run_id": "20261109T193807443911",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full2",
+      "run_id": "20261109T200638488431",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full4",
+      "run_id": "20261109T203738778169",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full5",
+      "run_id": "20261109T211448165755",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full6",
+      "run_id": "20261109T214642827733",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full7",
+      "run_id": "20261109T221806328579",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_refbw3",
+      "run_id": "20261110T080309233995",
+      "rows": 9,
+      "bandwidth": 0.75,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_userfix_band",
+      "run_id": "20261110T032614922228",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_userfix_band2",
+      "run_id": "20261110T035419920185",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_userfix_band5",
+      "run_id": "20261110T052901612516",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_userfix_band6",
+      "run_id": "20261110T064352882956",
+      "rows": 9,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    }
+  ],
+  "sparse": [
+    {
+      "campaign": "campaign_fast2",
+      "run_id": "20261110T002624785840",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_fast2",
+      "run_id": "20261110T003335533136",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full8",
+      "run_id": "20261109T224433804360",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_full9",
+      "run_id": "20261109T234224352312",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_lensref3",
+      "run_id": "20261110T115319743031",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 0.9,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_noring",
+      "run_id": "20261110T070802300175",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_operator1",
+      "run_id": "20261110T013542942173",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_probe1",
+      "run_id": "20261110T071605493472",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_ref3",
+      "run_id": "20261110T062759119448",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan1",
+      "run_id": "20261110T004124490756",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan1",
+      "run_id": "20261110T004835246735",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan2",
+      "run_id": "20261110T005718124784",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan2",
+      "run_id": "20261110T010418854498",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan3",
+      "run_id": "20261110T011203603167",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan3",
+      "run_id": "20261110T011904339840",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_scan3",
+      "run_id": "20261110T012605131460",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_solid2",
+      "run_id": "20261110T084123763894",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_state1",
+      "run_id": "20261110T023237212375",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_thick",
+      "run_id": "20261110T072928444110",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_tipscan",
+      "run_id": "20261110T104743561892",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 2.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_userfix2",
+      "run_id": "20261110T031551430773",
+      "rows": 1,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": null,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_refband",
+      "run_id": "20261110T095540895003",
+      "rows": 2,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_refdisc",
+      "run_id": "20261110T093640479158",
+      "rows": 2,
+      "bandwidth": 0.0,
+      "ring_outer": null,
+      "tip_offset": 1.0,
+      "ring_height": null,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_ring235",
+      "run_id": "20261111T135645294210",
+      "rows": 4,
+      "bandwidth": 2.0,
+      "ring_outer": 2.35,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "campaign": "campaign_ringscan",
+      "run_id": "20261110T141428598952",
+      "rows": 5,
+      "bandwidth": 3.0,
+      "ring_outer": 2.4,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": null
+    },
+    {
+      "campaign": "campaign_feed4",
+      "run_id": "20261111T103854384339",
+      "rows": 6,
+      "bandwidth": 0.0,
+      "ring_outer": 2.2,
+      "tip_offset": 1.0,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    }
+  ]
+}

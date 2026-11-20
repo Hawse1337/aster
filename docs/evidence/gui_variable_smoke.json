@@ -1,0 +1,31 @@
+{
+  "what_was_tested": "GUI real mode on the variable case (lens28_var), one project copy, batch queue",
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "GUI refused to start: --case/--reuse-project were never actually added to the launcher although an earlier commit claimed it"
+    },
+    {
+      "attempt": 2,
+      "result": "started, batch of two candidates accepted and run in one session, both failed with E_SWEEP_EXPORT_INCOMPLETE"
+    },
+    {
+      "attempt": 3,
+      "result": "after recreating the discrete sweep, both failed with WorkerRemoteError: InsertFrequencySweep"
+    },
+    {
+      "attempt": 4,
+      "result": "single candidate: still InsertFrequencySweep, so the sweep re-creation itself breaks the run; reverted"
+    }
+  ],
+  "verified": [
+    "the GUI starts in real mode with --case lens28_var --reuse-project",
+    "POST /api/batch queues candidates and the batch thread runs them sequentially in one session (state DONE, done == total, run_ids recorded)",
+    "failures surface through the job record with the guard error code and the page shows a hint"
+  ],
+  "not_verified": [
+    "a successful real solve of the variable case driven from the GUI page; the runs fail before solving, on the frequency-sweep manipulation the manager/executor performs",
+    "the standalone path (scripts/run_var_case.py) does produce successful solves (3.0 GHz at ring 2.2, run 20261112T083656348040), so the model is fine and the gap is in the GUI runner wiring"
+  ],
+  "next": "let GuardExecutor own the sweep setup instead of the manager, and diff its bundle against scripts/run_var_case.py which works"
+}

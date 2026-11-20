@@ -1,0 +1,26 @@
+{
+  "file": "response.npz",
+  "values": [
+    2.0,
+    6.19140240214396
+  ],
+  "metadata": {
+    "feasible": false,
+    "names": [
+      "s11_bandwidth",
+      "peak_gain"
+    ],
+    "rawdata_name": "response",
+    "run_id": "20261113T075355425273",
+    "schema_version": 1,
+    "setup_error": "WorkerRemoteError: backend_error: Failed to execute gRPC AEDT command: InsertFrequencySweep",
+    "shape": [
+      2
+    ],
+    "units": {
+      "peak_gain": "dBi",
+      "s11_bandwidth": "GHz"
+    },
+    "violation": 1.0
+  }
+}

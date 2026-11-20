@@ -1,0 +1,39 @@
+{
+  "source": "user migration package 04_运行模板/R01_Lens30.aedt, design FeedIdeal, setup F28",
+  "band_ghz": [
+    24.0,
+    32.0
+  ],
+  "measured": "2026-11-16, real solve on this machine, no geometry rebuild",
+  "s11_db": {
+    "24": -11.2,
+    "25": -14.1,
+    "26": -14.9,
+    "27": -13.8,
+    "28": -8.7,
+    "29": -8.2,
+    "30": -13.1,
+    "31": -9.3,
+    "32": -3.8
+  },
+  "metrics": {
+    "s11_bandwidth": 3.0,
+    "beam_theta": 42.0,
+    "directivity_horiz_db": 1.38,
+    "peak_gain": 2.65,
+    "ripple": 6.62,
+    "sll": -0.06
+  },
+  "timings": {
+    "CONNECTING": 8.88,
+    "MODEL": 3.88,
+    "SOLVING": 3140.8,
+    "POSTPROCESS": 4.93
+  },
+  "caveats": [
+    "the template's own documented isolated-feed result is -20.22 dB at 28 GHz while this pipeline measures -8.7 dB",
+    "peak gain 2.65 dBi and beam_theta 42 deg suggest the radiated measurement did not reproduce the integrated lens beam",
+    "the solve used 36 GB RSS on a 61.6 GB machine; convergence history must be inspected before treating these numbers as the antenna",
+    "the screenshots labelled 'Final' are a different project that is not present on this machine"
+  ]
+}

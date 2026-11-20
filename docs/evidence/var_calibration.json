@@ -1,0 +1,25 @@
+{
+  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_var_cal",
+  "run_id": "20261112T065338552723",
+  "params": {
+    "tip_offset": 1.0,
+    "disc_factor": 1.0,
+    "disc_radial": 1.0,
+    "ring_outer": 2.2,
+    "ring_height": 0.6,
+    "ring_shift": 0.0
+  },
+  "metrics": {
+    "s11_bandwidth": 0.0,
+    "peak_gain": 4.88296152829173,
+    "ripple": 1.44272256263583
+  },
+  "reference_measured": {
+    "run_id": "20261110T142952497786",
+    "s11_bandwidth": 3.0,
+    "peak_gain": 6.44,
+    "ripple": 1.3
+  },
+  "verdict": "NOT equivalent: the rebuilt variable-driven geometry does not reproduce the measured ring-2.2 design (0 GHz / 4.88 dBi vs 3.0 GHz / 6.44 dBi)",
+  "next": "compare object inventories (type/volume/bounding box) between the reference design and the rebuild to find the body that differs; the disc profile (237 points) is the prime suspect because a plain revolve may not reproduce a periodic plate"
+}

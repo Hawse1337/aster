@@ -1,0 +1,25 @@
+{
+  "setup": {
+    "region": true,
+    "walls": true,
+    "pec": true,
+    "radiation": true,
+    "port_in": true,
+    "port_out": true,
+    "setup": true,
+    "validated": true
+  },
+  "no_sweep": {
+    "analyze": true,
+    "is_solved": [
+      true
+    ]
+  },
+  "with_sweep": {
+    "sweep": true,
+    "analyze": true,
+    "is_solved": [
+      true
+    ]
+  }
+}

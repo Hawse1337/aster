@@ -1,0 +1,80 @@
+{
+  "case": "lens28_var",
+  "structure": "A2: outer height dominates bandwidth, split near coax",
+  "points": [
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.5,
+      "ring_mid": 1.45,
+      "ring_height_outer": 0.65,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.52,
+      "ring_mid": 1.55,
+      "ring_height_outer": 0.65,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.5,
+      "ring_mid": 1.9,
+      "ring_height_outer": 0.7,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.35,
+      "ring_height": 0.5,
+      "ring_mid": 1.5,
+      "ring_height_outer": 0.65,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.25,
+      "ring_height": 0.5,
+      "ring_mid": 1.5,
+      "ring_height_outer": 0.65,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.55,
+      "ring_mid": 1.6,
+      "ring_height_outer": 0.68,
+      "ring_shift": 0.0
+    }
+  ],
+  "hashes": [
+    "7b4f07e9ee7103a8",
+    "c60fc82276108cbf",
+    "5dac7df6f05f9a36",
+    "c3f08a49e4608355",
+    "3d7e63ce02f157b5",
+    "00cff822e6f07b16"
+  ]
+}

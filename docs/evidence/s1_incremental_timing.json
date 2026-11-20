@@ -1,0 +1,52 @@
+{
+  "summary": {
+    "build_seconds": 17.35,
+    "disc_mean_seconds": 1.098,
+    "bowl_mean_seconds": 10.374,
+    "all_ok": true
+  },
+  "rows": [
+    {
+      "kind": "disc",
+      "seconds": 0.989,
+      "operations": 3,
+      "ok": true,
+      "validated": true
+    },
+    {
+      "kind": "disc",
+      "seconds": 0.942,
+      "operations": 3,
+      "ok": true,
+      "validated": true
+    },
+    {
+      "kind": "disc",
+      "seconds": 1.363,
+      "operations": 3,
+      "ok": true,
+      "validated": true
+    },
+    {
+      "kind": "bowl",
+      "seconds": 10.102,
+      "operations": 42,
+      "ok": true,
+      "validated": true
+    },
+    {
+      "kind": "bowl",
+      "seconds": 10.547,
+      "operations": 42,
+      "ok": true,
+      "validated": true
+    },
+    {
+      "kind": "bowl",
+      "seconds": 10.472,
+      "operations": 42,
+      "ok": true,
+      "validated": true
+    }
+  ]
+}

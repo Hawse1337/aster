@@ -1,0 +1,30 @@
+{
+  "candidate": {
+    "tip_offset": 1.0,
+    "disc_factor": 1.1694,
+    "disc_radial": 1.0,
+    "ring_inner": 1.2,
+    "ring_outer": 2.1973,
+    "ring_height": 0.6,
+    "ring_shift": 0.0
+  },
+  "attempts": [
+    {
+      "run_id": "20261114T134920340022",
+      "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\rec_envelope",
+      "passes": 12,
+      "status": "FAILED",
+      "stage_log_tail": "FAILED: BUDGET_EXCEEDED: run exceeded max_run_minutes=50 and was stopped",
+      "elapsed_minutes": 50
+    },
+    {
+      "run_id": "20261114T144054246935",
+      "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\rec_envelope2",
+      "passes": 8,
+      "status": "FAILED",
+      "stage_log_tail": "SOLVED at 27 min, EXPORTING, then FAILED: adaptive convergence was not proven for this solve (assessment=not_converged, native=False); E_NOT_CONVERGED",
+      "elapsed_minutes": 27
+    }
+  ],
+  "conclusion": "the proposal is geometrically valid and solvable, but did not converge within the pass budget and exceeded the guard time limit when given more passes"
+}

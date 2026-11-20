@@ -1,0 +1,29 @@
+{
+  "setup": "D:\\AntennaDesignSystem\\dist\\AntennaOptimizer-1.47.1-setup.exe",
+  "target": "D:\\AntennaDesignSystem\\dist\\_install_test",
+  "steps": {
+    "install": {
+      "exit": 0,
+      "tail": []
+    },
+    "installed_exe": true,
+    "selftest": {
+      "exit": 0,
+      "tail": [
+        "launching through C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
+      ]
+    },
+    "installed_server": {
+      "answered": true,
+      "about": "{\"about\": \"antopt 1.47.1 (python 3.14)\"}"
+    },
+    "uninstaller_present": true,
+    "uninstall": {
+      "exit": 0,
+      "tail": []
+    },
+    "left_behind": []
+  },
+  "setup_mb": 182.3,
+  "ok": true
+}

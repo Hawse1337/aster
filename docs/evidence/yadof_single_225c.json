@@ -1,0 +1,26 @@
+{
+  "file": "response.npz",
+  "values": [
+    3.0,
+    6.071630522353
+  ],
+  "metadata": {
+    "feasible": true,
+    "names": [
+      "s11_bandwidth",
+      "peak_gain"
+    ],
+    "rawdata_name": "response",
+    "run_id": "20261113T100600800046",
+    "schema_version": 1,
+    "setup_error": null,
+    "shape": [
+      2
+    ],
+    "units": {
+      "peak_gain": "dBi",
+      "s11_bandwidth": "GHz"
+    },
+    "violation": 0.0
+  }
+}

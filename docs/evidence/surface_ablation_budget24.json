@@ -1,0 +1,51 @@
+{
+  "measured_points": 21,
+  "budget": 24,
+  "report": {
+    "case": "lens28_ref",
+    "budget": 24,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "summary": {
+      "random": {
+        "runs": 3,
+        "first_feasible_mean": 5.333333333333333,
+        "first_feasible_never": 0,
+        "feasible_mean": 3.333,
+        "feasible_best": 4,
+        "evaluations_mean": 24.0,
+        "hypervolume_mean": 262.4783
+      },
+      "lhs": {
+        "runs": 3,
+        "first_feasible_mean": 2.0,
+        "first_feasible_never": 0,
+        "feasible_mean": 3.0,
+        "feasible_best": 3,
+        "evaluations_mean": 24.0,
+        "hypervolume_mean": 251.5274
+      },
+      "nsga2": {
+        "runs": 3,
+        "first_feasible_mean": 4.0,
+        "first_feasible_never": 0,
+        "feasible_mean": 9.0,
+        "feasible_best": 13,
+        "evaluations_mean": 22.67,
+        "hypervolume_mean": 265.036
+      },
+      "surrogate": {
+        "runs": 3,
+        "first_feasible_mean": 2.5,
+        "first_feasible_never": 1,
+        "feasible_mean": 4.333,
+        "feasible_best": 11,
+        "evaluations_mean": 24.0,
+        "hypervolume_mean": 167.3621
+      }
+    }
+  }
+}

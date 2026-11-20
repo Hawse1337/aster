@@ -1,0 +1,29 @@
+{
+  "goal": "P2 yadof arm - one candidate through the generated session",
+  "state": "verified for one candidate",
+  "run_id": "20261112T212409485591",
+  "values": {
+    "s11_bandwidth": 3.0,
+    "peak_gain": 5.88122785741421
+  },
+  "feasible": false,
+  "violation": 0.11877214258579016,
+  "setup_error": null,
+  "cross_path_agreement": {
+    "yadof_session": 5.88122785741421,
+    "standalone_runner": 5.88122916756663,
+    "gui_batch": 5.88119459309579,
+    "note": "three independent paths agree to five decimals on the same parameters"
+  },
+  "what_was_needed": [
+    "publish the design spec from the session",
+    "create the band sweep and set passes/MaxDeltaS before submitting (shared setup_config_code)",
+    "name the far-field setup so the export does not inherit the S11 sweep",
+    "surface setup_error instead of swallowing it"
+  ],
+  "stall_notes": {
+    "earlier_attempt": "the same session stalled with idle hf3d workers; this attempt ran through",
+    "watchdog": "scripts/watch_solver.py now samples system-wide busy CPU and flags a stall in about two minutes; validated live: no false positive while 11 workers solved",
+    "sampler_note": "per-process psutil enumeration sees none of the AEDT/HF3D processes in this environment, which is why the first sampler reported a permanent zero"
+  }
+}

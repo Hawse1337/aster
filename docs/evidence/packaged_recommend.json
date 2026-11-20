@@ -1,0 +1,55 @@
+{
+  "exe": "D:\\AntennaDesignSystem\\dist\\AntennaOptimizer\\AntennaOptimizer.exe",
+  "seeded_runs": 6,
+  "app_ready": true,
+  "answer": {
+    "recommendations": [
+      {
+        "params": {
+          "tip_offset": 1.061805986471599,
+          "disc_factor": 1.0046483253953602,
+          "disc_radial": 0.8965340458642468,
+          "ring_inner": 1.213042559573046,
+          "ring_outer": 2.8650590558873437,
+          "ring_height": 0.5075943841177004,
+          "ring_shift": 0.05214203412901752
+        },
+        "feasible": true,
+        "violations": {},
+        "nearest_run": "seed-05",
+        "note": "可行性与约束按最近一次实测（seed-05）估计"
+      },
+      {
+        "params": {
+          "tip_offset": 1.0419649350039812,
+          "disc_factor": 0.9841076671341218,
+          "disc_radial": 0.8122535696173199,
+          "ring_inner": 1.4737890290905733,
+          "ring_outer": 2.826960845097816,
+          "ring_height": 0.64306433261891,
+          "ring_shift": -0.06026162420642389
+        },
+        "feasible": true,
+        "violations": {},
+        "nearest_run": "seed-05",
+        "note": "可行性与约束按最近一次实测（seed-05）估计"
+      }
+    ],
+    "method": "believer",
+    "note": "",
+    "trained_on": 6,
+    "reason": "以 6 条实测数据拟合，使用 believer 后端推荐 2 个候选",
+    "source_runs": [
+      "seed-00",
+      "seed-01",
+      "seed-02",
+      "seed-03",
+      "seed-04",
+      "seed-05"
+    ]
+  },
+  "ok": true,
+  "stdout_tail": [
+    "launching through C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
+  ]
+}

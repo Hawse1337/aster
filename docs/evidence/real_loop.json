@@ -1,0 +1,394 @@
+{
+  "campaign": "D:\\AntennaDesignSystem\\dist\\real_loop",
+  "seeded": [
+    "prior-205",
+    "prior-215",
+    "prior-225"
+  ],
+  "first_batch_rings": [
+    2.3,
+    2.35
+  ],
+  "first_batch": {
+    "batch_id": "batch-20261114T100345",
+    "case": "lens28_var",
+    "state": "DONE",
+    "total": 2,
+    "done": 2,
+    "run_ids": [
+      "real-20261114T100345-00",
+      "real-20261114T102409-01"
+    ],
+    "created_utc": "2026-11-14T10:03:45Z"
+  },
+  "proposal": {
+    "recommendations": [
+      {
+        "params": {
+          "tip_offset": 0.93980592392524,
+          "disc_factor": 1.22129085225404,
+          "disc_radial": 0.8115186377684013,
+          "ring_inner": 1.7905281987518071,
+          "ring_outer": 1.8,
+          "ring_height": 1.042811284071389,
+          "ring_shift": 0.4438160570193036
+        },
+        "feasible": true,
+        "violations": {},
+        "nearest_run": "prior-205",
+        "note": "可行性与约束按最近一次实测（prior-205）估计"
+      },
+      {
+        "params": {
+          "tip_offset": 1.4,
+          "disc_factor": 0.8,
+          "disc_radial": 0.8490342353173874,
+          "ring_inner": 1.2,
+          "ring_outer": 1.8,
+          "ring_height": 0.2,
+          "ring_shift": -0.6
+        },
+        "feasible": true,
+        "violations": {},
+        "nearest_run": "prior-205",
+        "note": "可行性与约束按最近一次实测（prior-205）估计"
+      }
+    ],
+    "method": "qlognehvi",
+    "note": "",
+    "trained_on": 10,
+    "reason": "以 10 条实测数据拟合，使用 qlognehvi 后端推荐 2 个候选",
+    "source_runs": [
+      "real-20261114T102409-01",
+      "real-20261114T102409-01",
+      "real-20261114T100345-00",
+      "real-20261114T100345-00",
+      "prior-205",
+      "prior-215",
+      "prior-225",
+      "prior-205",
+      "prior-215",
+      "prior-225"
+    ]
+  },
+  "second_batch": {
+    "batch_id": "batch-20261114T104755",
+    "case": "lens28_var",
+    "state": "DONE",
+    "total": 2,
+    "done": 2,
+    "run_ids": [
+      "real-20261114T104755-00",
+      "real-20261114T104755-01"
+    ],
+    "created_utc": "2026-11-14T10:47:55Z",
+    "last_error": "MODEL_FAILED"
+  },
+  "observability": {
+    "runs": 4,
+    "by_status": {
+      "FAILED": 2,
+      "COMPLETED": 2
+    },
+    "success_rate": 0.5,
+    "stage_median_seconds": {
+      "CONNECTING": 0.13,
+      "MODEL": 6.12,
+      "SOLVING": 1300.26
+    },
+    "stage_samples": {
+      "CONNECTING": 4,
+      "MODEL": 4,
+      "SOLVING": 2
+    },
+    "slowest": [
+      {
+        "run_id": "real-20261114T102409-01",
+        "status": "COMPLETED",
+        "total_seconds": 1412.64
+      },
+      {
+        "run_id": "real-20261114T100345-00",
+        "status": "COMPLETED",
+        "total_seconds": 1224.32
+      },
+      {
+        "run_id": "real-20261114T104755-00",
+        "status": "FAILED",
+        "total_seconds": 0.13
+      },
+      {
+        "run_id": "real-20261114T104755-01",
+        "status": "FAILED",
+        "total_seconds": 0.13
+      }
+    ]
+  },
+  "measured": [
+    {
+      "run_id": "real-20261114T104755-00",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 0.93980592392524,
+        "disc_factor": 1.22129085225404,
+        "disc_radial": 0.8115186377684013,
+        "ring_inner": 1.7905281987518071,
+        "ring_outer": 1.8,
+        "ring_height": 1.042811284071389,
+        "ring_shift": 0.4438160570193036
+      },
+      "metrics": {},
+      "violations": {},
+      "feasible": false,
+      "status": "FAILED",
+      "error_code": "MODEL_FAILED",
+      "created_utc": "2026-11-14T10:47:55Z"
+    },
+    {
+      "run_id": "real-20261114T104755-01",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.4,
+        "disc_factor": 0.8,
+        "disc_radial": 0.8490342353173874,
+        "ring_inner": 1.2,
+        "ring_outer": 1.8,
+        "ring_height": 0.2,
+        "ring_shift": -0.6
+      },
+      "metrics": {},
+      "violations": {},
+      "feasible": false,
+      "status": "FAILED",
+      "error_code": "MODEL_FAILED",
+      "created_utc": "2026-11-14T10:47:55Z"
+    },
+    {
+      "run_id": "real-20261114T104755-00",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 0.93980592392524,
+        "disc_factor": 1.22129085225404,
+        "disc_radial": 0.8115186377684013,
+        "ring_inner": 1.7905281987518071,
+        "ring_outer": 1.8,
+        "ring_height": 1.042811284071389,
+        "ring_shift": 0.4438160570193036
+      },
+      "metrics": {},
+      "violations": {},
+      "feasible": false,
+      "status": "FAILED",
+      "error_code": "MODEL_FAILED",
+      "created_utc": "2026-11-14T10:47:55Z"
+    },
+    {
+      "run_id": "real-20261114T104755-01",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.4,
+        "disc_factor": 0.8,
+        "disc_radial": 0.8490342353173874,
+        "ring_inner": 1.2,
+        "ring_outer": 1.8,
+        "ring_height": 0.2,
+        "ring_shift": -0.6
+      },
+      "metrics": {},
+      "violations": {},
+      "feasible": false,
+      "status": "FAILED",
+      "error_code": "MODEL_FAILED",
+      "created_utc": "2026-11-14T10:47:55Z"
+    },
+    {
+      "run_id": "real-20261114T102409-01",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.35,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.10876445232545,
+        "ripple": 1.4981108269689303
+      },
+      "violations": {},
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-14T10:24:09Z"
+    },
+    {
+      "run_id": "real-20261114T102409-01",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.35,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.10876445232545,
+        "ripple": 1.4981108269689303
+      },
+      "violations": {},
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-14T10:24:09Z"
+    },
+    {
+      "run_id": "real-20261114T100345-00",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.05457135027426,
+        "ripple": 1.62294639791733
+      },
+      "violations": {},
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-14T10:03:45Z"
+    },
+    {
+      "run_id": "real-20261114T100345-00",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.3,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.05457135027426,
+        "ripple": 1.62294639791733
+      },
+      "violations": {},
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-14T10:03:45Z"
+    },
+    {
+      "run_id": "prior-205",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.05,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 2.0,
+        "peak_gain": 6.19154,
+        "ripple": 1.63067
+      },
+      "violations": null,
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-13T00:00:00Z"
+    },
+    {
+      "run_id": "prior-215",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.15,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.25979,
+        "ripple": 1.65295
+      },
+      "violations": null,
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-13T00:00:00Z"
+    },
+    {
+      "run_id": "prior-225",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.25,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.07182,
+        "ripple": 1.75689
+      },
+      "violations": null,
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-13T00:00:00Z"
+    },
+    {
+      "run_id": "prior-205",
+      "case": "lens28_var",
+      "params": {
+        "tip_offset": 1.0,
+        "disc_factor": 1.0,
+        "disc_radial": 1.0,
+        "ring_inner": 1.2,
+        "ring_outer": 2.05,
+        "ring_height": 0.6,
+        "ring_shift": 0.0
+      },
+      "metrics": {
+        "s11_bandwidth": 2.0,
+        "peak_gain": 6.19154,
+        "ripple": 1.63067
+      },
+      "violations": null,
+      "feasible": true,
+      "status": "COMPLETED",
+      "error_code": null,
+      "created_utc": "2026-11-13T00:00:00Z"
+    }
+  ],
+  "completed_runs": 4,
+  "ok": true,
+  "stdout_tail": [
+    "launching through C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
+  ]
+}

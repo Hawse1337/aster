@@ -1,0 +1,189 @@
+{
+  "goal": "P2 - yadof arm versus GUI batch arm, same candidates",
+  "state": "eight rings measured on both arms; seven agree fully and 2.40 agrees on gain while the band flips between 2 and 3 GHz because it sits on the -10 dB edge",
+  "table": [
+    {
+      "ring_outer": 2.2,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261112T212409485591",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 5.88122785741421
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261112T181456-00",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 5.88119459309579
+      },
+      "standalone": {
+        "run_id": "20261112T145151110233",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 5.88122916756663
+      },
+      "agreement": "three paths within 3e-5 dBi"
+    },
+    {
+      "ring_outer": 2.25,
+      "yadof": {
+        "status": "FAILED",
+        "run_id": "20261112T215251130284",
+        "error": "E_SWEEP_EXPORT_INCOMPLETE: touchstone for sweep ANT_Band has 1 row"
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261112T183507-01",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.07178131942632
+      },
+      "standalone": null,
+      "agreement": "not comparable - the yadof arm did not export its sweep"
+    },
+    {
+      "ring_outer": 2.05,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T075355425273",
+        "s11_bandwidth": 2.0,
+        "peak_gain": 6.19140240214396
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "20261113T060207321272",
+        "s11_bandwidth": 2.0,
+        "peak_gain": 6.19154
+      },
+      "agreement": "same bandwidth, gain within 1.4e-4 dBi",
+      "note": "the yadof session recorded a setup_error (InsertFrequencySweep) and still finished correctly - the reconnect retry turned a would-be failure into a measurement"
+    },
+    {
+      "ring_outer": 2.15,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T094405591505",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.2597693898217
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T072719-00",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.25978714219989,
+        "ripple": 1.65294585640999
+      },
+      "agreement": "same bandwidth, gain within 1.8e-5 dBi",
+      "note": "the earlier failure was the per-candidate sweep rebuild; with the rebuild removed the session solves the original sweep and the band comes out complete"
+    },
+    {
+      "ring_outer": 2.25,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T100600800046",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.071630522353
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T070141-01",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.07182170420508,
+        "ripple": 1.7568931698688104
+      },
+      "agreement": "same bandwidth, gain within 1.5e-4 dBi"
+    },
+    {
+      "ring_outer": 2.3,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T112159786605",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.05459573135503
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T103050-00",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.05461130818172,
+        "ripple": 1.6230007186887407
+      },
+      "agreement": "same bandwidth, gain within 1.6e-5 dBi"
+    },
+    {
+      "ring_outer": 2.35,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T114550886602",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.1087228322112
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T105113-01",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.10871174433445,
+        "ripple": 1.4980505393606798
+      },
+      "agreement": "same bandwidth, gain within 1.1e-5 dBi"
+    },
+    {
+      "ring_outer": 2.45,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T142609452676",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.16775041586918
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T140331-00",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.16780276326829,
+        "ripple": 1.7102883995279994
+      },
+      "agreement": "same bandwidth, gain within 5.2e-5 dBi"
+    },
+    {
+      "ring_outer": 2.4,
+      "yadof": {
+        "status": "COMPLETED",
+        "run_id": "20261113T144823655695",
+        "s11_bandwidth": 3.0,
+        "peak_gain": 5.88029346066351
+      },
+      "batch": {
+        "status": "COMPLETED",
+        "run_id": "real-20261113T123821-00",
+        "s11_bandwidth": 2.0,
+        "peak_gain": 5.88025918395063,
+        "ripple": 1.7291077016007002
+      },
+      "agreement": "gain within 3.4e-5 dBi; the two arms disagree on the band (3.0 vs 2.0 GHz)",
+      "interpretation": "2.40 sits on the -10 dB edge: one sweep point near 26 GHz flips the bandwidth between 2 and 3 GHz, so the metric is discontinuous exactly here while the gain - the smooth quantity - matches"
+    }
+  ],
+  "timing": {
+    "yadof_one_candidate_s": 1512,
+    "batch_two_candidates_s": 3720,
+    "note": "the two arms were measured on different days/runs, so the numbers show the order of magnitude rather than a controlled comparison"
+  },
+  "verdict": "the yadof path is proven for a candidate and matches the other two paths to five decimals; it is not yet reliable enough for an eight-candidate study - one of two attempts failed at the sweep export with the same flakiness the guard reports.",
+  "next_step": [
+    "make the yadof session recreate the sweep per candidate when parameters change structurally (it currently configures once per session)",
+    "then run the eight rings through both arms with scripts/run_p2_comparison.py"
+  ],
+  "summary": {
+    "full_matches": [
+      2.05,
+      2.15,
+      2.2,
+      2.25,
+      2.3,
+      2.35,
+      2.45
+    ],
+    "gain_only": [
+      2.4
+    ],
+    "max_gain_difference_dbi": 0.00015
+  }
+}

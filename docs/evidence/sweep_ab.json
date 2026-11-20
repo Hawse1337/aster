@@ -1,0 +1,27 @@
+{
+  "band_ghz": [
+    24.0,
+    30.0
+  ],
+  "threshold_db": -10.0,
+  "coarse": {
+    "points": 6,
+    "step_ghz": 1.0,
+    "bandwidth_ghz": 2.0,
+    "range_ghz": null,
+    "worst_db": -24.594957433444463
+  },
+  "fine": {
+    "points": 13,
+    "step_ghz": 0.5,
+    "bandwidth_ghz": 2.0,
+    "range_ghz": null,
+    "worst_db": -24.594950192325562
+  },
+  "difference_ghz": 0.0,
+  "shared_points": 6,
+  "max_abs_diff_at_shared_points_db": 0.018094,
+  "verdict": "the coarse sweep overstates or understates the band by 0.00 GHz on this design",
+  "coarse_run": "D:\\AgentAEDT_Collab\\phase_b4\\runs",
+  "fine_run": "D:\\AgentAEDT_Collab\\phase_c_interp\\runs"
+}

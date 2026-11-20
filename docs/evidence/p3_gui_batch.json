@@ -1,0 +1,41 @@
+{
+  "goal": "P3 - one variable-case solve driven by the GUI batch path",
+  "state": "closed",
+  "run": "batch-20261112T181456",
+  "rows": [
+    {
+      "run_id": "real-20261112T181456-00",
+      "ring_outer": 2.2,
+      "status": "COMPLETED",
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 5.88119459309579,
+        "ripple": 1.6307213598741699
+      }
+    },
+    {
+      "run_id": "real-20261112T183507-01",
+      "ring_outer": 2.25,
+      "status": "COMPLETED",
+      "metrics": {
+        "s11_bandwidth": 3.0,
+        "peak_gain": 6.07178131942632,
+        "ripple": 1.75725073790323
+      }
+    }
+  ],
+  "what_made_it_work": [
+    "prepare the project copy and its setup/sweep in the caller thread, before any worker thread exists",
+    "skip the duplicate _configure_setup/_ensure_band_sweep when the caller thread already did it",
+    "share one connected bridge for the whole manager instead of one per job"
+  ],
+  "why_those_matter": "the MCP server keeps its AEDT session per event loop, and every worker-thread snippet reached a loop that had no session, so the guard fell back to 'start AEDT on port 0' or refused the sweep insert",
+  "consistency_evidence": {
+    "gui_batch_ring_2_20": {"s11_bandwidth": 3.0, "peak_gain": 5.88119459309579,
+                             "ripple": 1.6307213598741699},
+    "standalone_runner_ring_2_20": {"s11_bandwidth": 3.0, "peak_gain": 5.88122916756663,
+                                     "ripple": 1.6307491569175205},
+    "note": "the GUI path and the standalone runner agree to four decimals on the same parameters"
+  },
+  "rounds_spent": ["9", "10", "11", "12", "13"]
+}

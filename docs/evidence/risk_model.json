@@ -1,0 +1,105 @@
+{
+  "runs": 9,
+  "failures": 2,
+  "global_failure_rate": 0.222,
+  "names": [
+    "tip_offset",
+    "disc_factor",
+    "disc_radial",
+    "ring_inner",
+    "ring_outer",
+    "ring_height",
+    "ring_shift"
+  ],
+  "neighbours": 5,
+  "leave_one_out": [
+    {
+      "run_id": "prior-205",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 1,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "prior-215",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 2,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "prior-225",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 4,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "real-20261114T121640-00",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 3,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "real-20261114T123749-00",
+      "actual_failure": false,
+      "failure_rate": 0.25,
+      "neighbours": 0,
+      "method": "global",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "real-20261114T100345-00",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 3,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "real-20261114T102409-01",
+      "actual_failure": false,
+      "failure_rate": 0.0,
+      "neighbours": 3,
+      "method": "neighbours",
+      "global_rate": 0.25
+    },
+    {
+      "run_id": "real-20261114T104755-00",
+      "actual_failure": true,
+      "failure_rate": 0.125,
+      "neighbours": 0,
+      "method": "global",
+      "global_rate": 0.125
+    },
+    {
+      "run_id": "real-20261114T104755-01",
+      "actual_failure": true,
+      "failure_rate": 0.125,
+      "neighbours": 0,
+      "method": "global",
+      "global_rate": 0.125
+    }
+  ],
+  "flagged_high_risk": 0,
+  "flagged_that_failed": 0,
+  "two_known_cases": {
+    "ring_2_30_completed": {
+      "failure_rate": 0.0,
+      "neighbours": 4,
+      "method": "neighbours",
+      "global_rate": 0.222
+    },
+    "disc_factor_1_169_failed": {
+      "failure_rate": 0.222,
+      "neighbours": 0,
+      "method": "global",
+      "global_rate": 0.222
+    }
+  }
+}

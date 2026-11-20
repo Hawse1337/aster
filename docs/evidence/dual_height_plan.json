@@ -1,0 +1,81 @@
+{
+  "case": "lens28_var",
+  "structure": "A: two-step ground-ring collar",
+  "origin": "inner height 0.45-0.55 for directivity, outer height 0.60-0.65 for bandwidth",
+  "points": [
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.5,
+      "ring_mid": 1.9,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.5,
+      "ring_mid": 1.9,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.45,
+      "ring_mid": 2.05,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.4,
+      "ring_height": 0.5,
+      "ring_mid": 2.0,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.55,
+      "ring_mid": 1.9,
+      "ring_height_outer": 0.65,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.2,
+      "ring_height": 0.5,
+      "ring_mid": 1.85,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    }
+  ],
+  "hashes": [
+    "41573e5f3e440e36",
+    "291d273327b859d8",
+    "864cd425b98d3d0a",
+    "3c3895983f74b46a",
+    "52cc01a672169997",
+    "2049ea9531227730"
+  ]
+}

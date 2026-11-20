@@ -1,0 +1,38 @@
+{
+  "entries": [
+    {
+      "tag": "Lens28_scaled_from_user_solid10g",
+      "route": "dielectric (Teflon) lens + PEC bicone, user's 10 GHz Solid_10GHz design scaled by 10/28 = 0.357143",
+      "source_design": "C:/Users/Administrator/Desktop/da project/LensOmni_10GHz.aedt :: Solid_10GHz",
+      "project": "C:/ProgramData/ansys-aedt-mcp/Lens28_scaled.aedt",
+      "solution_ghz": 28.0,
+      "s11_db": [["28", -14.15]],
+      "pattern_28ghz": {
+        "peak_gain_dbi": 6.35,
+        "peak_theta_deg": 90.0,
+        "horizon_max_dbi": 6.35,
+        "horizon_min_dbi": 5.73,
+        "horizon_ripple_db": 0.62,
+        "axial_max_dbi": -4.57,
+        "near_axis_max_dbi": -4.6,
+        "horizon_to_axial_db": 10.92,
+        "power_fraction_theta_60_120": 0.7711,
+        "e_hpbw_deg": 20.0,
+        "e_sidelobe_dbi": -1.55,
+        "sphere_points": 703
+      },
+      "targets_28ghz": {
+        "e_hpbw_deg": "20-30",
+        "peak_gain_dbi": "10-12",
+        "horizon_ripple_db": "<=2",
+        "horizon_to_axial_db": ">=15",
+        "near_axis_max_dbi": "<=-5",
+        "sidelobe_dbi": "<=-15",
+        "power_fraction_theta_60_120": ">=0.85"
+      },
+      "verdict": "Shape target nearly met (main lobe at theta=90, ripple 0.62 dB, E HPBW 20 deg, axial -4.57 dBi). Gain 6.35 dBi below 10-12 dBi target and band fraction 0.77 below 0.85; next step scales the electrical aperture (x1.5, x2) at 28 GHz to raise gain.",
+      "artifacts": "C:/Users/Administrator/Desktop/da project/scaled_28ghz/{result.s1p, farfield_views.json, pattern_metrics.json, native_reports/*.png}",
+      "measured_utc": "2026-11-19T13:39:00Z"
+    }
+  ]
+}

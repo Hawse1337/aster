@@ -1,0 +1,35 @@
+[
+  {
+    "params": {
+      "tip_offset": 1.0,
+      "ring_outer": 2.15
+    },
+    "predicted": {
+      "peak_gain": 6.255339050778333,
+      "ripple": 1.4552353047947395,
+      "s11_bandwidth": 2.4610909466395303
+    }
+  },
+  {
+    "params": {
+      "tip_offset": 1.0,
+      "ring_outer": 2.35
+    },
+    "predicted": {
+      "peak_gain": 6.22,
+      "ripple": 1.4699999999999989,
+      "s11_bandwidth": 2.9999999999999933
+    }
+  },
+  {
+    "params": {
+      "tip_offset": 1.0,
+      "ring_outer": 2.45
+    },
+    "predicted": {
+      "peak_gain": 6.29029160748139,
+      "ripple": 1.4403790271540542,
+      "s11_bandwidth": 2.390090610932555
+    }
+  }
+]

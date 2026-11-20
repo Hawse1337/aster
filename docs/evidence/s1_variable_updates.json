@@ -1,0 +1,81 @@
+{
+  "summary": {
+    "model": "lens28_var (variable-driven)",
+    "count": 5,
+    "all_ok": true,
+    "failures": [],
+    "build_seconds": 17.65,
+    "mean_update_seconds": 11.329,
+    "max_update_seconds": 11.412,
+    "aedt_pid": 41292,
+    "project": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_s1_var_timing\\projects\\s1_var.aedt",
+    "objects_after_build": 8
+  },
+  "rows": [
+    {
+      "index": 1,
+      "tip": 1.04,
+      "ring_outer": 2.274,
+      "ring_height": 0.685,
+      "disc_factor": 0.998,
+      "ok": true,
+      "validated": true,
+      "objects": 8,
+      "operations": 43,
+      "seconds": 11.412,
+      "error": null
+    },
+    {
+      "index": 2,
+      "tip": 1.052,
+      "ring_outer": 2.285,
+      "ring_height": 0.537,
+      "disc_factor": 1.001,
+      "ok": true,
+      "validated": true,
+      "objects": 8,
+      "operations": 43,
+      "seconds": 11.325,
+      "error": null
+    },
+    {
+      "index": 3,
+      "tip": 1.076,
+      "ring_outer": 2.367,
+      "ring_height": 0.519,
+      "disc_factor": 0.988,
+      "ok": true,
+      "validated": true,
+      "objects": 8,
+      "operations": 43,
+      "seconds": 11.292,
+      "error": null
+    },
+    {
+      "index": 4,
+      "tip": 0.968,
+      "ring_outer": 2.374,
+      "ring_height": 0.639,
+      "disc_factor": 0.973,
+      "ok": true,
+      "validated": true,
+      "objects": 8,
+      "operations": 43,
+      "seconds": 11.296,
+      "error": null
+    },
+    {
+      "index": 5,
+      "tip": 1.146,
+      "ring_outer": 2.436,
+      "ring_height": 0.631,
+      "disc_factor": 1.007,
+      "ok": true,
+      "validated": true,
+      "objects": 8,
+      "operations": 43,
+      "seconds": 11.321,
+      "error": null
+    }
+  ]
+}

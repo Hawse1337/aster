@@ -1,0 +1,58 @@
+{
+  "case": "synthetic",
+  "budget": 40,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "summary": {
+    "random": {
+      "runs": 5,
+      "first_feasible_mean": 2.0,
+      "first_feasible_never": 0,
+      "feasible_mean": 17.2,
+      "feasible_best": 18,
+      "evaluations_mean": 40.0,
+      "hypervolume_mean": 367.6919
+    },
+    "lhs": {
+      "runs": 5,
+      "first_feasible_mean": 2.0,
+      "first_feasible_never": 0,
+      "feasible_mean": 15.0,
+      "feasible_best": 16,
+      "evaluations_mean": 40.0,
+      "hypervolume_mean": 350.8503
+    },
+    "nsga2": {
+      "runs": 5,
+      "first_feasible_mean": 1.6,
+      "first_feasible_never": 0,
+      "feasible_mean": 14.8,
+      "feasible_best": 18,
+      "evaluations_mean": 20.4,
+      "hypervolume_mean": 334.399
+    },
+    "nsga3": {
+      "runs": 5,
+      "first_feasible_mean": 1.6,
+      "first_feasible_never": 0,
+      "feasible_mean": 13.4,
+      "feasible_best": 17,
+      "evaluations_mean": 19.6,
+      "hypervolume_mean": 346.6919
+    },
+    "surrogate": {
+      "runs": 5,
+      "first_feasible_mean": 1.8,
+      "first_feasible_never": 0,
+      "feasible_mean": 16.6,
+      "feasible_best": 19,
+      "evaluations_mean": 40.0,
+      "hypervolume_mean": 333.0928
+    }
+  }
+}

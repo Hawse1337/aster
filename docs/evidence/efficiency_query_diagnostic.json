@@ -1,0 +1,91 @@
+{
+  "stage": "done",
+  "queries": [
+    {
+      "label": "AP_plain",
+      "kwargs": {
+        "expressions": "['RadiationEfficiency']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Antenna Parameters"
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "AP_free_context",
+      "kwargs": {
+        "expressions": "['RadiationEfficiency']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Antenna Parameters",
+        "context": ""
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "AP_powers",
+      "kwargs": {
+        "expressions": "['RadiatedPower', 'AcceptedPower']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Antenna Parameters"
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "FF_gain_theta_phi",
+      "kwargs": {
+        "expressions": "['GainTotal']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Far Fields",
+        "primary_sweep_variable": "Theta",
+        "variations": "{'Phi': ['0deg'], 'Freq': ['28GHz']}"
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "FF_gain_all_phi",
+      "kwargs": {
+        "expressions": "['GainTotal']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Far Fields",
+        "primary_sweep_variable": "Theta",
+        "variations": "{'Phi': ['All'], 'Freq': ['28GHz']}"
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "FF_dir_theta",
+      "kwargs": {
+        "expressions": "['DirTotal']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Far Fields",
+        "primary_sweep_variable": "Theta",
+        "variations": "{'Phi': ['0deg'], 'Freq': ['28GHz']}"
+      },
+      "type": "bool",
+      "returned": "False"
+    },
+    {
+      "label": "Modal_S_powers",
+      "kwargs": {
+        "expressions": "['Pacc']",
+        "setup_sweep_name": "P4 : ANT_Band",
+        "report_category": "Modal Solution Data",
+        "primary_sweep_variable": "Freq"
+      },
+      "type": "bool",
+      "returned": "False"
+    }
+  ],
+  "setup_names": [
+    "P4"
+  ],
+  "solution_names": [
+    "P4 : LastAdaptive",
+    "P4 : ANT_Band"
+  ],
+  "close_error": "Design.close_project() got an unexpected keyword argument 'save_project'"
+}

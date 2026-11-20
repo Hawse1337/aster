@@ -1,0 +1,110 @@
+{
+  "source": "existing measured campaigns (no new solves)",
+  "campaigns": [
+    "D:\\AntennaDesignSystem\\dist\\real_loop_final",
+    "D:\\AntennaDesignSystem\\dist\\real_loop",
+    "D:\\AgentAEDT_Collab\\antopt_bench\\p2c_arm",
+    "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_eff_optin2"
+  ],
+  "normalisation": {
+    "ideal": [
+      -3.0,
+      -6.0
+    ],
+    "worst": [
+      0.0,
+      0.0
+    ]
+  },
+  "normalisation_source": "case targets (bandwidth 3.0 GHz, gain 6.0 dBi), worst at zero",
+  "reference": [
+    1.0,
+    1.0
+  ],
+  "points": [
+    {
+      "run_id": "prior-205",
+      "at": "2026-11-13T00:00:00Z",
+      "scaled": [
+        0.333333,
+        -0.031923
+      ],
+      "best_single": -0.031923
+    },
+    {
+      "run_id": "prior-215",
+      "at": "2026-11-13T00:00:00Z",
+      "scaled": [
+        0.0,
+        -0.043298
+      ],
+      "best_single": -0.043298
+    },
+    {
+      "run_id": "prior-225",
+      "at": "2026-11-13T00:00:00Z",
+      "scaled": [
+        0.0,
+        -0.01197
+      ],
+      "best_single": -0.01197
+    },
+    {
+      "run_id": "real-20261114T100345-00",
+      "at": "2026-11-14T10:03:45Z",
+      "scaled": [
+        0.0,
+        -0.009095
+      ],
+      "best_single": -0.009095
+    },
+    {
+      "run_id": "real-20261114T102409-01",
+      "at": "2026-11-14T10:24:09Z",
+      "scaled": [
+        0.0,
+        -0.018127
+      ],
+      "best_single": -0.018127
+    },
+    {
+      "run_id": "real-20261114T121640-00",
+      "at": "2026-11-14T12:16:40Z",
+      "scaled": [
+        0.0,
+        -0.009102
+      ],
+      "best_single": -0.009102
+    },
+    {
+      "run_id": "real-20261114T123749-00",
+      "at": "2026-11-14T12:37:49Z",
+      "scaled": [
+        1.0,
+        1.0
+      ],
+      "best_single": 1.0
+    }
+  ],
+  "cumulative": [
+    0.687949,
+    1.043298,
+    1.043298,
+    1.043298,
+    1.043298,
+    1.043298,
+    1.043298
+  ],
+  "generation": [
+    0.687949,
+    1.043298,
+    1.01197,
+    1.009095,
+    1.018127,
+    1.009102,
+    0.0
+  ],
+  "best": 1.043298,
+  "biggest_step": 1,
+  "biggest_step_run": "prior-215"
+}

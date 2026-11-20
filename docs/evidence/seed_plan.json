@@ -1,0 +1,88 @@
+{
+  "case": "lens28_var",
+  "origin": "bandwidth seed search around the measured 3 GHz region",
+  "points": [
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.2,
+      "ring_height": 0.4,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.4,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.2,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.3,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.4,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.25,
+      "ring_height": 0.35,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.9,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.15,
+      "ring_height": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.35,
+      "ring_height": 0.5,
+      "ring_shift": 0.0
+    }
+  ],
+  "hashes": [
+    "0199c8e5c474efbf",
+    "7551edbef35135c2",
+    "6991f1c1db42fced",
+    "dc02d18140cd219d",
+    "9f6129d24db25db7",
+    "8fbaeb090fcb6315",
+    "e5b42fbc70e0a2f4",
+    "c2cded7d57098fa8"
+  ]
+}

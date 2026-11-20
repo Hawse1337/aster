@@ -1,0 +1,16 @@
+{
+  "attempt": "fine discrete sweep, 0.5 GHz, same design as the 1 GHz reference run",
+  "run_id": "real-20261115T153223",
+  "status": "FAILED",
+  "error_code": "E_SWEEP_EXPORT_INCOMPLETE",
+  "error_detail": "export failed: E_SWEEP_EXPORT_INCOMPLETE: touchstone for sweep 'ANT_Band' has 1 row(s) after 3 attempt(s); refusing to report a bandwidth",
+  "timings": {
+    "CONNECTING": 9.89,
+    "MODEL": 21.13,
+    "SOLVING": 1820.34
+  },
+  "metrics": {},
+  "invariant": "a sweep that has not finished exporting must be refused, not turned into a bandwidth",
+  "held": true,
+  "interpretation": "the 13-point discrete sweep did not finish exporting inside the measurement window; the guard refused with E_SWEEP_EXPORT_INCOMPLETE instead of reporting a one-row bandwidth. The A/B therefore moves to an interpolating sweep, which resolves the band without paying for 13 discrete solves."
+}

@@ -1,0 +1,43 @@
+{
+  "case": "lens28_var",
+  "band_ghz": [
+    24.0,
+    32.0
+  ],
+  "origin": "wideband baseline: default, dual-height A success, ro 2.60 compromise",
+  "points": [
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 3.0,
+      "ring_height": 0.6,
+      "ring_mid": 3.0,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 0.95,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.4,
+      "ring_height": 0.5,
+      "ring_mid": 2.0,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    },
+    {
+      "tip_offset": 1.0,
+      "disc_factor": 1.0,
+      "disc_radial": 1.0,
+      "ring_inner": 1.2,
+      "ring_outer": 2.6,
+      "ring_height": 0.6,
+      "ring_mid": 3.0,
+      "ring_height_outer": 0.6,
+      "ring_shift": 0.0
+    }
+  ]
+}

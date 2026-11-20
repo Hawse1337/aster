@@ -1,0 +1,19 @@
+{
+  "metric": "time per parameter update inside one AEDT session",
+  "before_batching": {
+    "operations_per_apply": 77,
+    "mean_seconds": 19.216,
+    "max_seconds": 20.136,
+    "source": "docs/evidence/s1_variable_updates.json (30 updates)"
+  },
+  "after_batching": {
+    "operations_per_apply": 43,
+    "mean_seconds": 11.329,
+    "max_seconds": 11.412,
+    "source": "docs/evidence/s1_variable_updates.json (5 updates)",
+    "change": "36 hole subtractions collapsed into 2 subtract calls"
+  },
+  "target_seconds": 2.0,
+  "gap": "the remaining cost is creating 36 hole cylinders plus the three revolves; the next step is to skip bodies whose parameters did not change, which should reach a few seconds for a single-parameter tweak",
+  "old_model_context": "the destructive-operation model needed a fresh AEDT launch (~40 s) and a new project copy per candidate and failed on the second apply in the same session, so it had no per-apply path at all"
+}

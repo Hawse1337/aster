@@ -1,0 +1,17 @@
+{
+  "what": "ring 2.40 on the batch arm stalled during the solve",
+  "run": "20261113T120947825117",
+  "evidence": {
+    "hf3d_processes": 7,
+    "hf3d_cpu_delta_over_60s": 0.8,
+    "wall_minutes_before_kill": 27,
+    "status": "SOLVING throughout"
+  },
+  "watchdog_result": {
+    "system_wide_check": "not stalled (31 CPU-seconds in 45 s)",
+    "why_it_disagreed": "the watchdog samples machine-wide busy time because per-process enumeration is blocked in this environment; on a busier machine the system-wide delta can stay above the threshold while the solver itself is idle, so the watchdog has false negatives there",
+    "second_signal": "the hf3d per-process delta from Get-Process, 0.8 s in 60 s, is the reliable one and is what the kill decision used"
+  },
+  "action": "killed the solve, retrying in a fresh campaign",
+  "note": "this is the same stall signature seen twice earlier in the goal; it is solver-side and intermittent"
+}

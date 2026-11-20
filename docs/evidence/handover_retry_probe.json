@@ -1,0 +1,9 @@
+{
+  "kind": "offline_fault_injection",
+  "aedt_started": false,
+  "configured_attempts": 2,
+  "actual_evaluate_calls": 1,
+  "error_code": "STALLED",
+  "detail": "the solve stalled 2 time(s); retry budget exhausted",
+  "finding": "second attempt consumed budget while queued behind blocked first call"
+}

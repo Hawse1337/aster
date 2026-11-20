@@ -1,0 +1,162 @@
+{
+  "run": "D:\\AgentAEDT_Collab\\phase_b3\\runs",
+  "artifacts": {
+    "sphere_grid": "D:\\AgentAEDT_Collab\\phase_b3\\runs\\20261115T144243939271\\artifacts\\farfield\\Plot_O2TRPG.csv",
+    "theta": "D:\\AgentAEDT_Collab\\phase_b3\\runs\\20261115T144243939271\\artifacts\\farfield\\Plot_21ZT1I.csv",
+    "phi": "D:\\AgentAEDT_Collab\\phase_b3\\runs\\20261115T144243939271\\artifacts\\farfield\\Plot_QQ1G4M.csv",
+    "s11": "D:\\AgentAEDT_Collab\\phase_b3\\runs\\20261115T144243939271\\artifacts\\result.s1p"
+  },
+  "grid": {
+    "thetas": 91,
+    "phis": 73,
+    "theta_span": [
+      0.0,
+      180.0
+    ],
+    "phi_span": [
+      0.0,
+      360.0
+    ]
+  },
+  "library": {
+    "directivity_db": 6.80315807794869,
+    "horizontal_db": 6.74701398529489,
+    "horizontal_phi_deg": 285.0,
+    "radiation_efficiency_raw": 1.0
+  },
+  "independent_integral": {
+    "integral": 12.728834430040187,
+    "eta": 1.012928459669602,
+    "directivity_db": 6.804475508544773,
+    "horizontal_db": 6.748331415890973,
+    "peak_gain_db": 6.86026324282005,
+    "horizontal_theta": 90.0
+  },
+  "replayed_metrics": {
+    "s11_bandwidth": {
+      "value": 2.0,
+      "target_db": -10.0,
+      "low_ghz": 24.0,
+      "high_ghz": 26.0,
+      "samples": 7,
+      "per_frequency": {
+        "24": true,
+        "25": true,
+        "26": true,
+        "27": false,
+        "28": false,
+        "29": false,
+        "30": false
+      }
+    },
+    "s11": {
+      "worst_db": -0.5146135150899365,
+      "worst_freq_ghz": 30.0,
+      "samples": 7,
+      "band_ok_fraction": 0.42857142857142855,
+      "span_ghz": 2.0,
+      "span_range_ghz": [
+        24.0,
+        26.0
+      ]
+    },
+    "realized_gain_h": {
+      "value": 3.045981668448798,
+      "per_frequency": {
+        "28": 3.045981668448798
+      },
+      "frequencies_ghz": [
+        28.0
+      ]
+    },
+    "peak_gain": {
+      "value": 6.80411915016625,
+      "per_frequency": {
+        "28": 6.80411915016625
+      }
+    },
+    "beam_theta": {
+      "value": 90.0,
+      "drift_deg": 0.0,
+      "per_frequency": {
+        "28": 90.0
+      }
+    },
+    "ripple": {
+      "value": 38.60100318136016,
+      "per_frequency": {
+        "28": 38.60100318136016
+      }
+    },
+    "directivity_db": {
+      "value": 6.80315807794869,
+      "per_frequency": {
+        "28": 6.80315807794869
+      }
+    },
+    "directivity_horiz_db": {
+      "value": 6.74701398529489,
+      "per_frequency": {
+        "28": 6.74701398529489
+      }
+    },
+    "radiation_efficiency": {
+      "value": 1.0,
+      "per_frequency": {
+        "28": 1.0
+      }
+    }
+  },
+  "replayed_hard": {
+    "bw": false,
+    "gain": true,
+    "dirh": false,
+    "beam_min": true,
+    "beam_max": true
+  },
+  "replayed_unmet": [
+    "bw",
+    "dirh"
+  ],
+  "checks": {
+    "replay_reports_horizontal_directivity": true,
+    "library_and_replay_agree": true,
+    "independent_integral_agrees_within_0_1_db": true,
+    "efficiency_is_physical": true,
+    "beam_theta_is_90": true,
+    "horizontal_directivity_meets_7dbi": false,
+    "live_run_reports_horizontal_directivity": true,
+    "live_matches_replay_within_0_01_db": true,
+    "beam_is_90_in_live_run": true,
+    "default_design_meets_7dbi": false
+  },
+  "verdict": "live pipeline now reports theta=90 directivity (6.747 dBi) and beam theta 90 deg; the default design misses the 7 dBi and 3 GHz targets, which the constraint set correctly marks infeasible. Efficiency has one numeric source (grid integral, eta~1.0 for this PEC lens); an independent source is still blocked by the PyAEDT attach limitation in this environment.",
+  "live_run": {
+    "campaign": "D:\\AgentAEDT_Collab\\phase_b4",
+    "run_id": "real-20261115T150642",
+    "status": "COMPLETED",
+    "metric_keys": [
+      "beam_theta",
+      "directivity_horiz_db",
+      "peak_gain",
+      "ripple",
+      "s11_bandwidth"
+    ],
+    "directivity_horiz_db": 6.747040462799045,
+    "beam_theta": 90.0,
+    "peak_gain": 6.05135926700057,
+    "s11_bandwidth": 2.0,
+    "ripple": 1.8192959273688194,
+    "violations": {
+      "directivity_h": 0.25295953720095543,
+      "bandwidth": 1.0
+    },
+    "feasible": false,
+    "timings": {
+      "CONNECTING": 1.57,
+      "MODEL": 18.2,
+      "SOLVING": 1190.29,
+      "POSTPROCESS": 0.13
+    }
+  }
+}
