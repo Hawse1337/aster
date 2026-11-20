@@ -11,7 +11,10 @@ solve budget and the evidence trail.
 - A preflight/audit layer, solver budget accounting, archive and export gates.
 - Touchstone and far-field export with the artifacts kept on disk.
 
-The guard pins PyAEDT **1.10.0** and is validated on AEDT 2026 R1. PyAEDT documentation:
+The guard pins PyAEDT **1.10.0** and is validated on AEDT 2026 R1. From guard **v0.3.2** it also
+enforces managed-only sessions (unmanaged AEDT is refused and reported), denies arbitrary broker
+code by default, and binds run tokens to project/design/setup when `AEDT_GUARD_ENFORCE=1`.
+See [runtime safety](safety.md) for the boundary. PyAEDT documentation:
 <https://aedt.docs.pyansys.com/version/stable/index.html>.
 
 ## Configuration

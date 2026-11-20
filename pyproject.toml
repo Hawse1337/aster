@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aster"
-version = "1.53.0"
+version = "1.54.0"
 description = "Physics-guided antenna design and optimisation library (design side, no GUI)"
 readme = "README.md"
 requires-python = ">=3.10"

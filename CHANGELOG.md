@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.54.0 — 2026-11-20
+
+- Security integration: real AEDT runs are documented as guard-only (ansys-aedt-mcp v0.3.2+),
+  with managed-session refusal, arbitrary-code default-off, run-token scope and audit.
+- New docs page `user_doc/safety.md` (boundary, client fail-closed rule, residual risk), linked
+  from the repository README and the docs site.
+- README/docs landing refreshed with the three delivery forms and the runtime-safety section;
+  release references updated to v1.54.0.
+- No library API change in this release; offline suite unchanged.
+
 ## 1.53.0 — 2026-11-20
 
 - Three-layer packaging: Python library/CLI, agent skill, docs site + GitHub releases.

@@ -37,6 +37,7 @@ nav:
   - Architecture: architecture.md
   - Workflow: workflow.md
   - AEDT integration: aedt_integration.md
+  - Runtime safety: safety.md
   - Agent skill: skill.md
   - Validation: validation.md
 

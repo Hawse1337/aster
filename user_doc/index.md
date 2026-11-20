@@ -18,6 +18,7 @@ you re-judge the history instead of re-solving it.
 | **Library / CLI** | `pip install aster-<version>-py3-none-any.whl[optimizer,surrogate]`, then `aster doctor` | scripting your own loop, CI, notebooks |
 | **Agent skill** | `aster skill install` or copy `skills/aster/` | an AI agent running design studies |
 | **Docs + releases** | this site + [GitHub Releases](https://github.com/Hawse1337/aster/releases) | learning the contract, pinned wheels |
+| **Runtime safety** | [safety.md](safety.md) + the guard's threat model | real AEDT runs, agent safety, fail-closed policy |
 
 ## Start in one minute
 
@@ -47,7 +48,7 @@ aster dry-demo --samples 64
 ## Next
 
 - [Install](installation.md) · [Architecture](architecture.md) · [Workflow](workflow.md)
-- [AEDT integration](aedt_integration.md) · [Agent skill](skill.md) · [Validation](validation.md)
+- [AEDT integration](aedt_integration.md) · [Runtime safety](safety.md) · [Agent skill](skill.md) · [Validation](validation.md)
 - Repository: [github.com/Hawse1337/aster](https://github.com/Hawse1337/aster)
 
 MIT licensed. If you build a study on this bench, keep the artifacts — a bench without evidence is

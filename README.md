@@ -93,6 +93,24 @@ runs = [Evaluation("c%02d" % i, "ring", p,
 front = pareto_archive(runs, objectives)
 ```
 
+## Runtime safety, by construction
+
+Real solves go through the companion guard
+[ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp), not through a loose PyAEDT call in
+the same process:
+
+- the guard records the AEDT sessions **it** launched and refuses to attach to unmanaged ones
+  (`guard_status` classifies every live `ansysedt.exe`);
+- `run_python_code` / `run_python_script` are refused by default at the guard's MCP and worker
+  layers; a human operator can enable them for a supervised session;
+- run tokens bind analysis submissions to project/design/setup when
+  `AEDT_GUARD_ENFORCE=1`;
+- launch/release events are audited and PyAEDT app objects are checked against the verified desktop.
+
+If the guard MCP tools are missing, **stop** — do not fall back to shell-level PyAEDT or
+`ansysedt.exe`. Fail-closed DSH/Codex configurations and the threat model are in the guard repo.
+See [user_doc/safety.md](user_doc/safety.md) for the boundary and residual risks.
+
 ## Real studies
 
 1. Install the guard system and its virtual environment (PyAEDT 1.10.0, AEDT 2026 R1).
@@ -144,7 +162,7 @@ mkdocs.yml     documentation site
 - Offline suite: **782 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
-- Wheel and sdist: [v1.53.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.53.0);
+- Wheel and sdist: [v1.54.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.54.0);
   documentation: [hawse1337.github.io/aster](https://hawse1337.github.io/aster/).
 
 ## License

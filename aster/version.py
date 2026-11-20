@@ -8,7 +8,7 @@ from pathlib import Path
 
 __all__ = ["__version__", "describe", "VERSION_INFO"]
 
-__version__ = "1.53.0"
+__version__ = "1.54.0"
 
 VERSION_INFO = tuple(int(part) for part in re.findall(r"\d+", __version__)[:3])
 
