@@ -7,8 +7,8 @@ from types import SimpleNamespace
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.apply import ModelApplier
-from antopt.cases import lens28_var
+from aster.apply import ModelApplier
+from aster.cases import lens28_var
 
 
 class FakeBridge:

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-label="antopt — an antenna design bench, evidence first">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" role="img" aria-label="aster — an antenna design bench, evidence first">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0d1117"/>
@@ -44,7 +44,14 @@
 
   <!-- wordmark -->
   <g transform="translate(78 118)">
-    <text x="0" y="0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#f4f1ea" letter-spacing="-2">antopt</text>
+    <text x="0" y="0" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="86" font-weight="700" fill="#f4f1ea" letter-spacing="-2">aster</text>
+    <g transform="translate(352 34)">
+      <g stroke="#f4a261" stroke-opacity="0.9" stroke-width="3" stroke-linecap="round">
+        <path d="M 0 -16 L 0 16"/><path d="M -16 0 L 16 0"/>
+        <path d="M -11 -11 L 11 11"/><path d="M -11 11 L 11 -11"/>
+      </g>
+      <circle cx="0" cy="0" r="3.2" fill="#e4572e" stroke="none"/>
+    </g>
     <text x="4" y="42" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" font-weight="400" fill="#9fb3c8" letter-spacing="0.5">an antenna design bench — evidence first</text>
     <g transform="translate(2 78)" font-family="Consolas, SFMono-Regular, Menlo, monospace" font-size="13.5" fill="#7d8fa3">
       <text x="0" y="0">design space  /  guarded solve  /  artifacts kept  /  targets changeable</text>
@@ -53,7 +60,7 @@
       <rect x="0" y="0" width="132" height="30" rx="15" fill="#e4572e" fill-opacity="0.14" stroke="#e4572e" stroke-opacity="0.7"/>
       <text x="66" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#f4a261">python 3.10+</text>
       <rect x="146" y="0" width="116" height="30" rx="15" fill="#2a9d8f" fill-opacity="0.14" stroke="#2a9d8f" stroke-opacity="0.7"/>
-      <text x="204" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#7fd1c7">v1.51.0</text>
+      <text x="204" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#7fd1c7">v1.52.0</text>
       <rect x="276" y="0" width="128" height="30" rx="15" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.22"/>
       <text x="340" y="20" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#c6d2de">MIT licensed</text>
     </g>

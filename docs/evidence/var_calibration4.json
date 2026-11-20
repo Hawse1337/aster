@@ -1,6 +1,6 @@
 {
   "run_id": "20261112T083656348040",
-  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_var_cal4",
+  "campaign": "D:\\AgentAEDT_Collab\\aster_bench\\campaign_var_cal4",
   "geometry": "bowls with ring collar, measured hole arrays (6 x r1.0955 @4.2 mm + 12 x r1.2649 @16.75 mm per bowl), disc scaled, coax untouched",
   "metrics": {
     "s11_bandwidth": 3.0,

@@ -7,10 +7,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.core import Objective
-from antopt.export import (front_rows, progress_rows, write_front_csv, write_front_json)
-from antopt.optimize import Evaluation, ParetoArchive
-from antopt.physics.radiation import (efficiency_from_db, efficiency_from_powers,
+from aster.core import Objective
+from aster.export import (front_rows, progress_rows, write_front_csv, write_front_json)
+from aster.optimize import Evaluation, ParetoArchive
+from aster.physics.radiation import (efficiency_from_db, efficiency_from_powers,
                                       radiation_efficiency_metric)
 
 
@@ -66,7 +66,7 @@ class ParetoExportTests(unittest.TestCase):
 
 class ExecutorEnrichmentTests(unittest.TestCase):
     def test_executor_adds_the_metric_only_when_computable(self):
-        from antopt.executor import GuardExecutor
+        from aster.executor import GuardExecutor
 
         enriched = GuardExecutor._with_radiation_efficiency({"directivity_db": 9.0,
                                                              "gain_db": 8.0})
@@ -116,7 +116,7 @@ class EfficiencyConstraintTests(unittest.TestCase):
     """The efficiency kind must work as a constraint, not only as an objective."""
 
     def _case(self):
-        from antopt.core import CaseSpec, Constraint, Objective
+        from aster.core import CaseSpec, Constraint, Objective
 
         return CaseSpec(case_id="eff", project="p", design_type="d",
                         frequency_ghz=[28.0], family="f",
@@ -126,7 +126,7 @@ class EfficiencyConstraintTests(unittest.TestCase):
                                                 operator=">=", target=0.6)])
 
     def test_a_passing_value_is_feasible(self):
-        from antopt.optimize import evaluate_constraints
+        from aster.optimize import evaluate_constraints
 
         feasible, violations, total = evaluate_constraints(
             {"radiation_efficiency": 0.75}, self._case())
@@ -135,7 +135,7 @@ class EfficiencyConstraintTests(unittest.TestCase):
         self.assertEqual(total, 0.0)
 
     def test_a_failing_value_is_not(self):
-        from antopt.optimize import evaluate_constraints
+        from aster.optimize import evaluate_constraints
 
         feasible, violations, total = evaluate_constraints(
             {"radiation_efficiency": 0.45}, self._case())
@@ -144,7 +144,7 @@ class EfficiencyConstraintTests(unittest.TestCase):
         self.assertAlmostEqual(total, 0.15, places=6)
 
     def test_a_missing_metric_is_a_violation_not_a_pass(self):
-        from antopt.optimize import evaluate_constraints
+        from aster.optimize import evaluate_constraints
 
         feasible, violations, total = evaluate_constraints({}, self._case())
         self.assertFalse(feasible)

@@ -59,7 +59,7 @@ def build_case() -> CaseSpec:
         family_id="lens28_ref_v1",
         antenna_type="metal_lens_periodic_disc",
         param_space=space,
-        builder="antopt.cases.lens28_ref:build_model",
+        builder="aster.cases.lens28_ref:build_model",
         notes="reference design f24g05 measured today; only tip offset and disc "
               "thickness are searchable, everything else is the proven structure",
     )

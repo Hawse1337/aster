@@ -6,7 +6,7 @@ A campaign is a Python recipe with four moving parts: **case**, **evaluator**, *
 ## 1. Define the case
 
 ```python
-from antopt.core import CaseSpec, Constraint, FamilySpec, Objective, ParamSpec, ParamSpace
+from aster.core import CaseSpec, Constraint, FamilySpec, Objective, ParamSpec, ParamSpace
 
 case = CaseSpec(
     name="ring_demo",
@@ -26,7 +26,7 @@ case = CaseSpec(
 )
 ```
 
-The built-in cases under `antopt/cases/` are references for real designs; their project paths are
+The built-in cases under `aster/cases/` are references for real designs; their project paths are
 left empty on purpose and must be configured for your own checkout.
 
 ## 2. Pick an evaluator
@@ -47,7 +47,7 @@ archive = pareto_archive(evaluations, case.objectives)
 For longer studies, use the campaign driver:
 
 ```powershell
-python -m antopt.worker --case ring_demo --campaign <campaign-dir> --generations 8
+python -m aster.worker --case ring_demo --campaign <campaign-dir> --generations 8
 ```
 
 The worker persists every run in `campaign.sqlite` with its parameters, metrics, status and artifact

@@ -3,7 +3,7 @@
 The agent never touches the coordinator's database. It keeps its own campaign directory (the
 coordinator's ``config_hash`` names the design, so the same parameters are comparable), runs one task
 through the local ``RealRunManager`` discipline, and posts the outcome. A crashed agent simply stops
-heartbeating and the lease expires - see ``antopt/distributed.py``.
+heartbeating and the lease expires - see ``aster/distributed.py``.
 """
 from __future__ import annotations
 

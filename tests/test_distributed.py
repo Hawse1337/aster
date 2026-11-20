@@ -6,7 +6,7 @@ import time
 import unittest
 from pathlib import Path
 
-from antopt.distributed import DistributedScheduler, config_hash
+from aster.distributed import DistributedScheduler, config_hash
 
 
 def scheduler(tmp: str) -> DistributedScheduler:

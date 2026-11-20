@@ -5,20 +5,20 @@ import os
 import math
 import unittest
 
-from antopt.cases import lens28_builder
-from antopt.cases import lwa
-from antopt.controller import ControllerContext, StrategyController
-from antopt.core import CaseSpec
-from antopt.executor import SyntheticExecutor
-from antopt.optimize import ParetoArchive
-from antopt.parametric.registry import (
+from aster.cases import lens28_builder
+from aster.cases import lwa
+from aster.controller import ControllerContext, StrategyController
+from aster.core import CaseSpec
+from aster.executor import SyntheticExecutor
+from aster.optimize import ParetoArchive
+from aster.parametric.registry import (
     CaseRegistration,
     clear_registry,
     get_case,
     list_cases,
     register_case,
 )
-from antopt.synthetic import SyntheticProblem
+from aster.synthetic import SyntheticProblem
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -92,9 +92,9 @@ class LwaCaseTests(unittest.TestCase):
     def test_core_does_not_depend_on_case_plugins(self):
         import ast
 
-        import antopt.controller as controller
-        import antopt.core as core
-        import antopt.optimize as optimize
+        import aster.controller as controller
+        import aster.core as core
+        import aster.optimize as optimize
 
         for module in (core, optimize, controller):
             tree = ast.parse(open(module.__file__, encoding="utf-8-sig").read())
@@ -106,7 +106,7 @@ class LwaCaseTests(unittest.TestCase):
                     imported.append(node.module or "")
             for name in imported:
                 self.assertFalse(
-                    name.startswith("antopt.cases"),
+                    name.startswith("aster.cases"),
                     f"{module.__name__} imports a case plugin: {name}",
                 )
                 self.assertNotIn(name, {"mcp_server", "aedt_guard", "ansys"},
@@ -117,7 +117,7 @@ class SystemLoopTests(unittest.TestCase):
     """Compose the pieces: propose -> evaluate -> archive -> decide."""
 
     def test_loop_with_controller_and_archive(self):
-        from antopt.synthetic import build_case
+        from aster.synthetic import build_case
 
         case = build_case()
         executor = SyntheticExecutor(case, SyntheticProblem())
@@ -126,7 +126,7 @@ class SystemLoopTests(unittest.TestCase):
         state = {"budget": 24, "stalled": 0, "hv": []}
         rounds = 0
         while state["budget"] > 0 and rounds < 6:
-            from antopt.core import latin_hypercube
+            from aster.core import latin_hypercube
 
             params = latin_hypercube(case.family.param_space, 4, seed=rounds)
             for candidate_params in params:
@@ -134,7 +134,7 @@ class SystemLoopTests(unittest.TestCase):
                 archive.add(executor.evaluate(candidate))
                 state["budget"] -= 1
             front = archive.feasible_front()
-            from antopt.optimize import hypervolume_2d
+            from aster.optimize import hypervolume_2d
 
             volume = hypervolume_2d(archive.feasible(), case.objectives[0],
                                    case.objectives[1], (0.0, -30.0))
@@ -168,21 +168,21 @@ class LwaGeometryTests(unittest.TestCase):
     """S7: the second antenna must be buildable, not just specified."""
 
     def test_case_renders_a_full_geometry_snippet(self):
-        from antopt.cases import lwa
-        from antopt.parametric.aedt import render
+        from aster.cases import lwa
+        from aster.parametric.aedt import render
 
         model = lwa.build_model()
         ops = model.build(model.space.default())
         code = render(ops, project_path=r"D:\sandbox\lwa.aedt", design_name="LWA")
         self.assertIn("app.modeler.create_box(origin=[0.0, 0.0, 0.0], sizes=[22.86, 10.16, 200.0]", code)
-        self.assertIn("_antopt_units = []", code)
+        self.assertIn("_aster_units = []", code)
         self.assertIn("lwa_unit_", code)
         # the LWA now uses the additive law h_n = h0 + a1*u + a2*u^2
         self.assertIn("_h = 2.0 + 0.0 * _t + 0.0 * _t * _t", code)
 
     def test_taper_changes_the_unit_heights(self):
-        from antopt.cases import lwa
-        from antopt.parametric.aedt import render
+        from aster.cases import lwa
+        from aster.parametric.aedt import render
 
         params = dict(lwa.build_model().space.default(), a1=0.5, a2=0.0)
         ops = lwa.build_model().build(params)
@@ -190,7 +190,7 @@ class LwaGeometryTests(unittest.TestCase):
         self.assertIn("0.5 * _t", code)
 
     def test_invalid_unit_arguments_are_rejected(self):
-        from antopt.parametric.aedt import OperationError, validate_operations
+        from aster.parametric.aedt import OperationError, validate_operations
 
         with self.assertRaises(OperationError):
             validate_operations([{"op": "create_tapered_units",

@@ -1,6 +1,6 @@
-# antopt user guide
+# aster user guide
 
-`antopt` is a library for simulation-driven antenna design studies. This guide covers installation,
+`aster` is a library for simulation-driven antenna design studies. This guide covers installation,
 the core concepts, the campaign workflow and the AEDT integration contract.
 
 - [Installation](installation.md)
@@ -18,7 +18,7 @@ and the guarded-run integration are published.
 2. Run the dry demo:
 
    ```powershell
-   python -m antopt dry-demo --samples 64
+   python -m aster dry-demo --samples 64
    ```
 
 3. Read [`examples/dry_run_demo.py`](../examples/dry_run_demo.py) and

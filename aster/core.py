@@ -3,7 +3,7 @@
 The layer is deliberately case-agnostic: an antenna design case is described by
 a *family* (parameter space + builder), a list of *constraints* and
 *objectives*, and the evaluation settings used by ``aedt_guard``. The lens /
-leaky-wave specifics live in ``antopt.cases`` and must not leak into this file.
+leaky-wave specifics live in ``aster.cases`` and must not leak into this file.
 """
 from __future__ import annotations
 

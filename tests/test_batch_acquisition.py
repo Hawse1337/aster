@@ -5,8 +5,8 @@ import unittest
 
 import numpy as np
 
-from antopt.surrogate.batch import kriging_believer
-from antopt.surrogate.selection import select_candidates
+from aster.surrogate.batch import kriging_believer
+from aster.surrogate.selection import select_candidates
 
 
 def pool(n=20):

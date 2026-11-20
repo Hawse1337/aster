@@ -13,8 +13,8 @@ def main() -> int:
     parser.add_argument("--samples", type=int, default=64)
     args = parser.parse_args()
 
-    from antopt.core import Objective, ParamSpace, ParamSpec, latin_hypercube
-    from antopt.optimize import Evaluation, pareto_archive
+    from aster.core import Objective, ParamSpace, ParamSpec, latin_hypercube
+    from aster.optimize import Evaluation, pareto_archive
 
     space = ParamSpace([
         ParamSpec("r", "mm", 30.0, 70.0, 50.0),

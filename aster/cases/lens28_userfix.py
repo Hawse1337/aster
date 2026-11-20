@@ -43,7 +43,7 @@ def build_case() -> CaseSpec:
         family_id="lens28_userfix_v1",
         antenna_type="metal_lens_periodic_disc",
         param_space=space,
-        builder="antopt.cases.lens28_userfix:build_model",
+        builder="aster.cases.lens28_userfix:build_model",
         notes="user-corrected structure: disc2 and wedge removed, bowls identical "
               "with 18 holes, disc centred with an adjustable gap",
     )

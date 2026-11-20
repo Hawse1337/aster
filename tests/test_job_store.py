@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.runtime.store import JobStore, summarise
+from aster.runtime.store import JobStore, summarise
 
 
 def job(run_id: str, status: str = "COMPLETED", batch_id: str | None = "b1",

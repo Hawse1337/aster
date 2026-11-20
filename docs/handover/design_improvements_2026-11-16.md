@@ -9,8 +9,8 @@
 |---|---|
 | 指标计算 | `aedt_guard/pattern.py`：`directivity_horizontal_from_grid()`（同一积分给出 η、峰值方向性、水平面峰值）；`directivity_from_grid()` 保留 |
 | 评估输出 | `aedt_guard/evaluator.py`：`directivity_horiz_db`（跨频最差）；`pattern.read_sphere_grid` 兼容**扁平表**（Freq, Phi, Theta, 一行一对）与矩阵布局 |
-| 案例声明 | `antopt/cases/lens28_var.py`：`evaluation.include_directivity=True`、硬约束 θ=90° 方向性 ≥7 dBi、主瓣 θ∈[85°,95°]、目标 `dir_obj` |
-| 页面 | `antopt/gui/static/index.html`：运行状态显示「θ=90° 方向性」「主瓣 θ」 |
+| 案例声明 | `aster/cases/lens28_var.py`：`evaluation.include_directivity=True`、硬约束 θ=90° 方向性 ≥7 dBi、主瓣 θ∈[85°,95°]、目标 `dir_obj` |
+| 页面 | `aster/gui/static/index.html`：运行状态显示「θ=90° 方向性」「主瓣 θ」 |
 | 证据 | `docs/evidence/phase_b_validation.json`、`docs/evidence/efficiency_query_diagnostic.json`、`docs/evidence/quantities_full.json` |
 
 真机结论（默认设计）：θ=90° 方向性 **6.747 dBi**、主瓣 **90.0°**、峰值 6.803 dBi、η≈1.01（PEC 透镜），
@@ -33,15 +33,15 @@
 
 ## 4. DoE 铺底
 
-- `antopt/doe.py`：拉丁超立方、按 `config_hash` 去重、跳过已测、FAILED 可重排、计划可续跑；
-- `scripts/run_doe.py`：入队（幂等）；`scripts/analyze_doe.py` + `antopt/doe_report.py`：完成/失败、
+- `aster/doe.py`：拉丁超立方、按 `config_hash` 去重、跳过已测、FAILED 可重排、计划可续跑；
+- `scripts/run_doe.py`：入队（幂等）；`scripts/analyze_doe.py` + `aster/doe_report.py`：完成/失败、
   可行点、分布、最优、参数粗略效应；
 - 首轮 10 点 DoE 正在真实 worker 上执行（campaign `<workspace>\phase_doe`），
   结果将写入 `docs/evidence/doe_results.json`。
 
 ## 5. 鲁棒性与多机
 
-- `antopt/robustness.py`：公差扰动生成（边界裁剪、去重）+ 最差情况/合格率评分（11 项测试）；
+- `aster/robustness.py`：公差扰动生成（边界裁剪、去重）+ 最差情况/合格率评分（11 项测试）；
 - 多机代码与离线测试完整，**真实多机未验证**（本机单授权环境）。
 
 ## 6. 踩过的坑（值得记住）

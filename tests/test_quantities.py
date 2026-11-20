@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.quantities import ProbeRecord, candidate_categories, enumerate_quantities, summarise
+from aster.quantities import ProbeRecord, candidate_categories, enumerate_quantities, summarise
 
 
 class FakeProbe:

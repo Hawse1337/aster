@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt import config
+from aster import config
 
 
 def touch(path: Path) -> Path:
@@ -72,11 +72,11 @@ class ConfigFileTests(unittest.TestCase):
             root = Path(tmp)
             written = config.write(root / "config.toml", self._env_with_paths(root))
             other = touch(root / "elsewhere.aedt")
-            os.environ["ANTOPT_REFERENCE_PROJECT"] = str(other)
+            os.environ["ASTER_REFERENCE_PROJECT"] = str(other)
             try:
                 loaded = config.load(written)
             finally:
-                os.environ.pop("ANTOPT_REFERENCE_PROJECT", None)
+                os.environ.pop("ASTER_REFERENCE_PROJECT", None)
             self.assertEqual(loaded.reference_project, other)
             self.assertEqual(loaded.source["reference_project"], "env")
 

@@ -1,17 +1,21 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="antopt — an antenna design bench, evidence first" width="100%">
+  <img src="assets/banner.svg" alt="aster — an antenna design bench, evidence first" width="100%">
 </p>
 
 <p align="center">
-  <a href="https://github.com/Hawse1337/antopt/actions/workflows/ci.yml"><img alt="tests" src="https://github.com/Hawse1337/antopt/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/Hawse1337/antopt/releases/latest"><img alt="release" src="https://img.shields.io/github/v/release/Hawse1337/antopt?color=e4572e"></a>
+  <a href="https://github.com/Hawse1337/aster/actions/workflows/ci.yml"><img alt="tests" src="https://github.com/Hawse1337/aster/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/Hawse1337/aster/releases/latest"><img alt="release" src="https://img.shields.io/github/v/release/Hawse1337/aster?color=e4572e"></a>
   <a href="LICENSE"><img alt="license: MIT" src="https://img.shields.io/badge/license-MIT-2a9d8f"></a>
   <img alt="python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-23262b">
 </p>
 
 # Keep the measurement. Change the target.
 
-`antopt` is a design bench for antenna studies. You describe a parameter space and what "good"
+> **aster** was previously published as **antopt**. The package import, CLI and
+> environment prefix are now `aster` / `ASTER_*`; the old repository URL redirects.
+
+
+`aster` is a design bench for antenna studies. You describe a parameter space and what "good"
 means, the library drives candidates through a guarded AEDT session, and every solve leaves its raw
 artifacts behind. When the requirement changes — a different band, a tighter ripple, a flatter
 elevation cut — you re-judge the history instead of burning another night of solver time.
@@ -41,7 +45,7 @@ The archive is the point. A *campaign* is just a Python recipe over that loop; s
 
 ## What it refuses to hide
 
-| risk | how antopt handles it |
+| risk | how aster handles it |
 |---|---|
 | "the result looks great" | every measured run keeps `result.s1p`, `farfield_views.json` and the native report PNGs |
 | "we changed the target, re-run everything" | records are re-scored; the solver is not called again unless you ask |
@@ -56,16 +60,16 @@ py -3.10 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -U pip
 .\.venv\Scripts\python.exe -m pip install -e ".[optimizer,surrogate,plot]"
 
-python -m antopt version
-python -m antopt dry-demo --samples 64
+python -m aster version
+python -m aster dry-demo --samples 64
 ```
 
 `dry-demo` is a complete study on an analytic objective — Latin-hypercube design, Pareto archive,
 no AEDT required. The same shape in code:
 
 ```python
-from antopt.core import Objective, ParamSpace, ParamSpec, latin_hypercube
-from antopt.optimize import Evaluation, pareto_archive
+from aster.core import Objective, ParamSpace, ParamSpec, latin_hypercube
+from aster.optimize import Evaluation, pareto_archive
 
 space = ParamSpace([
     ParamSpec("ring_radius", "mm", 20.0, 60.0, 40.0),
@@ -84,8 +88,8 @@ front = pareto_archive(runs, objectives)
 ## Real studies
 
 1. Install the guard system and its virtual environment (PyAEDT 1.10.0, AEDT 2026 R1).
-2. Point `ANTOPT_AEDT_EXE`, `ANTOPT_GUARD_REPO`, `ANTOPT_VENV_PYTHON`,
-   `ANTOPT_REFERENCE_PROJECT`, `ANTOPT_CAMPAIGN_ROOT` at your machine.
+2. Point `ASTER_AEDT_EXE`, `ASTER_GUARD_REPO`, `ASTER_VENV_PYTHON`,
+   `ASTER_REFERENCE_PROJECT`, `ASTER_CAMPAIGN_ROOT` at your machine.
 3. Run the worker against a campaign directory; each candidate gets its own run folder and archive
    row.
 
@@ -99,8 +103,8 @@ The repository ships an agent skill at [`SKILL.md`](SKILL.md). To use it in a sk
 (for example DeepSeek Harness), copy the file into the agent's skill directory:
 
 ```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\antopt" | Out-Null
-Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\antopt\SKILL.md"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\aster" | Out-Null
+Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\aster\SKILL.md"
 ```
 
 The skill teaches the agent when to use the bench, where the core APIs live, and which evidence rules
@@ -110,7 +114,7 @@ to follow. It deliberately does **not** cover the GUI, which is not published.
 
 ```text
 assets/        banner + loop illustrations
-antopt/        the library
+aster/        the library
   core.py        parameter spaces, objectives, constraints
   optimize.py    evaluations, dominance, Pareto archive
   campaign.py    campaign recipes
@@ -130,7 +134,7 @@ SKILL.md       agent skill
 - Offline suite: **778 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
-- Wheel and sdist: [v1.51.0 release](https://github.com/Hawse1337/antopt/releases/tag/v1.51.0).
+- Wheel and sdist: [v1.52.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.52.0).
 
 ## License
 

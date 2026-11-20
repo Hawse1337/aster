@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.failures import STALLED, classify
+from aster.failures import STALLED, classify
 
 
 class ClassificationTests(unittest.TestCase):

@@ -6,7 +6,7 @@ offset, the disc scales about its mid-plane, and the coax outer wall steps out t
 ground-ring radius. No ``unite`` and no ``subtract`` runs, so the same design can be
 re-parameterised any number of times.
 
-The parameter names and ranges match :mod:`antopt.cases.lens28_ref` so the measured
+The parameter names and ranges match :mod:`aster.cases.lens28_ref` so the measured
 dataset, the GUI and the benchmark harness all work unchanged.
 """
 from __future__ import annotations

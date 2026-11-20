@@ -8,7 +8,7 @@
 **来源**：yadof `user_doc/config_and_run.md` 的 *History and tools* 一节——成本视图用**固定归一化
 参考点 `(1, ..., 1)`** 画超体积带：上沿是截至当前所有代的累计超体积，下沿是当前代自身的贡献。
 
-**我们的实现**：`antopt/metrics.py`
+**我们的实现**：`aster/metrics.py`
 
 - `normalisation_from_case()`：按**案例目标**归一化（带宽 3.0 GHz / 增益 6.0 dBi 为理想，0 为最差），
   **优于目标允许负值**（截断在 −1），避免"刚达标就饱和"；
@@ -23,7 +23,7 @@ yadof 是"先算成本再归一化"，所以必须用任务目标而不是测量
 
 **来源**：yadof `distributed` 模式（HTCondor）及其文档建议"多机不要共享网络 SQLite"。
 
-**我们的实现**：`antopt/distributed.py` + `antopt/dist_agent.py` + `worker.py --agent`
+**我们的实现**：`aster/distributed.py` + `aster/dist_agent.py` + `worker.py --agent`
 
 | 维度 | yadof | 我们 |
 |---|---|---|

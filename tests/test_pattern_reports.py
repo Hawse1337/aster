@@ -13,8 +13,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.farfield import persist_pattern_reports, persist_pattern_reports_code
-from antopt.runtime.runner import RealJob, RealRunManager
+from aster.farfield import persist_pattern_reports, persist_pattern_reports_code
+from aster.runtime.runner import RealJob, RealRunManager
 
 
 class PatternReportWiringTests(unittest.TestCase):
@@ -23,10 +23,10 @@ class PatternReportWiringTests(unittest.TestCase):
                                             Path(r"D:\tmp\out"))
         self.assertIn("keep_reports=True", code)
         self.assertIn("open_window=False", code)
-        self.assertIn("ANTOPT_3D_Gain_", code)
-        self.assertIn("ANTOPT_E_Plane_", code)
-        self.assertIn("ANTOPT_H_Plane_", code)
-        self.assertIn("ANTOPT_EH_Overlay_", code)
+        self.assertIn("ASTER_3D_Gain_", code)
+        self.assertIn("ASTER_E_Plane_", code)
+        self.assertIn("ASTER_H_Plane_", code)
+        self.assertIn("ASTER_EH_Overlay_", code)
         self.assertIn("project.Save()", code)
 
     def test_persist_writes_manifest_and_reports_directory(self):
@@ -34,7 +34,7 @@ class PatternReportWiringTests(unittest.TestCase):
             def execute_code(self, code, pid=None, timeout=None):
                 return {"result": {"samples": [{"freq": 28.0}],
                                    "persisted": {"reports_kept": True,
-                                                 "opened_reports": ["ANTOPT_3D_Gain_28GHz"],
+                                                 "opened_reports": ["ASTER_3D_Gain_28GHz"],
                                                  "sets": [{"images": ["native_reports/gain3d_28.png"]}]}}}
 
         with tempfile.TemporaryDirectory() as tmp:
@@ -44,7 +44,7 @@ class PatternReportWiringTests(unittest.TestCase):
                                              design="FeedIdeal", setup="F28", pid=1)
             self.assertTrue(result["ok"])
             self.assertTrue(result["reports_kept"])
-            self.assertEqual(result["reports"], ["ANTOPT_3D_Gain_28GHz"])
+            self.assertEqual(result["reports"], ["ASTER_3D_Gain_28GHz"])
             manifest = campaign / "pattern_reports" / "r1" / "persist_result.json"
             self.assertTrue(manifest.is_file())
             self.assertEqual(json.loads(manifest.read_text(encoding="utf-8"))["ok"], True)
@@ -66,10 +66,10 @@ class PatternReportWiringTests(unittest.TestCase):
     def test_real_job_carries_pattern_reports_and_ledger_round_trip(self):
         job = RealJob(run_id="r3", case="lens28_var", params={})
         self.assertEqual(job.pattern_reports, {})
-        job.pattern_reports = {"ok": True, "reports": ["ANTOPT_3D_Gain_28GHz"]}
+        job.pattern_reports = {"ok": True, "reports": ["ASTER_3D_Gain_28GHz"]}
         self.assertEqual(job.to_dict()["pattern_reports"]["ok"], True)
         restored = RealJob(**job.to_dict())
-        self.assertEqual(restored.pattern_reports["reports"], ["ANTOPT_3D_Gain_28GHz"])
+        self.assertEqual(restored.pattern_reports["reports"], ["ASTER_3D_Gain_28GHz"])
 
     def test_manager_keeps_reports_by_default_and_can_opt_out(self):
         with tempfile.TemporaryDirectory() as tmp:

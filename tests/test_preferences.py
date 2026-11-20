@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt import preferences
+from aster import preferences
 
 
 PARAMS = [

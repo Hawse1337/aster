@@ -2,7 +2,7 @@
 
 The rest of the package needs no torch: this module is the only place that imports it, and it
 does so lazily so a checkout without torch keeps working. ``available()`` answers whether the
-stack can be used; callers fall back to :func:`antopt.surrogate.batch.kriging_believer` when it
+stack can be used; callers fall back to :func:`aster.surrogate.batch.kriging_believer` when it
 cannot.
 
 qLogNEHVI is the noisy expected-hypervolume improvement of a batch of ``q`` points, which is the

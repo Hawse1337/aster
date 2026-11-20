@@ -12,7 +12,7 @@
      （例如 `D:\Tools\AntennaOptimizer`），双击其中的 `AntennaOptimizer.exe`；
 2. 双击 `AntennaOptimizer.exe`；
 3. 首次启动若缺少配置，会在控制台里逐项询问 AEDT、守护仓库、参考工程的位置，
-   回答后写入 `%APPDATA%\antopt\config.toml`，以后不再询问。
+   回答后写入 `%APPDATA%\aster\config.toml`，以后不再询问。
 
 **不需要安装 Python**：可执行文件自带解释器。但**真实求解**需要：
 
@@ -37,7 +37,7 @@
 | 批量细扫 | 一次提交多个候选，按顺序跑，可中途查看进度 |
 | **推荐下一批** | 用**已有实测数据**拟合并推荐候选：填**个数**与**预算(分)**，选后端；表格给出参数、**预计耗时**、可行性（按最近实测估计）与依据 run id。点「推荐结果入队」直接排队 |
 | **带宽权重 / 增益权重** | 表达"更看重哪个目标"；保存后参与推荐（标量化后端与理由说明里都会体现） |
-| **保存边界与权重** | 把边界与权重写入 `%APPDATA%\antopt\preferences.json`，下次启动仍然有效 |
+| **保存边界与权重** | 把边界与权重写入 `%APPDATA%\aster\preferences.json`，下次启动仍然有效 |
 | **运行状态** | 运行次数、成功率、各阶段耗时中位数、最慢的几次；数据来自 `GET /api/observability` |
 | 结果表 | 每个候选的带宽、增益、波纹、是否可行 |
 | 导出 Pareto | 把当前非支配前沿导出 CSV/JSON（含每代进度） |
@@ -75,7 +75,7 @@
 
 ## 6. 配置
 
-配置文件：`%APPDATA%\antopt\config.toml`（也可用 `ANTOPT_CONFIG` 指定别的路径）。
+配置文件：`%APPDATA%\aster\config.toml`（也可用 `ASTER_CONFIG` 指定别的路径）。
 
 ```toml
 [paths]
@@ -83,10 +83,10 @@ aedt_exe = "D:\\ANSYS Inc\\v261\\AnsysEM\\ansysedt.exe"
 guard_repo = "C:\\ProgramData\\ansys-aedt-mcp"
 venv_python = "C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
 reference_project = "C:\\Users\\me\\Desktop\\lensfinal\\LensFinal.aedt"
-campaign_root = "D:\\AgentAEDT_Collab\\antopt_bench"
+campaign_root = "D:\\AgentAEDT_Collab\\aster_bench"
 ```
 
-优先级：**自动探测 < 配置文件 < 环境变量**（`ANTOPT_AEDT_EXE` 等）。
+优先级：**自动探测 < 配置文件 < 环境变量**（`ASTER_AEDT_EXE` 等）。
 想看当前生效的值：`AntennaOptimizer.exe --selftest`。
 
 ## 7. 命令行
@@ -103,7 +103,7 @@ campaign_root = "D:\\AgentAEDT_Collab\\antopt_bench"
 ## 8. 卸载
 
 1. 删除程序目录；
-2. 需要的话删除 `%APPDATA%\antopt\`（配置）与各 campaign 目录（结果）。
+2. 需要的话删除 `%APPDATA%\aster\`（配置）与各 campaign 目录（结果）。
 
 AEDT 与 `ansys-aedt-mcp` 不受影响。
 

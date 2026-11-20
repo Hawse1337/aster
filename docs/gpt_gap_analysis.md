@@ -18,22 +18,22 @@
 
 | 要求 | 状态 | 证据 |
 |---|---|---|
-| NSGA-II + 可行性优先比较 | ✅ | `antopt/optimizer/nsga2.py`（pymoo 约束支配）、`tests/test_nsga2.py` |
-| **升级到 NSGA-III** | ✅ 本次新增 | `antopt/optimizer/nsga3.py`、`tests/test_nsga3.py`、benchmark 策略 `nsga3` |
-| Pareto Archive（参数/指标/可行/违反/支配/算法/run） | ✅ | `antopt/optimize.py::ParetoArchive` |
+| NSGA-II + 可行性优先比较 | ✅ | `aster/optimizer/nsga2.py`（pymoo 约束支配）、`tests/test_nsga2.py` |
+| **升级到 NSGA-III** | ✅ 本次新增 | `aster/optimizer/nsga3.py`、`tests/test_nsga3.py`、benchmark 策略 `nsga3` |
+| Pareto Archive（参数/指标/可行/违反/支配/算法/run） | ✅ | `aster/optimize.py::ParetoArchive` |
 | 硬约束不能靠加权并入评分 | ✅ | 约束走 `g(x) ≤ 0`，缺数据记 `MISSING_PENALTY` |
-| 综合有效带宽（多指标同时满足的连续区间） | ✅ | `antopt/core.py` 的 `effective_bandwidth`，案例里按采样点判定 |
-| **Pareto 前沿导出（数据 + 过程记录）** | ✅ 已补（v0.83.0） | `antopt/export.py`（CSV/JSON + 过程记录）、`ParetoArchive.first_front()`、10 项测试 |
-| 辐射效率作为目标 | 🟡 单元验证完成，真机受阻 | `antopt/physics/radiation.py` + 守护 evaluator 双侧单测；**开启 directivity 表达式会让真机求解卡死/扫频只导出 1 行**，已回退（guard v1.16.1），需 opt-in 开关后再验（`docs/evidence/efficiency_investigation.json`） |
+| 综合有效带宽（多指标同时满足的连续区间） | ✅ | `aster/core.py` 的 `effective_bandwidth`，案例里按采样点判定 |
+| **Pareto 前沿导出（数据 + 过程记录）** | ✅ 已补（v0.83.0） | `aster/export.py`（CSV/JSON + 过程记录）、`ParetoArchive.first_front()`、10 项测试 |
+| 辐射效率作为目标 | 🟡 单元验证完成，真机受阻 | `aster/physics/radiation.py` + 守护 evaluator 双侧单测；**开启 directivity 表达式会让真机求解卡死/扫频只导出 1 行**，已回退（guard v1.16.1），需 opt-in 开关后再验（`docs/evidence/efficiency_investigation.json`） |
 | 副瓣/波束角约束 | ✅ | `sll`、`beam_angle` 在 contract/core，lens28 案例已用 |
 
 ### 模块 B：代理模型与贝叶斯优化
 
 | 要求 | 状态 | 证据 |
 |---|---|---|
-| 统一代理接口、GPR/RBF、误差与不确定性 | ✅ | `antopt/surrogate/models.py` |
-| 采集函数（EI/UCB）、可行性优先 | ✅ | `antopt/surrogate/selection.py`、`benchmark/ablation.py` |
-| 多保真分层 | ✅ | `antopt/surrogate/multifidelity.py`（S3） |
+| 统一代理接口、GPR/RBF、误差与不确定性 | ✅ | `aster/surrogate/models.py` |
+| 采集函数（EI/UCB）、可行性优先 | ✅ | `aster/surrogate/selection.py`、`benchmark/ablation.py` |
+| 多保真分层 | ✅ | `aster/surrogate/multifidelity.py`（S3） |
 | **BoTorch / qLogNEHVI 多目标贝叶斯** | ❌ | 未接入；当前是自研 EI/UCB |
 | 预测值不得冒充实测 | ✅ | `status=PREDICTED` 与 `COMPLETED` 分离 |
 | 同预算对比随机/GA | ✅ | `docs/benchmarks.md`、`docs/evidence/ablation_*.json` |
@@ -42,22 +42,22 @@
 
 | 要求 | 状态 | 证据 |
 |---|---|---|
-| 灵敏度矩阵、耦合判断 | ✅ | `antopt/physics/sensitivity.py` |
-| 物理引导的局部搜索 | ✅ | `antopt/physics/local_opt.py`、`strategy_loop.py` |
+| 灵敏度矩阵、耦合判断 | ✅ | `aster/physics/sensitivity.py` |
+| 物理引导的局部搜索 | ✅ | `aster/physics/local_opt.py`、`strategy_loop.py` |
 
 ### 模块 D：结构级搜索
 
 | 要求 | 状态 | 证据 |
 |---|---|---|
-| 结构算子与结构族 | ✅ | `antopt/topology/operators.py`、`antopt/families.py` |
-| 何时该换结构的触发规则 | ✅ | `antopt/topology/triggers.py` |
+| 结构算子与结构族 | ✅ | `aster/topology/operators.py`、`aster/families.py` |
+| 何时该换结构的触发规则 | ✅ | `aster/topology/triggers.py` |
 | **自动生成新结构（而非只选已有算子）** | 🟡 部分 | 有算子组合与族基线；没有"生成器"式的新拓扑合成 |
 
 ### 控制器
 
 | 要求 | 状态 | 证据 |
 |---|---|---|
-| 按状态/预算选策略 | ✅ | `antopt/controller.py`（规则状态机） |
+| 按状态/预算选策略 | ✅ | `aster/controller.py`（规则状态机） |
 | 统一调度四模块 | 🟡 部分 | 控制器已串 A/B/C/D，但未做预算分配的最优控制 |
 
 ## 二、`gpt_improve2`：参数化建模 13 条
@@ -66,7 +66,7 @@
 |---|---|---|---|
 | 1 | 识别几何参数与依赖 | ✅ | `lens28_var` 的 7 参数 + `physics` 说明 |
 | 2 | 改成设计变量/派生表达式驱动 | ✅ | `revolve_profile` + 参数化轮廓；派生量在 `profile.py` |
-| 3 | 统一参数文件（名/单位/默认/上下限/连续离散/物理意义/制造约束） | ✅ | `antopt/parametric/spec.py::ParamDefinition`（含 `manufacturing`） |
+| 3 | 统一参数文件（名/单位/默认/上下限/连续离散/物理意义/制造约束） | ✅ | `aster/parametric/spec.py::ParamDefinition`（含 `manufacturing`） |
 | 4 | `update_parameters()` 接口，不重建脚本 | ✅ | `OperationModel.update` + 增量重建（单参 1.1 s） |
 | 5 | 几何有效性检查（相交/非法尺寸/端口失效） | ✅ | `geometry_checks` + `validate_simple` |
 | 6 | 结构族拆分（参数优化 vs 拓扑重建） | ✅ | `families.py`、`topology/` |
@@ -119,9 +119,9 @@ sga2.py；本轮补 Pareto 导出 |
 
 ## 四、本次已经补上的两项
 
-1. **NSGA-III**（用户点名）：`antopt/optimizer/nsga3.py` + benchmark 策略 + 6 项测试；
+1. **NSGA-III**（用户点名）：`aster/optimizer/nsga3.py` + benchmark 策略 + 6 项测试；
    合成消融里 HV 346.7（NSGA-II 334.4），评估次数 19.6（NSGA-II 20.4）。
-2. **yadof 互操作**：`antopt/interop/yadof.py`（参数文件生成 / AEDT 变量表导入 /
+2. **yadof 互操作**：`aster/interop/yadof.py`（参数文件生成 / AEDT 变量表导入 /
    recorded_data 导出）+ 9 项测试，见 `docs/yadof_integration.md`。
 
 > 说明：以上"✅/🟡/❌"以代码与 `docs/evidence/` 为准；若某条与 GPT 原文措辞有出入，

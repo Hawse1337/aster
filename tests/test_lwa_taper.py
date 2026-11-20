@@ -6,8 +6,8 @@ import unittest
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.cases import lwa
-from antopt.parametric.aedt import render
+from aster.cases import lwa
+from aster.parametric.aedt import render
 
 
 class HeightLawTests(unittest.TestCase):
@@ -80,7 +80,7 @@ class RenderingTests(unittest.TestCase):
         self.assertIn("_h = 2.0 * (1.0 + 0.5 * _t", code)
 
     def test_unknown_mode_is_rejected(self):
-        from antopt.parametric.aedt import OperationError, validate_operations
+        from aster.parametric.aedt import OperationError, validate_operations
 
         with self.assertRaises(OperationError):
             validate_operations([{"op": "create_tapered_units",

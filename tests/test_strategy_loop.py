@@ -6,12 +6,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.apply import ModelApplier
-from antopt.campaign import CampaignRunner
-from antopt.cases import lens28_builder
-from antopt.cases.lens28 import build_case
-from antopt.executor import GuardConfig
-from antopt.strategy_loop import run_local_search
+from aster.apply import ModelApplier
+from aster.campaign import CampaignRunner
+from aster.cases import lens28_builder
+from aster.cases.lens28 import build_case
+from aster.executor import GuardConfig
+from aster.strategy_loop import run_local_search
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

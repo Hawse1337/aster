@@ -30,10 +30,10 @@
 
 ```powershell
 $python = '<guard-repo>\.venv\Scripts\python.exe'
-& $python -B -m antopt.acceptance --campaign '<workspace>\verify_20261118\campaign_lens2' --run-id 20261118T041651340500 --band 24 32 --pattern-frequencies 24 28 32 --astrabb-target
-& $python -B -m antopt.aperture --example
-& $python -B -m antopt.aperture '.\rim_complex_e.csv' --sectors 3 --output '.\rim_diagnostic.json'
-& $python -B -m antopt.surrogate.coarse_validation --help
+& $python -B -m aster.acceptance --campaign '<workspace>\verify_20261118\campaign_lens2' --run-id 20261118T041651340500 --band 24 32 --pattern-frequencies 24 28 32 --astrabb-target
+& $python -B -m aster.aperture --example
+& $python -B -m aster.aperture '.\rim_complex_e.csv' --sectors 3 --output '.\rim_diagnostic.json'
+& $python -B -m aster.surrogate.coarse_validation --help
 ```
 
 口径输入需要真实复数 Ex/Ey/Ez、完整 φ×z 网格和共同相位参考。当前保存的 AstraBB 远场为幅值，合成用例验证了算法和文件入口。实用时需补导出环缝复近场。

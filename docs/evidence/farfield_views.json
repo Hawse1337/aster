@@ -4,7 +4,7 @@
   "aedt_version": "2026.1",
   "pyaedt_version": "1.9.0",
   "new_solve_started": false,
-  "original_project": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_y14\\projects\\LensFinal_ref.aedt",
+  "original_project": "D:\\AgentAEDT_Collab\\aster_bench\\campaign_y14\\projects\\LensFinal_ref.aedt",
   "validation_project": "C:\\Users\\Administrator\\Documents\\Codex\\2026-11-15\\md\\work\\native_reports\\validation_project\\LensFinal_ref.aedt",
   "design": "f24g05",
   "solution": "P4 : LastAdaptive",
@@ -25,10 +25,10 @@
       {
         "frequency_ghz": 28.0,
         "names": [
-          "ANTOPT_3D_Gain_28GHz",
-          "ANTOPT_E_Plane_28GHz",
-          "ANTOPT_H_Plane_28GHz",
-          "ANTOPT_EH_Overlay_28GHz"
+          "ASTER_3D_Gain_28GHz",
+          "ASTER_E_Plane_28GHz",
+          "ASTER_H_Plane_28GHz",
+          "ASTER_EH_Overlay_28GHz"
         ],
         "images": [
           "native_reports/gain3d_28.png",
@@ -44,10 +44,10 @@
       }
     ],
     "opened_reports": [
-      "ANTOPT_3D_Gain_28GHz",
-      "ANTOPT_E_Plane_28GHz",
-      "ANTOPT_H_Plane_28GHz",
-      "ANTOPT_EH_Overlay_28GHz"
+      "ASTER_3D_Gain_28GHz",
+      "ASTER_E_Plane_28GHz",
+      "ASTER_H_Plane_28GHz",
+      "ASTER_EH_Overlay_28GHz"
     ],
     "saved": true,
     "plane_convention": "z_axis_E_phi0_H_theta90",
@@ -86,11 +86,11 @@
     "E/H cuts follow this project's convention, not all antenna polarizations"
   ],
   "source_sha256": {
-    "antopt/farfield.py": "dda25fa848e43b6094a3690f9e6708c19c213bad7005bdecc1b505e67a475f91",
-    "antopt/open_reports.py": "a7d5a27de88b1d4cf4cceab19e6511140b799310f8f479958413cfe8da4f6bb8",
-    "antopt/gui/runner.py": "63e5f01d0726952487482c7d2ec18638e91b41eedf5cab5a52c59d0de9fab61d",
-    "antopt/gui/server.py": "92ccdab9732d30df6697f09ab2996b13dc2a71c757db44f8ce661b2b3d0d1305",
-    "antopt/gui/static/index.html": "fab3f5911fc6733e7b3dbcca470be691adbe95936d2f3a6fe482dff50e4b90f1",
-    "antopt/bridge.py": "c349013247c892d05107ec70bc5c0b16a4667c51c438e0aad08c73468338e02a"
+    "aster/farfield.py": "dda25fa848e43b6094a3690f9e6708c19c213bad7005bdecc1b505e67a475f91",
+    "aster/open_reports.py": "a7d5a27de88b1d4cf4cceab19e6511140b799310f8f479958413cfe8da4f6bb8",
+    "aster/gui/runner.py": "63e5f01d0726952487482c7d2ec18638e91b41eedf5cab5a52c59d0de9fab61d",
+    "aster/gui/server.py": "92ccdab9732d30df6697f09ab2996b13dc2a71c757db44f8ce661b2b3d0d1305",
+    "aster/gui/static/index.html": "fab3f5911fc6733e7b3dbcca470be691adbe95936d2f3a6fe482dff50e4b90f1",
+    "aster/bridge.py": "c349013247c892d05107ec70bc5c0b16a4667c51c438e0aad08c73468338e02a"
   }
 }

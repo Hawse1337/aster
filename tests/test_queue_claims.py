@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.runtime.store import JobStore
+from aster.runtime.store import JobStore
 
 
 def store(tmp: str) -> JobStore:

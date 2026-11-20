@@ -4,8 +4,8 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.apply import ModelApplier
-from antopt.cases import lens28_builder
+from aster.apply import ModelApplier
+from aster.cases import lens28_builder
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

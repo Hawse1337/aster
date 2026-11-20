@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from antopt.metrics import (Normalisation, hypervolume_2d, hypervolume_progress,
+from aster.metrics import (Normalisation, hypervolume_2d, hypervolume_progress,
                             normalisation_from_runs)
 
 

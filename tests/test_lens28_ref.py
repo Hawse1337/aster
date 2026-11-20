@@ -4,9 +4,9 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases import lens28_ref
-from antopt.parametric.aedt import OperationError, render, validate_operations
-from antopt.parametric.registry import clear_registry, get_case, list_cases, register_case
+from aster.cases import lens28_ref
+from aster.parametric.aedt import OperationError, render, validate_operations
+from aster.parametric.registry import clear_registry, get_case, list_cases, register_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -119,11 +119,11 @@ class StepRingRenderingTests(unittest.TestCase):
             project_path=r"D:\sandbox\b0.aedt", design_name="B0_f24_thin",
         )
         self.assertIn("_ring_z = _coax_end - 0.3 + 0.0", code)
-        self.assertIn("app.modeler.subtract('antopt_ring_out', 'antopt_ring_in'", code)
+        self.assertIn("app.modeler.subtract('aster_ring_out', 'aster_ring_in'", code)
         # NOTE: the unite absorbs cone_dn, so a design can only be parameterised
         # once; see tests/test_step_ring_idempotency.py for the full history
         self.assertIn(
-            "app.modeler.unite(['coax_outer', 'antopt_ring_out', 'cone_dn'])", code)
+            "app.modeler.unite(['coax_outer', 'aster_ring_out', 'cone_dn'])", code)
 
     def test_ring_arguments_are_validated(self):
         with self.assertRaises(OperationError):
@@ -148,8 +148,8 @@ class TransitionConeTests(unittest.TestCase):
         )
         self.assertIn("app.modeler.create_cone(", code)
         self.assertIn("radius_bottom=1.2, radius_top=6.2, height=1.5", code)
-        self.assertIn("app.modeler.unite(['coax_outer', 'antopt_cone', 'cone_dn'])", code)
-        self.assertIn('_antopt_ops.append({"op": "add_transition_cone"})', code)
+        self.assertIn("app.modeler.unite(['coax_outer', 'aster_cone', 'cone_dn'])", code)
+        self.assertIn('_aster_ops.append({"op": "add_transition_cone"})', code)
 
     def test_cone_arguments_are_validated(self):
         with self.assertRaises(OperationError):
@@ -168,9 +168,9 @@ class InnerSleeveTests(unittest.TestCase):
               "args": {"radius": 0.7, "z0": -2.8, "length": 1.6}}],
             project_path=r"D:\sandbox\b0.aedt", design_name="B0_f24_thin",
         )
-        self.assertIn("app.modeler.subtract('coax_diel', 'antopt_bore'", code)
-        self.assertIn("radius=0.7, height=1.6, name='antopt_sleeve'", code)
-        self.assertIn("app.modeler.unite(['coax_inner', 'antopt_sleeve'])", code)
+        self.assertIn("app.modeler.subtract('coax_diel', 'aster_bore'", code)
+        self.assertIn("radius=0.7, height=1.6, name='aster_sleeve'", code)
+        self.assertIn("app.modeler.unite(['coax_inner', 'aster_sleeve'])", code)
 
     def test_sleeve_must_exceed_the_inner_conductor(self):
         with self.assertRaises(OperationError):

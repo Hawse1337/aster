@@ -29,9 +29,9 @@
 
 | 要求 | 判定 | 证据 |
 |---|---|---|
-| P1① Pareto 前沿导出（CSV/JSON + 每代过程 + API + GUI 下载） | ✅ | `antopt/export.py`、`antopt/pareto.py`、`GET /api/pareto`、GUI「导出 Pareto」按钮；18 项测试 |
-| P1② 辐射效率（远场算 η，接入 objectives 与约束，附单测） | 🟡 代码 ✅ / 真机数据源受阻 | 数学 `antopt/physics/directivity.py`（8 项解析测试）、守护 `aedt_guard/evaluator.py`；约束用法 3 项测试；真机两条路径均被求解器否掉，见 `docs/evidence/efficiency_investigation.json` |
-| P2 yadof 适配器（受控执行） | ✅ | `antopt/interop/yadof*.py`；`python -m yadof check` 通过 |
+| P1① Pareto 前沿导出（CSV/JSON + 每代过程 + API + GUI 下载） | ✅ | `aster/export.py`、`aster/pareto.py`、`GET /api/pareto`、GUI「导出 Pareto」按钮；18 项测试 |
+| P1② 辐射效率（远场算 η，接入 objectives 与约束，附单测） | 🟡 代码 ✅ / 真机数据源受阻 | 数学 `aster/physics/directivity.py`（8 项解析测试）、守护 `aedt_guard/evaluator.py`；约束用法 3 项测试；真机两条路径均被求解器否掉，见 `docs/evidence/efficiency_investigation.json` |
+| P2 yadof 适配器（受控执行） | ✅ | `aster/interop/yadof*.py`；`python -m yadof check` 通过 |
 | **P2 8 候选 × 2 臂对拍** | ✅ | 8 个环径两臂都测，7 个完全一致（≤1.5e-4 dBi），见第二节 |
 | P3 GUI 变量案例真机求解 | ✅ | 2.05 / 2.15 / 2.20 / 2.25 / 2.30 / 2.35 / 2.40 / 2.45 全部完成 |
 | P4 漏波渐变降维（3 参数） | ✅ | `cases/lwa.py` + 11 项测试（生成 + 边界） |
@@ -101,7 +101,7 @@
 
 | 阶段 | 交付 | 验证 |
 |---|---|---|
-| A 统一配置层 | ntopt/config.py：探测 → config.toml → ANTOPT_* | 本机零配置探测全绿；入口脚本不再含硬编码路径（测试钉住） |
+| A 统一配置层 | ntopt/config.py：探测 → config.toml → ASTER_* | 本机零配置探测全绿；入口脚本不再含硬编码路径（测试钉住） |
 | B 稳定性闭环 | ntopt/stall.py、ntopt/status_watch.py、ntopt/failures.py | 停滞→杀→重试一次；12 类失败翻译成中文建议 |
 | C 队列持久化 | ntopt/gui/store.py（queue.sqlite）、/api/queue、/api/resume | 终态先落库再发布；重启后可按原参数续跑 |
 | D 采集接入 | ntopt/surrogate/backends.select_batch | auto/显式/降级三态；修掉符号错误后 qLogNEHVI 超体积为随机 1.85× |
@@ -117,7 +117,7 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 
 缺 JSON 数据文件（--selftest 抓到）、缺数据集导致 503、worker 用 sys.executable（冻结后是
 应用本身）、InProcessBridge/StdioBridge 在冻结进程都不可用、验收脚本因进程树未杀而挂住。
-最终架构：**exe 只做启动器**，用 venv 解释器重跑 python -m antopt.app，真机路径与源码完全同一份代码。
+最终架构：**exe 只做启动器**，用 venv 解释器重跑 python -m aster.app，真机路径与源码完全同一份代码。
 
 ### 分发物
 
@@ -137,12 +137,12 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 
 | 步骤 | 交付 | 关键测试/证据 |
 |---|---|---|
-| 优化闭环 | `antopt/recommend.py`、`GET /api/recommend`、页面「推荐下一批」 | 只认 `COMPLETED` 且字段完整的实测；少于 4 条直接说"数据不足"；候选上标注依据 run id |
+| 优化闭环 | `aster/recommend.py`、`GET /api/recommend`、页面「推荐下一批」 | 只认 `COMPLETED` 且字段完整的实测；少于 4 条直接说"数据不足"；候选上标注依据 run id |
 | 阶段耗时与失败率 | `RealJob.timings`、`RealRunManager.observability()`、`GET /api/observability` | 修掉"终态先落库导致最后一段永远缺失"的顺序问题 |
-| 结果与磁盘 | `antopt/campaigns.py`、`scripts/manage_campaigns.py` | 保留策略默认 dry-run；证据文件（ledger/queue/spec/projects）永不删，有测试逐项确认 |
+| 结果与磁盘 | `aster/campaigns.py`、`scripts/manage_campaigns.py` | 保留策略默认 dry-run；证据文件（ledger/queue/spec/projects）永不删，有测试逐项确认 |
 | 指标可用性 | `CaseRegistration.unavailable_metrics`、页面提示 | 辐射效率不可用与原因写在页面上，不再"点了才知道" |
-| 参数与偏好 | `antopt/preferences.py`、`POST /api/preferences` | 边界**只能收窄**不能越过案例物理界限（422 + 原因） |
-| 界面状态/版本/英文手册 | `antopt/observability.py`、页脚、`docs/user_manual_en.md` | 中英手册章节数一致（测试守着） |
+| 参数与偏好 | `aster/preferences.py`、`POST /api/preferences` | 边界**只能收窄**不能越过案例物理界限（422 + 原因） |
+| 界面状态/版本/英文手册 | `aster/observability.py`、页脚、`docs/user_manual_en.md` | 中英手册章节数一致（测试守着） |
 | 采集算法定论 | qLogNParEGO 接入 + 五臂对拍（8 次 / 20 次，配对统计） | qLogNEHVI 与 qLogEHVI 统计上不可区分；两者比 qLogNParEGO 高约 0.3 超体积（t>4） |
 
 ### 8.2 只有真机才暴露的四个问题
@@ -200,7 +200,7 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 | 透镜单元级参数化 | 未做 | 需要新的几何模型与真机验证，与"把优化做成闭环"是两件事 |
 | 辐射效率 | **已定论：本设计不可得** | 三条路径（直接性报告 / 全向网格 / 功率量）均有真机或 PyAEDT 证据，见 `docs/decisions/efficiency.md`；界面已标注不可用及原因 |
 | 多目标偏好接入超体积 | 部分 | 权重已接入标量后端；超体积参考点仅落盘展示 |
-| 推荐器不理解求解代价 | **已解决（v1.38.0）** | `antopt/cost.py` + 预算约束 + 页面预计耗时；留一法误差 7.3 分钟 |
+| 推荐器不理解求解代价 | **已解决（v1.38.0）** | `aster/cost.py` + 预算约束 + 页面预计耗时；留一法误差 7.3 分钟 |
 
 ## 九、1.39.0 现状（软件化第二阶段收尾）
 
@@ -210,11 +210,11 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 |---|---|---|
 | 用实测数据推荐下一批，并说明理由 | 页面「推荐下一批」/ `GET /api/recommend` | `docs/evidence/envelope_check.json`、真机 `real_loop_final.json` |
 | 推荐不会给出"注定失败"的点 | 几何校验 + 实测覆盖约束 + 预算过滤 | `tests/test_recommend_validation.py`、`tests/test_cost_budget.py` |
-| 预测单次求解代价并卡预算 | `antopt/cost.py`、`budget_seconds` | `docs/evidence/cost_model.json`（留一法 7.3 分钟） |
+| 预测单次求解代价并卡预算 | `aster/cost.py`、`budget_seconds` | `docs/evidence/cost_model.json`（留一法 7.3 分钟） |
 | 运行中可见、失败可读 | 页面「运行状态」、`/api/observability`、`/api/runs` | `docs/evidence/live_queue.json`（0.0 秒可见） |
 | 停滞自动处置 | 三通道 + 求解预算（45 分钟兜底） | `docs/evidence/stall_channel.json`（6 秒识别） |
 | 结果与磁盘管理 | 页面导出、`scripts/manage_campaigns.py` | `tests/test_campaigns.py` |
-| 参数边界与目标偏好可改 | 页面参数面板 + 「保存边界与权重」 | `%APPDATA%\antopt\preferences.json` |
+| 参数边界与目标偏好可改 | 页面参数面板 + 「保存边界与权重」 | `%APPDATA%\aster\preferences.json` |
 | 可安装、可便携 | `dist/AntennaOptimizer-1.39.0-setup.exe` / `-portable.zip` | `docs/evidence/installer.json`、`live_queue.json` |
 | 本设计不产出的指标提前声明 | 「约束」下方不可用提示 | `docs/decisions/efficiency.md` |
 
@@ -230,7 +230,7 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 ### 9.3 质量与发布
 
 - 设计仓测试 **657 全绿**（本阶段起点 526）；守护仓 **439 全绿**；
-- 版本单一来源（`antopt/version.py` ← 最新 tag，`scripts/release.py --check` 守护），
+- 版本单一来源（`aster/version.py` ← 最新 tag，`scripts/release.py --check` 守护），
   `CHANGELOG.md` 由标签间提交生成；
 - 分发物 1.39.0 已重建并完成安装/卸载零残留与打包冒烟验证。
 
@@ -273,11 +273,11 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 ### 10.4 安装版启动缺陷（v1.44.1，用户现场发现）
 
 用户在 `D:\AntennaOptimizer` 安装 1.44.0 后双击无反应、手册也打不开。两个真实缺陷：手册路径
-指向 `{app}` 而文件在 `_internal`；以及**冻结包只带了 `antopt` 的数据文件**，重启的
-`python -m antopt.app` 无法导入包——此前打包验证都以仓库为 cwd，源码树掩盖了它。修复：把包源码
+指向 `{app}` 而文件在 `_internal`；以及**冻结包只带了 `aster` 的数据文件**，重启的
+`python -m aster.app` 无法导入包——此前打包验证都以仓库为 cwd，源码树掩盖了它。修复：把包源码
 打进 `_internal`、启动失败写日志并弹窗、修正手册路径、三个验证脚本改用临时 cwd，
 并新增 `tests/test_packaging_layout.py`。已在本机 `D:\AntennaOptimizer` 重装 1.44.1 并从
-`<user-home>` 启动验证：`/api/about` 返回 `antopt 1.44.1`。
+`<user-home>` 启动验证：`/api/about` 返回 `aster 1.44.1`。
 
 ### 10.5 启动体验（v1.44.2）
 
@@ -285,7 +285,7 @@ eal_acceptance.py | 安装/卸载零残留；打包产物真机求解 COMPLETED�
 用控制台版解释器重跑、`--real` 在启动时急切拉起 AEDT、浏览器打开结果被忽略。现在：子进程以
 `CREATE_NO_WINDOW` 启动；AEDT 改为第一个排队任务开始时惰性启动；浏览器打开失败会弹窗给出 URL；
 启动日志记录模式与 GUI 地址。已在安装版上从 `<user-home>` 以 `--real` 验证：
-启动前后 AEDT 进程数 0→0，`/api/about` 返回 `antopt 1.44.2`。
+启动前后 AEDT 进程数 0→0，`/api/about` 返回 `aster 1.44.2`。
 
 ### 10.6 方向性目标（v1.44.4）
 

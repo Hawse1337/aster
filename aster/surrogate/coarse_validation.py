@@ -1,6 +1,6 @@
 """Offline evidence gate for *measured* coarse-to-fine screening.
 
-Run ``python -m antopt.surrogate.coarse_validation --help``. No solver, ledger
+Run ``python -m aster.surrogate.coarse_validation --help``. No solver, ledger
 write, automatic recipe inference, or promotion of a prediction to a measurement.
 The permission is local to the declared observable/recipe/parameter support; a
 held-out replay does not establish population-wide safety or realized savings.

@@ -13,8 +13,8 @@ python examples/dry_run_demo.py --samples 128
 ## Using the library directly
 
 ```python
-from antopt.core import ParamSpace, ParamSpec, latin_hypercube
-from antopt.optimize import Evaluation, pareto_archive
+from aster.core import ParamSpace, ParamSpec, latin_hypercube
+from aster.optimize import Evaluation, pareto_archive
 
 space = ParamSpace([ParamSpec("r", "mm", 30.0, 70.0, 50.0)])
 candidates = latin_hypercube(space, 32, seed=1)

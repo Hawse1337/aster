@@ -3,8 +3,8 @@
   "campaigns": [
     "D:\\AntennaDesignSystem\\dist\\real_loop_final",
     "D:\\AntennaDesignSystem\\dist\\real_loop",
-    "D:\\AgentAEDT_Collab\\antopt_bench\\p2c_arm",
-    "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_eff_optin2"
+    "D:\\AgentAEDT_Collab\\aster_bench\\p2c_arm",
+    "D:\\AgentAEDT_Collab\\aster_bench\\campaign_eff_optin2"
   ],
   "normalisation": {
     "ideal": [

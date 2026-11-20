@@ -4,10 +4,10 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases.lens28 import build_case
-from antopt.cases.lens28_operators import aperture_operator, operator_operations
-from antopt.core import SpecError
-from antopt.topology.operators import FamilyManager, FamilyVersion
+from aster.cases.lens28 import build_case
+from aster.cases.lens28_operators import aperture_operator, operator_operations
+from aster.core import SpecError
+from aster.topology.operators import FamilyManager, FamilyVersion
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

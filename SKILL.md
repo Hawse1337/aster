@@ -1,11 +1,11 @@
 ---
-name: antopt
+name: aster
 description: Physics-guided antenna design and optimisation library and agent skill. Use when an agent must define a parameterized antenna design space, run dry or real AEDT-backed design studies through a guarded solver, keep measured artifacts as evidence, apply explicit bandwidth/pattern acceptance rules, or re-score recorded runs without re-solving. The web GUI is not included; real runs require the ansys-aedt-mcp guard plus AEDT 2026 R1.
 ---
 
-# antopt
+# aster
 
-`antopt` is a design bench for antenna studies, packaged in this repository as a Python library, a
+`aster` is a design bench for antenna studies, packaged in this repository as a Python library, a
 command-line entry point and this agent skill. The bench keeps every solve's artifacts so that a
 changed requirement re-judges history instead of re-solving it.
 
@@ -14,8 +14,8 @@ Hero and loop diagrams live in [`assets/`](assets/): `banner.svg`, `loop.svg`.
 ## Install as a skill
 
 ```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\antopt" | Out-Null
-Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\antopt\SKILL.md"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\aster" | Out-Null
+Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\aster\SKILL.md"
 ```
 
 For other agents, use the same `SKILL.md` convention (YAML front matter with `name` and
@@ -41,9 +41,9 @@ py -3.10 -m venv .venv
 ## Quick checks
 
 ```powershell
-python -m antopt version
-python -m antopt cases
-python -m antopt dry-demo --samples 64
+python -m aster version
+python -m aster cases
+python -m aster dry-demo --samples 64
 python -m pytest tests -q
 ```
 
@@ -51,20 +51,20 @@ python -m pytest tests -q
 
 | task | API |
 |---|---|
-| search space | `antopt.core.ParamSpec`, `ParamSpace` |
-| goals/constraints | `antopt.core.Objective`, `Constraint`, `CaseSpec` |
-| sampling | `antopt.core.latin_hypercube`, `sample_population` |
-| population comparison | `antopt.optimize.Evaluation`, `pareto_archive`, `fast_non_dominated_sort` |
-| campaigns | `antopt.campaign`, `antopt.campaigns`, `antopt.worker` |
-| measured runs | `antopt.runtime.runner.RealRunManager`, `antopt.runtime.store.JobStore` |
-| S11 acceptance | `antopt.band_acceptance.assess_touchstone_band` |
-| pattern acceptance | `antopt.pattern_acceptance.assess_ring_pattern` |
-| combined verdict | `antopt.acceptance` |
+| search space | `aster.core.ParamSpec`, `ParamSpace` |
+| goals/constraints | `aster.core.Objective`, `Constraint`, `CaseSpec` |
+| sampling | `aster.core.latin_hypercube`, `sample_population` |
+| population comparison | `aster.optimize.Evaluation`, `pareto_archive`, `fast_non_dominated_sort` |
+| campaigns | `aster.campaign`, `aster.campaigns`, `aster.worker` |
+| measured runs | `aster.runtime.runner.RealRunManager`, `aster.runtime.store.JobStore` |
+| S11 acceptance | `aster.band_acceptance.assess_touchstone_band` |
+| pattern acceptance | `aster.pattern_acceptance.assess_ring_pattern` |
+| combined verdict | `aster.acceptance` |
 
 ## Real-run contract
 
-1. Configure `ANTOPT_AEDT_EXE`, `ANTOPT_GUARD_REPO`, `ANTOPT_VENV_PYTHON`,
-   `ANTOPT_REFERENCE_PROJECT`, `ANTOPT_CAMPAIGN_ROOT`.
+1. Configure `ASTER_AEDT_EXE`, `ASTER_GUARD_REPO`, `ASTER_VENV_PYTHON`,
+   `ASTER_REFERENCE_PROJECT`, `ASTER_CAMPAIGN_ROOT`.
 2. Target one AEDT session explicitly (PID or gRPC port); the guard refuses implicit sessions.
 3. Submit a `RealJob`; the runner copies the project, applies parameters, solves under the guard's
    budget, exports S11/far field and stores the artifacts.

@@ -45,7 +45,7 @@ def build_case() -> CaseSpec:
         family_id="lens2g4_10g_v1",
         antenna_type="dielectric_lens_omni",
         param_space=space,
-        builder="antopt.cases.lens2g4_10g:build_model",
+        builder="aster.cases.lens2g4_10g:build_model",
         notes="10 GHz scaled Lens2G4 dielectric disc; truncated biconical center; "
               "5-18 GHz target; thin-rim variant",
     )

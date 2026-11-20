@@ -5,7 +5,7 @@ import os
 import unittest
 from unittest import mock
 
-from antopt.bridge import InProcessBridge, StdioBridge, make_bridge
+from aster.bridge import InProcessBridge, StdioBridge, make_bridge
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

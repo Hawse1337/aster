@@ -7,7 +7,7 @@ from collections import Counter
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.cases import lens28_var
+from aster.cases import lens28_var
 
 
 class IncrementalTests(unittest.TestCase):

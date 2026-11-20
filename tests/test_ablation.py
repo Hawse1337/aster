@@ -4,10 +4,10 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.benchmark.ablation import run_ablation, run_surrogate_assisted
-from antopt.benchmark.harness import run_strategy
-from antopt.executor import SyntheticExecutor
-from antopt.synthetic import SyntheticProblem, build_case
+from aster.benchmark.ablation import run_ablation, run_surrogate_assisted
+from aster.benchmark.harness import run_strategy
+from aster.executor import SyntheticExecutor
+from aster.synthetic import SyntheticProblem, build_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -99,7 +99,7 @@ class SurrogateLoopHygieneTests(unittest.TestCase):
         result = self._run(40, seed=0)
         random_case = build_case()
         executor = SyntheticExecutor(random_case, self.problem)
-        from antopt.benchmark.harness import run_strategy
+        from aster.benchmark.harness import run_strategy
         baseline = run_strategy(random_case, executor, "random", budget=40, seed=0,
                                 reference=(0.0, -30.0))
         self.assertGreaterEqual(result.feasible, baseline.feasible)

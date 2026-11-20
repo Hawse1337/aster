@@ -4,9 +4,9 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases import lens28_userfix
-from antopt.parametric.aedt import OperationError, render, validate_operations
-from antopt.parametric.registry import clear_registry, get_case, list_cases, register_case
+from aster.cases import lens28_userfix
+from aster.parametric.aedt import OperationError, render, validate_operations
+from aster.parametric.registry import clear_registry, get_case, list_cases, register_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

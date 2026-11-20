@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.cases.lens28_var import build_case
-from antopt.robustness import ToleranceSpec, perturbed_designs, score_robustness
+from aster.cases.lens28_var import build_case
+from aster.robustness import ToleranceSpec, perturbed_designs, score_robustness
 
 
 def _space():
@@ -55,7 +55,7 @@ class PerturbationTests(unittest.TestCase):
     def test_already_measured_variants_are_dropped(self):
         spec = ToleranceSpec(parameters=("ring_inner",))
         first = perturbed_designs(self.space, self.nominal, spec)
-        from antopt.distributed import config_hash
+        from aster.distributed import config_hash
 
         measured = [config_hash("", variant) for variant in first["variants"]]
         again = perturbed_designs(self.space, self.nominal, spec, measured=measured)

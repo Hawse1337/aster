@@ -4,10 +4,10 @@ from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
 
-from antopt.surrogate.batch import diverse_batch
-from antopt.surrogate.backends import select_batch
-from antopt.surrogate.models import GaussianProcessModel, cross_validate, ModelReport, model_is_usable
-from antopt.surrogate.botorch_acq import available
+from aster.surrogate.batch import diverse_batch
+from aster.surrogate.backends import select_batch
+from aster.surrogate.models import GaussianProcessModel, cross_validate, ModelReport, model_is_usable
+from aster.surrogate.botorch_acq import available
 
 
 class ValidationAndDiversityTests(unittest.TestCase):
@@ -72,7 +72,7 @@ class ValidationAndDiversityTests(unittest.TestCase):
         self.assertAlmostEqual(report.to_dict()["nominal_gaussian_coverage"], .9545)
 
     def test_unvalidated_auto_selection_explores_without_calling_botorch(self):
-        import antopt.surrogate.backends as backends
+        import aster.surrogate.backends as backends
         x = np.linspace(0, 1, 8)[:, None]
         y = np.column_stack([x[:, 0], 1 - x[:, 0]])
         with patch.object(backends, "_quality", return_value=[{"usable": False, "coverage": .1}]), \
@@ -84,7 +84,7 @@ class ValidationAndDiversityTests(unittest.TestCase):
         self.assertEqual(result.diagnostics["stage"], "exploration")
 
     def test_smooth_objective_cannot_hide_unpredictable_constraint(self):
-        import antopt.surrogate.backends as backends
+        import aster.surrogate.backends as backends
         x = np.linspace(0, 1, 20)[:, None]
         y = x.copy()
         constraint = np.where(np.arange(len(x)) % 2, 1.0, -1.0)[:, None]
@@ -102,7 +102,7 @@ class ValidationAndDiversityTests(unittest.TestCase):
         self.assertEqual(result.diagnostics["stage"], "exploration")
 
     def test_constant_constraint_has_finite_fixed_scale_and_held_out_evidence(self):
-        from antopt.surrogate.backends import _quality
+        from aster.surrogate.backends import _quality
         x = np.linspace(0, 1, 8)[:, None]
         report = _quality(x, np.full((8, 1), -.2), role="constraint")[0]
         self.assertEqual(report["error_scale"], 1.0)
@@ -119,7 +119,7 @@ class FittedConstrainedBotorchTests(unittest.TestCase):
         from botorch.models import SingleTaskGP
         from botorch.models.transforms.outcome import Standardize
         from gpytorch.mlls import ExactMarginalLogLikelihood
-        from antopt.surrogate.botorch_acq import _fit_gp
+        from aster.surrogate.botorch_acq import _fit_gp
         x = torch.linspace(0, 1, 12, dtype=torch.double)[:, None]
         y = torch.sin(x * 9)
         initial = SingleTaskGP(x, y, outcome_transform=Standardize(m=1))
@@ -134,7 +134,7 @@ class FittedConstrainedBotorchTests(unittest.TestCase):
         self.assertEqual(diagnostics["fit"]["budget_seconds"], 6)
 
     def test_no_feasible_baseline_minimises_expected_violation(self):
-        from antopt.surrogate.botorch_acq import qlognehvi_batch
+        from aster.surrogate.botorch_acq import qlognehvi_batch
         x = np.linspace(0, 1, 8)[:, None]
         y = np.column_stack([(x[:, 0] - .9) ** 2, x[:, 0]])
         diagnostics = {}
@@ -148,7 +148,7 @@ class FittedConstrainedBotorchTests(unittest.TestCase):
 
     def test_fit_failure_is_explicit(self):
         import torch
-        from antopt.surrogate.botorch_acq import _fit_gp
+        from aster.surrogate.botorch_acq import _fit_gp
         diagnostics = {}
         with patch("botorch.fit.fit_gpytorch_mll", side_effect=RuntimeError("budget failed")):
             with self.assertRaisesRegex(RuntimeError, "hyperparameter fitting failed"):
@@ -176,7 +176,7 @@ class FittedConstrainedBotorchTests(unittest.TestCase):
 
 class PhysicalUnitsResearchEntryTests(unittest.TestCase):
     def test_refitting_high_only_cannot_reuse_an_old_low_fidelity_response(self):
-        from antopt.surrogate.multifidelity import MultiFidelityModel, MultiFidelitySample
+        from aster.surrogate.multifidelity import MultiFidelityModel, MultiFidelitySample
         low = [MultiFidelitySample([x], 20 + x, "low") for x in np.linspace(0, 1, 8)]
         high = [MultiFidelitySample([x], x * x, "high") for x in np.linspace(0, 1, 5)]
         reused = MultiFidelityModel().fit(low + high).fit(high)
@@ -186,9 +186,9 @@ class PhysicalUnitsResearchEntryTests(unittest.TestCase):
             np.testing.assert_allclose(left, right)
 
     def test_campaign_prediction_queries_stay_in_training_units(self):
-        from antopt.core import ParamSpec, ParamSpace
-        from antopt.surrogate import campaign_data
-        from antopt.surrogate.dataset import Dataset, Sample
+        from aster.core import ParamSpec, ParamSpace
+        from aster.surrogate import campaign_data
+        from aster.surrogate.dataset import Dataset, Sample
         space = ParamSpace([ParamSpec("x", "mm", 2, 4, 3, integer_step=0)])
         case = SimpleNamespace(family=SimpleNamespace(param_space=space))
         dataset = Dataset()
@@ -209,9 +209,9 @@ class PhysicalUnitsResearchEntryTests(unittest.TestCase):
             campaign_data.grid_prediction(case, dataset, per_axis=5)
 
     def test_ablation_pool_uses_physical_parameter_values(self):
-        from antopt.core import CaseSpec, FamilySpec, ParamSpace, ParamSpec, Objective
-        from antopt.optimize import Evaluation
-        from antopt.benchmark import ablation
+        from aster.core import CaseSpec, FamilySpec, ParamSpace, ParamSpec, Objective
+        from aster.optimize import Evaluation
+        from aster.benchmark import ablation
         case = CaseSpec("units", "fake", "fake", (1., 2.),
                         FamilySpec("f", "fake", ParamSpace([ParamSpec("x", "mm", 2, 4, 3, integer_step=0)])),
                         constraints=[], objectives=[Objective("score", "peak_gain", "maximize")])

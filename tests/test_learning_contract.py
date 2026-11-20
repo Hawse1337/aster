@@ -10,10 +10,10 @@ from unittest.mock import patch
 
 import numpy as np
 
-from antopt.core import CaseSpec, Constraint, FamilySpec, Objective, ParamSpace, ParamSpec
-from antopt.learning_contract import case_contract, compatibility
-from antopt.recommend import recommend_from_runs, training_set
-from antopt.surrogate.backends import BatchSelection
+from aster.core import CaseSpec, Constraint, FamilySpec, Objective, ParamSpace, ParamSpec
+from aster.learning_contract import case_contract, compatibility
+from aster.recommend import recommend_from_runs, training_set
+from aster.surrogate.backends import BatchSelection
 
 
 def case():
@@ -81,7 +81,7 @@ class LearningContractTests(unittest.TestCase):
         self.assertEqual(case_contract(self.case)["identity"], self.contract["identity"])
 
     def test_cold_start_is_bounded_validated_and_never_calls_surrogate(self):
-        with patch("antopt.recommend.select_batch", side_effect=AssertionError("not a GP yet")):
+        with patch("aster.recommend.select_batch", side_effect=AssertionError("not a GP yet")):
             result = self.recommend([], count=8, validator=lambda params: params["x"] >= 5)
         self.assertEqual(result["method"], "controlled_exploration")
         self.assertGreater(len(result["recommendations"]), 0)
@@ -97,7 +97,7 @@ class LearningContractTests(unittest.TestCase):
                    "params": {"n": 8, "x": 8}}
         selection = BatchSelection(np.asarray([[0, 0], [8, 8], [6.1, 6.2],
                                                [6.3, 6.4], [7.2, 7.1]]), "fake")
-        with patch("antopt.recommend.select_batch", return_value=selection) as pick:
+        with patch("aster.recommend.select_batch", return_value=selection) as pick:
             result = self.recommend(self.rows + [pending], count=2)
         self.assertEqual(pick.call_args.kwargs["constraint_obs"].shape, (6, 2))
         self.assertTrue(np.all(pick.call_args.kwargs["constraint_obs"] <= 0))
@@ -113,16 +113,16 @@ class LearningContractTests(unittest.TestCase):
         risk = SimpleNamespace(predict=lambda p: SimpleNamespace(to_dict=lambda:
             {"known": True, "risk_upper": 0.1}))
         selection = BatchSelection(np.asarray([[6, 6], [7, 7]]), "fake")
-        with patch("antopt.recommend.select_batch", return_value=selection), \
-             patch("antopt.cost.fit_cost_model", return_value=cost), \
-             patch("antopt.risk.fit_risk_model", return_value=risk):
+        with patch("aster.recommend.select_batch", return_value=selection), \
+             patch("aster.cost.fit_cost_model", return_value=cost), \
+             patch("aster.risk.fit_risk_model", return_value=risk):
             result = self.recommend(count=2, budget_seconds=100)
         self.assertEqual(len(result["recommendations"]), 1)
         self.assertEqual(result["batch_conservative_seconds"], 70)
         self.assertEqual(len(result["over_budget"]), 1)
 
     def test_queue_persists_contract_without_changing_old_rows(self):
-        from antopt.runtime.store import JobStore
+        from aster.runtime.store import JobStore
         with tempfile.TemporaryDirectory() as tmp:
             store = JobStore(Path(tmp) / "queue.sqlite")
             first = store.enqueue([{"n": 5, "x": 5}], "test", "batch",

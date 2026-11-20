@@ -32,7 +32,7 @@ def _broker_read(project_path, design_name, setup_name):
     design = project.SetActiveDesign(design_name)
     radiation = design.GetChildObject("Radiation")
     spheres = [radiation.GetChildObject(name) for name in radiation.GetChildNames()
-               if name != "ANTOPT_PrincipalCuts"
+               if name != "ASTER_PrincipalCuts"
                and radiation.GetChildObject(name).GetPropValue("Type") == "Infinite Sphere"]
     if not spheres:
         raise ValueError("No Infinite Sphere exists in this design")
@@ -99,7 +99,7 @@ def _broker_reports(project_path, design_name, snapshot, output_dir, keep_report
     radiation = design.GetChildObject("Radiation")
     original = radiation.GetChildObject(snapshot["sphere_name"])
     coord = str(original.GetPropValue("Coordinate System"))
-    cuts_sphere = "ANTOPT_PrincipalCuts"
+    cuts_sphere = "ASTER_PrincipalCuts"
     sphere_args = ["NAME:" + cuts_sphere, "UseCustomRadiationSurface:=", False,
                    "CustomRadiationSurface:=", "", "CSDefinition:=", "Theta-Phi",
                    "Polarization:=", "Linear", "SlantAngle:=", "45deg",
@@ -120,8 +120,8 @@ def _broker_reports(project_path, design_name, snapshot, output_dir, keep_report
     report_sets = []
     for freq in sorted({r[0] for r in snapshot["samples"]}):
         key = format(freq, ".12g").replace(".", "p")
-        names = ["ANTOPT_3D_Gain_" + key + "GHz", "ANTOPT_E_Plane_" + key + "GHz",
-                 "ANTOPT_H_Plane_" + key + "GHz", "ANTOPT_EH_Overlay_" + key + "GHz"]
+        names = ["ASTER_3D_Gain_" + key + "GHz", "ASTER_E_Plane_" + key + "GHz",
+                 "ASTER_H_Plane_" + key + "GHz", "ASTER_EH_Overlay_" + key + "GHz"]
         # Refresh only these owned reports; leave every user report untouched.
         existing = [name for name in names if name in list(reporter.GetAllReportNames())]
         if existing:
@@ -330,7 +330,7 @@ def write_report_opener(project: Path, design: str, reports: list[str], pid: int
     environment = config.load()
     python = str(environment.venv_python or sys.executable)
     source_root = str(Path(__file__).resolve().parent.parent)
-    manifest = project.with_suffix(".antopt-reports.json")
+    manifest = project.with_suffix(".aster-reports.json")
     project_sha256 = project_sha256 or hashlib.sha256(project.read_bytes()).hexdigest()
     try:
         previous = json.loads(manifest.read_text(encoding="utf-8"))
@@ -347,7 +347,7 @@ def write_report_opener(project: Path, design: str, reports: list[str], pid: int
                                   ensure_ascii=False), encoding="utf-8")
     lines = ["@echo off", "@chcp 65001 >nul", "setlocal",
              'set "PYTHONPATH=' + source_root.replace("%", "%%") + ';%PYTHONPATH%"',
-             '"' + python + '" -m antopt.open_reports --manifest "%~dp0' + manifest.name + '"',
+             '"' + python + '" -m aster.open_reports --manifest "%~dp0' + manifest.name + '"',
              "if errorlevel 1 pause", ""]
     path = project.with_name(project.stem + "_查看方向图.cmd")
     path.write_bytes("\r\n".join(lines).encode("utf-8"))
@@ -379,7 +379,7 @@ def open_saved_reports(campaign: Path, run_id: str, frequency_ghz: float | None 
         # AEDT rewrites window/layout state during an ordinary Save. The sidecar
         # identifies the latest captured run; a later capture replaces its token.
         try:
-            latest = json.loads(project.with_suffix(".antopt-reports.json").read_text(encoding="utf-8"))
+            latest = json.loads(project.with_suffix(".aster-reports.json").read_text(encoding="utf-8"))
         except (OSError, ValueError):
             latest = {}
         if (latest.get("project") != str(project.resolve()) or latest.get("design") != raw["design"]
@@ -388,8 +388,8 @@ def open_saved_reports(campaign: Path, run_id: str, frequency_ghz: float | None 
     write_report_opener(project, raw["design"], reports, raw.get("aedt_pid"), raw.get("project_sha256"))
     environment = os.environ.copy()
     environment["PYTHONPATH"] = str(Path(__file__).resolve().parent.parent) + os.pathsep + environment.get("PYTHONPATH", "")
-    result = subprocess.run([str(config.load().venv_python or sys.executable), "-m", "antopt.open_reports",
-                             "--manifest", str(project.with_suffix(".antopt-reports.json"))],
+    result = subprocess.run([str(config.load().venv_python or sys.executable), "-m", "aster.open_reports",
+                             "--manifest", str(project.with_suffix(".aster-reports.json"))],
                             env=environment, capture_output=True, text=True, encoding="utf-8", errors="replace",
                             timeout=120, creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0) if os.name=="nt" else 0)
     if result.returncode:

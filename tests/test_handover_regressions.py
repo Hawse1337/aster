@@ -6,9 +6,9 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from antopt.runtime.runner import RealJob, RealRunManager
-from antopt.stall import StallWatch, system_cpu_seconds
-from antopt.touchstone import contiguous_bandwidth, read_touchstone
+from aster.runtime.runner import RealJob, RealRunManager
+from aster.stall import StallWatch, system_cpu_seconds
+from aster.touchstone import contiguous_bandwidth, read_touchstone
 
 
 class TouchstoneRegressionTests(unittest.TestCase):

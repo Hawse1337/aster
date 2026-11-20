@@ -6,17 +6,17 @@ import unittest
 
 import numpy as np
 
-from antopt.controller import Decision, GLOBAL, LOCAL, PHYSICS, STOP, SURROGATE, TOPOLOGY, StrategyController
-from antopt.cost import fit_cost_model
-from antopt.core import ParamSpec
-from antopt.experiment import run_experiment
-from antopt.optimize import Evaluation, evaluate_constraints
-from antopt.physics.sensitivity import BudgetedEvaluator, EvaluationBudgetExceeded, compute_sensitivity
-from antopt.risk import failure_kind, fit_risk_model
-from antopt.robustness import score_robustness
-from antopt.strategy_loop import run_local_search
-from antopt.synthetic import build_case, SyntheticProblem
-from antopt.topology.operators import FamilyManager, FamilyVersion, StructureOperator
+from aster.controller import Decision, GLOBAL, LOCAL, PHYSICS, STOP, SURROGATE, TOPOLOGY, StrategyController
+from aster.cost import fit_cost_model
+from aster.core import ParamSpec
+from aster.experiment import run_experiment
+from aster.optimize import Evaluation, evaluate_constraints
+from aster.physics.sensitivity import BudgetedEvaluator, EvaluationBudgetExceeded, compute_sensitivity
+from aster.risk import failure_kind, fit_risk_model
+from aster.robustness import score_robustness
+from aster.strategy_loop import run_local_search
+from aster.synthetic import build_case, SyntheticProblem
+from aster.topology.operators import FamilyManager, FamilyVersion, StructureOperator
 
 
 def row(index, status="COMPLETED", error_code=None, seconds=100, x=0.5):

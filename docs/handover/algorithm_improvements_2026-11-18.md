@@ -8,8 +8,8 @@
 
 | 改动 | 当前行为 | 主要位置 |
 |---|---|---|
-| 案例契约统一 | 从当前 `CaseSpec` 派生全部目标、优化方向和硬约束，约束观测统一为 `g≤0`；当前透镜案例不再只推荐带宽/增益两个目标 | `antopt/recommend.py`、`gui/server.py` |
-| 数据身份 | 保存案例、结构与参数模式、源工程、渲染/profile 源码、测量配方、提取器及可获得的软件环境指纹 | `antopt/learning_contract.py`、`gui/runner.py` |
+| 案例契约统一 | 从当前 `CaseSpec` 派生全部目标、优化方向和硬约束，约束观测统一为 `g≤0`；当前透镜案例不再只推荐带宽/增益两个目标 | `aster/recommend.py`、`gui/server.py` |
+| 数据身份 | 保存案例、结构与参数模式、源工程、渲染/profile 源码、测量配方、提取器及可获得的软件环境指纹 | `aster/learning_contract.py`、`gui/runner.py` |
 | 历史兼容 | 旧数据仍可查看；缺契约、缺参数维度或契约不兼容时，明确说明排除原因，不自动补当前默认值进入训练 | `learning_contract.py`、`recommend.py`、`gui/history.py` |
 | 预测隔离 | `PREDICTED` 数据不进入真实指标训练、耗时/风险模型或已测点占用集合；新候选的实测可行性保持未知 | `recommend.py`、`response_model.py` |
 | 队列冻结 | 契约随任务持久化；未绑定实际配方的任务在执行前绑定，随后重试须保持一致；建模使用任务自己的案例 | `gui/store.py`、`worker.py`、`gui/runner.py` |
@@ -29,7 +29,7 @@
 
 自动后端在模型质量不足或 BoTorch 不可用/失败时可降级到显式标注的探索/`diverse_ei`，返回实际方法和诊断。**显式指定 BoTorch 方法时，用户可在质量尚未验证的情况下继续请求该方法，返回值会注明这一边界；不能把质量检查描述成所有调用都无法绕过的硬门。** 显式后端错误也不会被自动模式之外的调用静默吞掉。
 
-主要位置：`antopt/surrogate/{botorch_acq,backends,batch,models,campaign_data}.py`、`benchmark/ablation.py`、`gui/static/index.html`。
+主要位置：`aster/surrogate/{botorch_acq,backends,batch,models,campaign_data}.py`、`benchmark/ablation.py`、`gui/static/index.html`。
 
 ## 3. 预算、失败风险与研究循环
 

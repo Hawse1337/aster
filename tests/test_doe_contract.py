@@ -3,15 +3,15 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from antopt.core import ParamSpace, ParamSpec
-from antopt.doe import plan_doe, load_points, enqueue_plan
+from aster.core import ParamSpace, ParamSpec
+from aster.doe import plan_doe, load_points, enqueue_plan
 
 
 class DoeContractTests(unittest.TestCase):
     def test_queue_does_not_confuse_other_cases_or_measurement_recipes(self):
-        from antopt.runtime.store import JobStore
-        from antopt.learning_contract import case_contract
-        from antopt.cases.lens28_var import build_case
+        from aster.runtime.store import JobStore
+        from aster.learning_contract import case_contract
+        from aster.cases.lens28_var import build_case
         case = build_case()
         contract = case_contract(case)
         params = case.family.param_space.default()

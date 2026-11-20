@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.core import SpecError
-from antopt.families import FamilyBase, FamilyRegistry, file_sha256
+from aster.core import SpecError
+from aster.families import FamilyBase, FamilyRegistry, file_sha256
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

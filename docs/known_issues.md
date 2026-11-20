@@ -29,7 +29,7 @@
 | 13 | 退化维度参与拟合（归一化退化、BoTorch 告警） | v1.35.0 | 只拟合变化维度，常量回填；`check_envelope` 输出 |
 | 14 | 可行边界停在网格点上 / 实测与可行区间不相交时全退化 | v1.35.0 | 二分精修 + 以实测为准的回落 |
 | 15 | 推荐批次重复点（同一角给两次） | v1.34.0 | 去重阈值 + `dropped_duplicates` |
-| 16 | 推荐器完全不理解求解代价 | v1.38.0 | `antopt/cost.py`、预算约束、`docs/evidence/cost_model.json` |
+| 16 | 推荐器完全不理解求解代价 | v1.38.0 | `aster/cost.py`、预算约束、`docs/evidence/cost_model.json` |
 | 17 | 版本号停在 1.21.0 而标签已到 1.36.x（安装包带旧号） | v1.38.1 | `scripts/release.py --check`、`tests/test_release.py` |
 | 18 | 便携版是手工压的，停留在 1.21.0 | v1.38.1 | `packaging/build.py --portable`，1.39.0 两个分发物均已重建 |
 | 19 | 页脚版本元素位置错误、下载路由 `/api/export.csv` 契约不匹配 | v1.39.0 | `tests/test_page_contract.py`（当场抓到并修复） |
@@ -43,7 +43,7 @@
 
 | 问题 | 根因 | 修复 | 证据 |
 |---|---|---|---|
-| 装完双击无反应 | 冻结包只带 `antopt` 数据文件，可导入包在 PYZ 里；重跑 `python -m antopt.app` 时导入失败 | 构建时把 `antopt` 源码打进 `_internal` | 安装版在 `<user-home>` 启动成功，`/api/about` = `antopt 1.44.1` |
+| 装完双击无反应 | 冻结包只带 `aster` 数据文件，可导入包在 PYZ 里；重跑 `python -m aster.app` 时导入失败 | 构建时把 `aster` 源码打进 `_internal` | 安装版在 `<user-home>` 启动成功，`/api/about` = `aster 1.44.1` |
 | 安装结束报 `user_manual.md` code 2 | 快捷方式指向 `{app}\user_manual.md`，实际在 `_internal` | 两处路径改为 `_internal` | `tests/test_packaging_layout.py` |
 | 打包验证曾经"通过"却漏掉 | 验证脚本以仓库为 cwd，源码树掩盖了缺陷 | 三个验证脚本改用临时 cwd | 同上 |
 
@@ -77,7 +77,7 @@
 
 | 现象 | 根因 | 状态 |
 |---|---|---|
-| 求解前成片 `Solution is not a property name` | PyAEDT 初始化 PostProcessor 时枚举已有报告并读 trace 的 `Solution` 属性；guard/antopt 从不删除自建报告，报告越积越多 | **已修**：guard 导出后删除自建报告（1.22.3）、antopt 原生方向图导出图片后删除报告；探测不再发起报表查询（1.22.2） |
+| 求解前成片 `Solution is not a property name` | PyAEDT 初始化 PostProcessor 时枚举已有报告并读 trace 的 `Solution` 属性；guard/aster 从不删除自建报告，报告越积越多 | **已修**：guard 导出后删除自建报告（1.22.3）、aster 原生方向图导出图片后删除报告；探测不再发起报表查询（1.22.2） |
 | `*_查看方向图.cmd` 不再生成 | 报告已删除，图片仍在 artifacts/页面 | 行为变化，已接受；`open_saved_reports` 会给明确提示 |
 
 ## 一·补 首轮 DoE（v1.45.0）

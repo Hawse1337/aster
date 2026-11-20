@@ -1,6 +1,6 @@
 # AEDT integration
 
-`antopt` does not talk to AEDT directly. Real runs go through the companion guard system
+`aster` does not talk to AEDT directly. Real runs go through the companion guard system
 [ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp), which owns the AEDT session, the
 solve budget and the evidence trail.
 
@@ -16,8 +16,8 @@ The guard pins PyAEDT **1.10.0** and is validated on AEDT 2026 R1. PyAEDT docume
 
 ## Configuration
 
-`antopt` discovers the guard checkout and its interpreter through `Environment` (see
-`antopt/config.py`). Values can be set with `ANTOPT_*` environment variables or a config file:
+`aster` discovers the guard checkout and its interpreter through `Environment` (see
+`aster/config.py`). Values can be set with `ASTER_*` environment variables or a config file:
 
 | field | meaning |
 |---|---|
@@ -28,7 +28,7 @@ The guard pins PyAEDT **1.10.0** and is validated on AEDT 2026 R1. PyAEDT docume
 | `campaign_root` | writable campaign directory |
 | `aedt_version` | default `2026.1` |
 
-`python -m antopt` reports missing fields before a campaign starts; validation is explicit rather
+`python -m aster` reports missing fields before a campaign starts; validation is explicit rather
 than a stack trace halfway through a solve.
 
 ## Run lifecycle

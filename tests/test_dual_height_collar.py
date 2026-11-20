@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.cases import lens28_var
-from antopt.parametric.profile import with_ring_collar
+from aster.cases import lens28_var
+from aster.parametric.profile import with_ring_collar
 
 
 def tip_face_profile() -> list[list[float]]:

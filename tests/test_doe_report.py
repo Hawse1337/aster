@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.doe_report import load_doe_rows, summarise_doe, write_report
-from antopt.runtime.store import JobStore
+from aster.doe_report import load_doe_rows, summarise_doe, write_report
+from aster.runtime.store import JobStore
 
 
 def _metrics(bandwidth=2.0, gain=6.0, directivity=6.7, beam=90.0, ripple=1.8):

@@ -6,14 +6,14 @@ import unittest
 
 import numpy as np
 
-from antopt.surrogate.dataset import Dataset, Sample
-from antopt.surrogate.models import (
+from aster.surrogate.dataset import Dataset, Sample
+from aster.surrogate.models import (
     GaussianProcessModel,
     RBFModel,
     cross_validate,
     model_is_usable,
 )
-from antopt.surrogate.selection import expected_improvement, select_candidates
+from aster.surrogate.selection import expected_improvement, select_candidates
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

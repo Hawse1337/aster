@@ -48,8 +48,8 @@ python scripts/yadof_single_candidate.py --ring 2.2                   # yadof �
 
 | # | 缺陷 | 修复位置 |
 |---|---|---|
-| 1 | `ModelApplier` 直接索引参数 → GUI 只传改动字段时 `KeyError` | `antopt/apply.py`：合并默认值、非法值返回失败 |
-| 2 | 只建扫频、不设求解设置 → `E_NOT_CONVERGED` | `antopt/executor.setup_config_code`（唯一一份） |
+| 1 | `ModelApplier` 直接索引参数 → GUI 只传改动字段时 `KeyError` | `aster/apply.py`：合并默认值、非法值返回失败 |
+| 2 | 只建扫频、不设求解设置 → `E_NOT_CONVERGED` | `aster/executor.setup_config_code`（唯一一份） |
 | 3 | 每 job 新建 bridge → 会话不共享 | `RealRunManager._shared_bridge` |
 | 4 | 工作线程里的 MCP 调用落在无会话的事件循环 → `port 0` / `InsertFrequencySweep` | `prepare_in_caller_thread` |
 | 5 | 线程里重复配置 setup → `InsertFrequencySweep` | 已配置则跳过 |
@@ -72,7 +72,7 @@ python scripts/yadof_single_candidate.py --ring 2.2                   # yadof �
 
 ## 五、状态与标签
 
-- 测试：**antopt 402 全绿**、**guard 422 全绿**（1 skip）；
+- 测试：**aster 402 全绿**、**guard 422 全绿**（1 skip）；
 - 设计系统 tags：`v0.83.0 … v1.3.0`；守护侧：`v1.16.1`；
 - 目标判定：P1（①✅ ②🟡）、P2 适配器✅ / 8 候选对拍❌、P3✅、P4✅、P5✅，
   因此**目标不标记完成**，交接后从第二节的两项继续。

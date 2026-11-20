@@ -3,9 +3,9 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.cases import lens28_var
-from antopt.core import SpecError
-from antopt.recommend import training_set
+from aster.cases import lens28_var
+from aster.core import SpecError
+from aster.recommend import training_set
 
 
 class CompleteTests(unittest.TestCase):

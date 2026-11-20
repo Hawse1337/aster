@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from antopt.recommend import recommend_from_runs, training_set
+from aster.recommend import recommend_from_runs, training_set
 
 NAMES = ("ring_outer", "ring_height", "tip_offset")
 BOUNDS = [(1.2, 3.0), (0.3, 1.2), (0.9, 1.4)]
@@ -98,7 +98,7 @@ class RecommendationTests(unittest.TestCase):
     def test_duplicate_proposals_are_dropped(self):
         from unittest import mock
 
-        import antopt.recommend as module
+        import aster.recommend as module
 
         same = np.array([[2.2, 0.6, 1.0], [2.2, 0.6, 1.0]])
 
@@ -116,7 +116,7 @@ class RecommendationTests(unittest.TestCase):
     def test_a_boundary_proposal_says_so(self):
         from unittest import mock
 
-        import antopt.recommend as module
+        import aster.recommend as module
 
         edge = np.array([[2.0, 0.4, 1.0]])   # ring_outer above its 1.5-2.9 default here
 

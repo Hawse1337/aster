@@ -50,7 +50,7 @@ def build_case() -> CaseSpec:
         family_id="lens28_disc_v1",
         antenna_type="metal_lens_periodic_disc",
         param_space=space,
-        builder="antopt.cases.lens28:build_model",
+        builder="aster.cases.lens28:build_model",
         notes="original two discs + periodic corrugation must be preserved",
     )
     return CaseSpec(

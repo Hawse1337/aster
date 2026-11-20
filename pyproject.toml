@@ -3,8 +3,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "antopt"
-version = "1.51.0"
+name = "aster"
+version = "1.52.0"
 description = "Physics-guided antenna design and optimisation library (design side, no GUI)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,13 +26,13 @@ plot = ["matplotlib>=3.7"]
 dev = ["pytest>=8.0"]
 
 [project.scripts]
-antopt = "antopt.cli:main"
+aster = "aster.cli:main"
 
 [tool.setuptools]
 packages = [
-    "antopt", "antopt.benchmark", "antopt.cases", "antopt.interop",
-    "antopt.optimizer", "antopt.parametric", "antopt.physics",
-    "antopt.runtime", "antopt.surrogate", "antopt.topology",
+    "aster", "aster.benchmark", "aster.cases", "aster.interop",
+    "aster.optimizer", "aster.parametric", "aster.physics",
+    "aster.runtime", "aster.surrogate", "aster.topology",
 ]
 
 [tool.pytest.ini_options]

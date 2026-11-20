@@ -4,8 +4,8 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases.lens28 import build_case
-from antopt.executor import GuardConfig, GuardExecutor
+from aster.cases.lens28 import build_case
+from aster.executor import GuardConfig, GuardExecutor
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -126,7 +126,7 @@ class RecommendedPassesTests(unittest.TestCase):
             "feed_radius": 0.4, "ring2_outer": 0.0, "ring_height": 0.6}
 
     def _passes(self, **changes):
-        from antopt.executor import recommended_passes
+        from aster.executor import recommended_passes
         params = dict(self.BASE)
         params.update(changes)
         return recommended_passes(params, self.BASE)

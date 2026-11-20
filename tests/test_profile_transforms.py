@@ -14,10 +14,10 @@ from pathlib import Path
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.parametric.profile import (coax_with_flange, load_profiles, scale_disc,
+from aster.parametric.profile import (coax_with_flange, load_profiles, scale_disc,
                                        shift_profile)
 
-PROFILES = Path(__file__).resolve().parent.parent / "antopt" / "cases" / "lens28_profiles.json"
+PROFILES = Path(__file__).resolve().parent.parent / "aster" / "cases" / "lens28_profiles.json"
 
 
 class ExtractedProfilesTests(unittest.TestCase):

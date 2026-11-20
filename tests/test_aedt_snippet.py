@@ -4,9 +4,9 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases.lens28 import build_case
-from antopt.cases.lens28_builder import operations
-from antopt.parametric.aedt import (
+from aster.cases.lens28 import build_case
+from aster.cases.lens28_builder import operations
+from aster.parametric.aedt import (
     OperationError,
     render,
     render_variable_declaration,
@@ -52,7 +52,7 @@ class SnippetRenderingTests(unittest.TestCase):
 
     def test_snippet_attaches_existing_project_and_never_solves(self):
         code = self._render({"step_L": 2.0, "step_ro": 0.8, "wedge": 1, "cone_dz": 0.0})
-        self.assertIn("_AntoptHfss(", code)
+        self.assertIn("_AsterHfss(", code)
         self.assertIn("B0_f24_thin", code)
         self.assertIn("port=59131", code)
         self.assertNotIn("Analyze", code)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
 class StructureOperationSnippetTests(unittest.TestCase):
     def test_scale_and_shift_are_rendered(self):
-        from antopt.parametric.aedt import render
+        from aster.parametric.aedt import render
 
         code = render(
             [{"op": "scale_objects", "args": {"targets": ["disc", "disc2"], "factor": 1.06}},
@@ -113,7 +113,7 @@ class StructureOperationSnippetTests(unittest.TestCase):
         self.assertNotIn("Analyze", code)
 
     def test_bad_structure_arguments_are_rejected(self):
-        from antopt.parametric.aedt import OperationError, validate_operations
+        from aster.parametric.aedt import OperationError, validate_operations
 
         with self.assertRaises(OperationError):
             validate_operations([{"op": "scale_objects", "args": {"targets": []}}])

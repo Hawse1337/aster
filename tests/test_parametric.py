@@ -7,16 +7,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.core import SpecError
-from antopt.parametric.model import GeometryReport, OperationModel, check_manufacturing
-from antopt.parametric.registry import (
+from aster.core import SpecError
+from aster.parametric.model import GeometryReport, OperationModel, check_manufacturing
+from aster.parametric.registry import (
     CaseRegistration,
     clear_registry,
     get_case,
     list_cases,
     register_case,
 )
-from antopt.parametric.spec import ParamDefinition, ParamFile
+from aster.parametric.spec import ParamDefinition, ParamFile
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -165,7 +165,7 @@ class Lens28BuilderTests(unittest.TestCase):
         clear_registry()
 
     def test_lens28_registers_and_builds(self):
-        from antopt.cases import lens28_builder
+        from aster.cases import lens28_builder
 
         register_case(lens28_builder.register())
         registration = get_case("lens28")
@@ -181,7 +181,7 @@ class Lens28BuilderTests(unittest.TestCase):
         self.assertTrue(report.valid, report.messages)
 
     def test_lens28_geometry_rules_reject_impossible_step(self):
-        from antopt.cases import lens28_builder
+        from aster.cases import lens28_builder
 
         model = lens28_builder.build_model()
         model.current = {"step_L": 2.0, "step_ro": 1.15, "wedge": 1, "cone_dz": 0.0}
@@ -190,7 +190,7 @@ class Lens28BuilderTests(unittest.TestCase):
         self.assertIn("step_gap", report.checks)
 
     def test_lens28_em_rule_rejects_large_cone_offset(self):
-        from antopt.cases import lens28_builder
+        from aster.cases import lens28_builder
 
         model = lens28_builder.build_model()
         model.current = {"step_L": 2.0, "step_ro": 0.8, "wedge": 1, "cone_dz": 0.9}

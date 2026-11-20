@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.controller import (
+from aster.controller import (
     GLOBAL,
     LOCAL,
     PHYSICS,
@@ -14,14 +14,14 @@ from antopt.controller import (
     ControllerContext,
     StrategyController,
 )
-from antopt.core import ParamSpace, ParamSpec, SpecError
-from antopt.topology.operators import (
+from aster.core import ParamSpace, ParamSpec, SpecError
+from aster.topology.operators import (
     FamilyManager,
     FamilyVersion,
     StructureOperator,
     build_operator_registry,
 )
-from antopt.topology.triggers import TriggerConfig, should_search_topology
+from aster.topology.triggers import TriggerConfig, should_search_topology
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -214,11 +214,11 @@ class FineScanRuleTests(unittest.TestCase):
     """A sharp optimum must trigger deterministic refinement, not surrogate EI."""
 
     def _controller(self):
-        from antopt.controller import StrategyController
+        from aster.controller import StrategyController
         return StrategyController()
 
     def test_spiky_neighbourhood_selects_fine_scan(self):
-        from antopt.controller import ControllerContext, FINE_SCAN
+        from aster.controller import ControllerContext, FINE_SCAN
         decision = self._controller().select(ControllerContext(
             passing_constraints=["peak_gain", "ripple", "bandwidth"],
             neighbourhood_probes=6, neighbourhood_feasible=2,
@@ -229,7 +229,7 @@ class FineScanRuleTests(unittest.TestCase):
         self.assertEqual(decision.details["refinement_step"], 0.05)
 
     def test_healthy_neighbourhood_keeps_surrogate(self):
-        from antopt.controller import ControllerContext, SURROGATE
+        from aster.controller import ControllerContext, SURROGATE
         decision = self._controller().select(ControllerContext(
             passing_constraints=["peak_gain"],
             surrogate_usable=True,
@@ -238,7 +238,7 @@ class FineScanRuleTests(unittest.TestCase):
         self.assertEqual(decision.strategy, SURROGATE)
 
     def test_too_few_probes_is_not_evidence(self):
-        from antopt.controller import ControllerContext, SURROGATE
+        from aster.controller import ControllerContext, SURROGATE
         decision = self._controller().select(ControllerContext(
             passing_constraints=["peak_gain"],
             surrogate_usable=True,

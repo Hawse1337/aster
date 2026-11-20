@@ -1,7 +1,7 @@
 """Headless batch worker: execute the persisted queue without the page.
 
-    python -m antopt.worker --campaign DIR --case lens28_var --real --once
-    python -m antopt.worker --campaign DIR --case lens28_var --real --watch 60
+    python -m aster.worker --campaign DIR --case lens28_var --real --once
+    python -m aster.worker --campaign DIR --case lens28_var --real --watch 60
 
 Why this exists: the page is a control surface, and running a twenty-five minute solve inside the
 same process as an HTTP server means a crash, a mis-click or a restart costs the run. The worker
@@ -159,7 +159,7 @@ def agent_main(args: argparse.Namespace, env: config.Environment) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="antopt.worker",
+    parser = argparse.ArgumentParser(prog="aster.worker",
                                      description="run the persisted queue without the page")
     parser.add_argument("--campaign", required=True, help="campaign directory")
     parser.add_argument("--case", default="lens28_var")

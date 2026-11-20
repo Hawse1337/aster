@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-label="antopt loop: design, solve, keep, judge, re-target">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-label="aster loop: design, solve, keep, judge, re-target">
   <defs>
     <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#faf7f0"/>
@@ -83,5 +83,5 @@
   <g stroke="#c9bfa8" stroke-opacity="0.5" stroke-width="1">
     <path d="M60 396 H1140"/>
   </g>
-  <text x="60" y="416" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a8272">antopt · design-side library · the solver lives in ansys-aedt-mcp</text>
+  <text x="60" y="416" font-family="Consolas, Menlo, monospace" font-size="12" fill="#8a8272">aster · design-side library · the solver lives in ansys-aedt-mcp</text>
 </svg>

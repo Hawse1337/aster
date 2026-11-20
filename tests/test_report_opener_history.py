@@ -9,14 +9,14 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-if not (Path(__file__).parents[1] / "antopt" / "__init__.py").exists():
+if not (Path(__file__).parents[1] / "aster" / "__init__.py").exists():
     sys.path.insert(0, r"D:\AntennaDesignSystem")
     spec = importlib.util.spec_from_file_location(
-        "antopt.farfield", Path(__file__).parents[1] / "antopt" / "farfield.py")
+        "aster.farfield", Path(__file__).parents[1] / "aster" / "farfield.py")
     farfield = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(farfield)
 else:
-    from antopt import farfield
+    from aster import farfield
 
 
 class ReportOpenerHistoryTests(unittest.TestCase):
@@ -25,11 +25,11 @@ class ReportOpenerHistoryTests(unittest.TestCase):
             project = Path(temporary) / "Saved.aedt"
             project.write_bytes(b"same geometry")
             digest = hashlib.sha256(project.read_bytes()).hexdigest()
-            manifest = project.with_suffix(".antopt-reports.json")
+            manifest = project.with_suffix(".aster-reports.json")
             manifest.write_text(json.dumps({"project": str(project.resolve()), "design": "Antenna",
                                            "reports": ["E", "H"], "pid": 81,
                                            "project_sha256": digest}), encoding="utf-8")
-            with patch("antopt.config.load", return_value=SimpleNamespace(venv_python=None)):
+            with patch("aster.config.load", return_value=SimpleNamespace(venv_python=None)):
                 farfield.write_report_opener(project, "Antenna", ["E", "H"], pid=40, project_sha256=digest)
             self.assertEqual(json.loads(manifest.read_text(encoding="utf-8"))["pid"], 81)
 
@@ -38,11 +38,11 @@ class ReportOpenerHistoryTests(unittest.TestCase):
             project = Path(temporary) / "Saved.aedt"
             project.write_bytes(b"new geometry")
             digest = hashlib.sha256(project.read_bytes()).hexdigest()
-            manifest = project.with_suffix(".antopt-reports.json")
+            manifest = project.with_suffix(".aster-reports.json")
             manifest.write_text(json.dumps({"project": str(project.resolve()), "design": "Antenna",
                                            "reports": ["E", "H"], "pid": 81,
                                            "project_sha256": "0" * 64}), encoding="utf-8")
-            with patch("antopt.config.load", return_value=SimpleNamespace(venv_python=None)):
+            with patch("aster.config.load", return_value=SimpleNamespace(venv_python=None)):
                 farfield.write_report_opener(project, "Antenna", ["E", "H"], pid=40, project_sha256=digest)
             self.assertEqual(json.loads(manifest.read_text(encoding="utf-8"))["pid"], 40)
 
@@ -51,7 +51,7 @@ class ReportOpenerHistoryTests(unittest.TestCase):
             campaign = Path(temporary)
             project = campaign / "Reused.aedt"
             project.write_bytes(b"current geometry and reports")
-            manifest = project.with_suffix(".antopt-reports.json")
+            manifest = project.with_suffix(".aster-reports.json")
             current_manifest = json.dumps({"project": str(project), "design": "Current",
                                            "reports": ["CurrentE", "CurrentH"], "pid": 72,
                                            "capture_sha256": hashlib.sha256(project.read_bytes()).hexdigest()}).encode()
@@ -81,14 +81,14 @@ class ReportOpenerHistoryTests(unittest.TestCase):
                 "project": str(project), "design": "Antenna", "aedt_pid": 40,
                 "project_sha256": digest,
                 "native_reports": {"saved": True, "opened_reports": reports}})
-            with patch("antopt.config.load", return_value=SimpleNamespace(venv_python=None)):
+            with patch("aster.config.load", return_value=SimpleNamespace(venv_python=None)):
                 farfield.write_report_opener(project, "Antenna", reports, 81, digest)
                 # Saving window/layout metadata changes the .aedt file as observed on 2026 R1.
                 project.write_bytes(b"solved project plus saved window positions")
                 with patch("subprocess.run", return_value=SimpleNamespace(returncode=0)) as launch:
                     farfield.open_saved_reports(campaign, "latest")
                 self.assertEqual(launch.call_count, 1)
-            manifest = json.loads(project.with_suffix(".antopt-reports.json").read_text(encoding="utf-8"))
+            manifest = json.loads(project.with_suffix(".aster-reports.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["capture_sha256"], digest)
             self.assertNotIn("project_sha256", manifest)
             self.assertEqual(manifest["pid"], 81)

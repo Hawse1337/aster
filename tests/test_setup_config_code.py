@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.executor import setup_config_code
+from aster.executor import setup_config_code
 
 
 class SetupConfigCodeTests(unittest.TestCase):

@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from antopt.surrogate import backends
+from aster.surrogate import backends
 
 
 def problem(seed: int = 0, points: int = 8) -> tuple[np.ndarray, np.ndarray]:
@@ -66,7 +66,7 @@ class DispatchTests(unittest.TestCase):
         backends.available_methods = lambda: {"qlogehvi": True, "qlognehvi": True,
                                               "qlognparego": True, "believer": True}
         try:
-            import antopt.surrogate.botorch_acq as module
+            import aster.surrogate.botorch_acq as module
 
             original_batch = module.qlognehvi_batch
             module.qlognehvi_batch = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom"))

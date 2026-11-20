@@ -4,13 +4,13 @@ from types import SimpleNamespace
 import tempfile
 import unittest
 
-from antopt.core import ParamSpace, ParamSpec
-from antopt.cost import fit_cost_model
-from antopt.physics.local_opt import propose_local_step
-from antopt.physics.sensitivity import BudgetedEvaluator, SensitivityMatrix, compute_sensitivity, screen_parameters
-from antopt.risk import fit_risk_model
-from antopt.robustness import score_robustness
-from antopt.synthetic import build_case
+from aster.core import ParamSpace, ParamSpec
+from aster.cost import fit_cost_model
+from aster.physics.local_opt import propose_local_step
+from aster.physics.sensitivity import BudgetedEvaluator, SensitivityMatrix, compute_sensitivity, screen_parameters
+from aster.risk import fit_risk_model
+from aster.robustness import score_robustness
+from aster.synthetic import build_case
 
 
 def integer_case():

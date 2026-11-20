@@ -12,7 +12,7 @@
   "checks": {
     "page_answers": true,
     "about": {
-      "about": "antopt 1.47.1 (python 3.14)"
+      "about": "aster 1.47.1 (python 3.14)"
     },
     "cases": 2,
     "queue": true,

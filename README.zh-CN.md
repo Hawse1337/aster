@@ -1,13 +1,13 @@
-# antopt · 天线设计工作台
+# aster · 天线设计工作台
 
 > **保留每一次测量，随时更换目标。**
 
-`antopt` 是一个面向天线研究的“设计工作台”：你描述参数空间和“好”的定义，库把候选方案送进受控的
+`aster` 是一个面向天线研究的“设计工作台”：你描述参数空间和“好”的定义，库把候选方案送进受控的
 AEDT 求解会话，并且让每次求解的原始产物留在记录里。需求变化时（换频段、收紧纹波、压扁俯仰面），
 你重新判定历史测量，而不是再烧一夜求解时间。
 
 <p align="center">
-  <img src="assets/banner.svg" alt="antopt" width="100%">
+  <img src="assets/banner.svg" alt="aster" width="100%">
 </p>
 
 - **设计**：`ParamSpec` / `ParamSpace` 描述变量，`Objective` / `Constraint` 描述目标；这一层不依赖 AEDT。
@@ -25,16 +25,16 @@ py -3.10 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -U pip
 .\.venv\Scripts\python.exe -m pip install -e ".[optimizer,surrogate,plot]"
 
-python -m antopt version
-python -m antopt dry-demo --samples 64
+python -m aster version
+python -m aster dry-demo --samples 64
 ```
 
 `dry-demo` 在解析目标函数上跑完整研究：拉丁超立方采样 + Pareto 存档。
 
 ## 真实 AEDT 研究
 
-安装守卫系统（PyAEDT 1.10.0 / AEDT 2026 R1），配置 `ANTOPT_AEDT_EXE`、`ANTOPT_GUARD_REPO`、
-`ANTOPT_VENV_PYTHON`、`ANTOPT_REFERENCE_PROJECT`、`ANTOPT_CAMPAIGN_ROOT`，然后用 worker 跑 campaign。
+安装守卫系统（PyAEDT 1.10.0 / AEDT 2026 R1），配置 `ASTER_AEDT_EXE`、`ASTER_GUARD_REPO`、
+`ASTER_VENV_PYTHON`、`ASTER_REFERENCE_PROJECT`、`ASTER_CAMPAIGN_ROOT`，然后用 worker 跑 campaign。
 每个候选方案都有独立 run 目录与存档记录。
 
 详见 [user_doc/aedt_integration.md](user_doc/aedt_integration.md) 与
@@ -45,8 +45,8 @@ python -m antopt dry-demo --samples 64
 仓库自带 [`SKILL.md`](SKILL.md)。把它复制进 agent 的 skill 目录即可：
 
 ```powershell
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\antopt" | Out-Null
-Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\antopt\SKILL.md"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.dsh\skills\aster" | Out-Null
+Copy-Item SKILL.md "$env:USERPROFILE\.dsh\skills\aster\SKILL.md"
 ```
 
 ## 不发布的部分

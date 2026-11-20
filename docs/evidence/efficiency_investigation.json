@@ -59,7 +59,7 @@
   "conclusion": "the design reports only Gain* far-field quantities and geometric Fields; there is no Directivity or power quantity to derive eta from, which is why create_report rejects the expression",
   "sphere_grid_attempt": {
     "what": "export a full theta/phi grid (Phi=All) and integrate it for the directivity",
-    "code": "aedt_guard.pattern + sphere_grid cut + antopt.physics.directivity, both unit-tested against analytic patterns",
+    "code": "aedt_guard.pattern + sphere_grid cut + aster.physics.directivity, both unit-tested against analytic patterns",
     "runs": [
       {
         "run": "20261113T044713271171",

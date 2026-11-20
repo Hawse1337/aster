@@ -5,11 +5,11 @@ import os
 import time
 import unittest
 
-from antopt.progress import Telemetry, classify, sample_process_tree
+from aster.progress import Telemetry, classify, sample_process_tree
 
 
 def sample(at: float, cpu: float, pid: int = 1) -> object:
-    from antopt.progress import ResourceSample
+    from aster.progress import ResourceSample
 
     return ResourceSample(at=at, pid=pid, cpu_seconds=cpu, memory_mb=100.0, children=2)
 

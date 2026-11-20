@@ -10,14 +10,14 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
-if not (Path(__file__).parents[1] / "antopt" / "__init__.py").exists():
+if not (Path(__file__).parents[1] / "aster" / "__init__.py").exists():
     sys.path.insert(0, r"D:\AntennaDesignSystem")
     spec = importlib.util.spec_from_file_location(
-        "antopt.open_reports", Path(__file__).parents[1] / "antopt" / "open_reports.py")
+        "aster.open_reports", Path(__file__).parents[1] / "aster" / "open_reports.py")
     opener = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(opener)
 else:
-    from antopt import open_reports as opener
+    from aster import open_reports as opener
 
 
 class OpenReportsTests(unittest.TestCase):

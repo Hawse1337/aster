@@ -6,8 +6,8 @@ import unittest
 
 import numpy as np
 
-from antopt.benchmark.curves import best_so_far, compare_curves, feasible_only_curve
-from antopt.surrogate.multifidelity import (
+from aster.benchmark.curves import best_so_far, compare_curves, feasible_only_curve
+from aster.surrogate.multifidelity import (
     FidelityBudget,
     MultiFidelityModel,
     MultiFidelitySample,
@@ -73,7 +73,7 @@ class MultiFidelityTests(unittest.TestCase):
         return samples
 
     def test_low_fidelity_data_improves_high_fidelity_prediction(self):
-        from antopt.surrogate.models import GaussianProcessModel
+        from aster.surrogate.models import GaussianProcessModel
 
         rng = np.random.RandomState(0)
         samples = self._samples(rng)

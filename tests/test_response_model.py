@@ -4,7 +4,7 @@ import warnings
 
 import numpy as np
 
-from antopt.response_model import S11ResponseModel
+from aster.response_model import S11ResponseModel
 
 
 CONTRACT = {"identity": "same-model-and-measurement"}

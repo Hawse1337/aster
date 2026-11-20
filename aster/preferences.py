@@ -23,13 +23,13 @@ __all__ = ["Preferences", "default_path", "load", "save", "apply_bounds", "valid
 
 
 def default_path() -> Path:
-    override = os.environ.get("ANTOPT_PREFERENCES")
+    override = os.environ.get("ASTER_PREFERENCES")
     if override:
         return Path(override)
     appdata = os.environ.get("APPDATA") or os.environ.get("XDG_CONFIG_HOME")
     if appdata:
-        return Path(appdata) / "antopt" / "preferences.json"
-    return Path.home() / ".config" / "antopt" / "preferences.json"
+        return Path(appdata) / "aster" / "preferences.json"
+    return Path.home() / ".config" / "aster" / "preferences.json"
 
 
 @dataclass

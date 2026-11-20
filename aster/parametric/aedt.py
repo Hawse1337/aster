@@ -220,7 +220,7 @@ class SnippetRenderer:
     def render(self, operations: Iterable[dict[str, Any]]) -> str:
         checked = validate_operations(operations)
         body: list[str] = []
-        body.append("_antopt_ops = []")
+        body.append("_aster_ops = []")
         for operation in checked:
             name = operation["op"]
             args = operation["args"]
@@ -254,7 +254,7 @@ class SnippetRenderer:
                     # h_n = h0 * (1 + a1*u + a2*u^2): the polynomial is a relative taper
                     formula = "    _h = %r * (1.0 + %r * _t + %r * _t * _t)\n" % (h0, a1, a2)
                 body.append(
-                    "_antopt_units = []\n"
+                    "_aster_units = []\n"
                     "for _i in range(%d):\n"
                     "    _t = 0.0 if %d <= 1 else _i / float(%d - 1)\n"
                     % (count, count, count)
@@ -264,7 +264,7 @@ class SnippetRenderer:
                         float(args.get("base_y", 0.0)), pitch)
                     + "        sizes=[%r, _h, %r], name=_name, material='pec')\n" % (
                         width, depth)
-                    + "    _antopt_units.append(_name)"
+                    + "    _aster_units.append(_name)"
                 )
             elif name == "create_cylinder":
                 body.append(
@@ -347,8 +347,8 @@ class SnippetRenderer:
                 radius = float(args["radius"])
                 z0 = float(args["z0"])
                 length = float(args["length"])
-                bore = str(args.get("tag", "antopt")) + "_bore"
-                sleeve = str(args.get("tag", "antopt")) + "_sleeve"
+                bore = str(args.get("tag", "aster")) + "_bore"
+                sleeve = str(args.get("tag", "aster")) + "_sleeve"
                 body.append(
                     "app.modeler.create_cylinder(orientation='Z', origin=[0, 0, %r],\n"
                     "    radius=%r, height=%r, name=%r, material='vacuum')\n"
@@ -369,7 +369,7 @@ class SnippetRenderer:
                 height = float(args["height"])
                 shift = float(args.get("shift", 0.0))
                 target_name = args.get("target", "cone_dn")
-                tag = str(args.get("tag", "antopt"))
+                tag = str(args.get("tag", "aster"))
                 cone_name = tag + "_cone"
                 body.append(
                     "_coax_end = app.modeler['coax_outer'].bounding_box[5]\n"
@@ -447,7 +447,7 @@ class SnippetRenderer:
                 height = float(args["height"])
                 target_name = args.get("target", "cone_dn")
                 shift = float(args.get("shift", 0.0))
-                tag = str(args.get("tag", "antopt"))
+                tag = str(args.get("tag", "aster"))
                 out_name = tag + "_ring_out"
                 in_name = tag + "_ring_in"
                 z_expression = "_coax_end - %r + %r" % (height / 2.0, shift)
@@ -493,22 +493,22 @@ class SnippetRenderer:
                 )
             elif name == "validate_simple":
                 body.append(
-                    "import time as _antopt_time\n"
-                    "_antopt_ok = False\n"
+                    "import time as _aster_time\n"
+                    "_aster_ok = False\n"
                     "for _attempt in range(%d):\n"
-                    "    _antopt_ok = bool(app.validate_simple())\n"
-                    "    if _antopt_ok:\n"
+                    "    _aster_ok = bool(app.validate_simple())\n"
+                    "    if _aster_ok:\n"
                     "        break\n"
-                    "    _antopt_time.sleep(%s)\n"
-                    "_antopt_ops.append({'validated': _antopt_ok})"
+                    "    _aster_time.sleep(%s)\n"
+                    "_aster_ops.append({'validated': _aster_ok})"
                     % (int(args.get("attempts", 1)), float(args.get("delay_s", 2.0)))
                 )
-            body.append("_antopt_ops.append(%s)" % self._literals({"op": name}))
+            body.append("_aster_ops.append(%s)" % self._literals({"op": name}))
 
         header = [
-            "if '_antopt_app' not in globals():",
-            "    from ansys.aedt.core import Hfss as _AntoptHfss",
-            "    _antopt_app = _AntoptHfss(",
+            "if '_aster_app' not in globals():",
+            "    from ansys.aedt.core import Hfss as _AsterHfss",
+            "    _aster_app = _AsterHfss(",
             "        project=%s, design=%s, new_desktop=False, close_on_exit=False,"
             " non_graphical=False%s" % (
                 self._literals(self.project_path),
@@ -516,11 +516,11 @@ class SnippetRenderer:
                 (", port=%d" % int(self.port)) if self.port else "",
             ),
             "    )",
-            "app = _antopt_app",
+            "app = _aster_app",
         ]
         footer = [
-            "result = {'operations': _antopt_ops,",
-            "          'validated': all(op.get('validated', True) for op in _antopt_ops),",
+            "result = {'operations': _aster_ops,",
+            "          'validated': all(op.get('validated', True) for op in _aster_ops),",
             "          'objects': sorted(app.modeler.object_names)}",
         ]
         self.lines = header + body + footer
@@ -539,14 +539,14 @@ def render_variable_declaration(
 ) -> str:
     """Declare HFSS design variables once (values are expressions with units)."""
     lines = [
-        "if '_antopt_app' not in globals():",
-        "    from ansys.aedt.core import Hfss as _AntoptHfss",
-        "    _antopt_app = _AntoptHfss(project=%s, design=%s, new_desktop=False,"
+        "if '_aster_app' not in globals():",
+        "    from ansys.aedt.core import Hfss as _AsterHfss",
+        "    _aster_app = _AsterHfss(project=%s, design=%s, new_desktop=False,"
         " close_on_exit=False, non_graphical=False%s)" % (
             json.dumps(project_path), json.dumps(design_name),
             (", port=%d" % int(port)) if port else "",
         ),
-        "app = _antopt_app",
+        "app = _aster_app",
     ]
     for name, expression in variables.items():
         lines.append("app[%s] = %s" % (json.dumps(name), json.dumps(expression)))
@@ -561,19 +561,19 @@ def render_variable_update(
 ) -> str:
     """Update existing HFSS variables; geometry rebuilds without new objects."""
     lines = [
-        "if '_antopt_app' not in globals():",
-        "    from ansys.aedt.core import Hfss as _AntoptHfss",
-        "    _antopt_app = _AntoptHfss(project=%s, design=%s, new_desktop=False,"
+        "if '_aster_app' not in globals():",
+        "    from ansys.aedt.core import Hfss as _AsterHfss",
+        "    _aster_app = _AsterHfss(project=%s, design=%s, new_desktop=False,"
         " close_on_exit=False, non_graphical=False%s)" % (
             json.dumps(project_path), json.dumps(design_name),
             (", port=%d" % int(port)) if port else "",
         ),
-        "app = _antopt_app",
+        "app = _aster_app",
     ]
     for name, expression in values.items():
         lines.append("app[%s] = %s" % (json.dumps(name), json.dumps(expression)))
-    lines.append("_antopt_ok = bool(app.validate_simple())")
-    lines.append("result = {'updated': %s, 'validated': _antopt_ok,"
+    lines.append("_aster_ok = bool(app.validate_simple())")
+    lines.append("result = {'updated': %s, 'validated': _aster_ok,"
                  " 'variables': {name: app[name] for name in %s}}"
                  % (json.dumps(sorted(values)), json.dumps(sorted(values))))
     return "\n".join(lines) + "\n"

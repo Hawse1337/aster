@@ -1,4 +1,4 @@
-# 渲染层算子目录（`antopt/parametric/aedt.py`）
+# 渲染层算子目录（`aster/parametric/aedt.py`）
 
 这份目录由 `scripts/gen_operator_catalog.py` 生成，测试会校验它与代码一致。
 

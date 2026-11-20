@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from antopt.cost import estimate, fit_cost_model, measured_costs
+from aster.cost import estimate, fit_cost_model, measured_costs
 
 NAMES = ("ring_outer", "ring_height")
 

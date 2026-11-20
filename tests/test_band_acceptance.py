@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.band_acceptance import (BandAcceptanceSpec, assess_s11_band,
+from aster.band_acceptance import (BandAcceptanceSpec, assess_s11_band,
                                     assess_touchstone_band)
 
 

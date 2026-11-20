@@ -4,9 +4,9 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.benchmark.harness import run_strategy
-from antopt.benchmark.measured_surface import MeasuredPoint, MeasuredSurfaceExecutor
-from antopt.cases import lens28_ref
+from aster.benchmark.harness import run_strategy
+from aster.benchmark.measured_surface import MeasuredPoint, MeasuredSurfaceExecutor
+from aster.cases import lens28_ref
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

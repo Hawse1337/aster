@@ -23,7 +23,7 @@
 
 ## 二、逐项对比
 
-| 维度 | yadof v0.8.1 | 我们（antopt） | 结论 |
+| 维度 | yadof v0.8.1 | 我们（aster） | 结论 |
 |---|---|---|---|
 | 多目标算法 | NSGA-III（第三代），可配 GPSAF 代理 | NSGA-II（旧）+ **本次新增 NSGA-III** | 持平（我们刚补上） |
 | 单目标 | GA | 随机/LHS/代理辅助 + 物理引导局部搜索 | 我们更细 |
@@ -39,7 +39,7 @@
 
 ### 方式 1：参数互导（已实现，零风险）
 
-`antopt/interop/yadof.py` 提供三件东西：
+`aster/interop/yadof.py` 提供三件东西：
 
 1. `parameters_constraints_source(space, constraints)` → 直接生成 yadof 工作区要的
    `job_template/parameters_constraints.py`（参数名/单位/上下限/类型/物理意义/制造约束 +
@@ -53,8 +53,8 @@
 用法：
 
 ```python
-from antopt.cases import lens28_var
-from antopt.interop.yadof import parameters_constraints_source, write_recorded_data, to_recorded_data
+from aster.cases import lens28_var
+from aster.interop.yadof import parameters_constraints_source, write_recorded_data, to_recorded_data
 
 space = lens28_var.build_model().space
 open("my-study/job_template/parameters_constraints.py", "w", encoding="utf-8").write(
@@ -67,7 +67,7 @@ write_recorded_data("my-study/recorded_data/rows.jsonl", to_recorded_data(entrie
 yadof 的 `job_template/workflow.py` 只要求"给一组参数，跑一次仿真，交回原始输出"。
 我们可以把**守护（guard）受控执行**包成这个 workflow：
 
-- `workflow.py` 调 `antopt.bridge` → 守护 worker → `OperationModel.update(params)` →
+- `workflow.py` 调 `aster.bridge` → 守护 worker → `OperationModel.update(params)` →
   求解 → 返回 touchstone 路径与远场 CSV；
 - 由 yadof 的 HTCondor 模式把 N 个候选分发到多台机器（每台一个 AEDT）；
 - 我们的 `SimulationGuard` 仍在每台机器上把关（收敛、扫频行数、远场球）。
@@ -94,7 +94,7 @@ yadof 的 `user_tools/aedt_parameters_gui.pyw` 已经做了"扫描 AEDT 设计�
 
 | 步骤 | 内容 | 工作量 | 风险 |
 |---|---|---|---|
-| 1 | 已完成：参数互导 + recorded_data 导出（`antopt/interop/yadof.py`，9 项测试） | — | 低 |
+| 1 | 已完成：参数互导 + recorded_data 导出（`aster/interop/yadof.py`，9 项测试） | — | 低 |
 | 2 | 写 `yadof` 工作区样例：`job_template/workflow.py` 调守护执行一次真实 HFSS | 半天 | 中（要处理项目复制与端口） |
 | 3 | 用 yadof `local` 模式跑 8 个候选，与我们 batch 队列对拍（同样 8 个点，比较耗时与结果一致性） | 1 天 | 中 |
 | 4 | 上 HTCondor：2 台 worker × 每台 1 个 AEDT，跑 16 个候选 | 2–3 天 | 高（许可、路径、并发写工程） |

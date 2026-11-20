@@ -8,9 +8,9 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
-from antopt.cases import lens28_var
-from antopt.core import SpecError
-from antopt.interop.yadof import (parameters_constraints_source,
+from aster.cases import lens28_var
+from aster.core import SpecError
+from aster.interop.yadof import (parameters_constraints_source,
                                   space_from_optimization_setup, to_recorded_data,
                                   write_recorded_data)
 
@@ -48,7 +48,7 @@ class SourceRenderingTests(unittest.TestCase):
 
     def test_module_documents_where_it_came_from(self):
         source = parameters_constraints_source(self.space)
-        self.assertIn("antopt.interop.yadof", source)
+        self.assertIn("aster.interop.yadof", source)
         self.assertIn("diverge", source)
 
 

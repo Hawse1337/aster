@@ -23,10 +23,10 @@
     "radiation efficiency availability"
   ],
   "source_sha256": {
-    "antopt/touchstone.py": "52dcc02f8f06890a8668769c05addbdf1e3df03349b164fb2735f142ae08b04c",
-    "antopt/stall.py": "df0f630b23082999f6db108934904de5bcffe6bc1e6ca9a22f26957783cdc0ad",
-    "antopt/gui/runner.py": "9e47711270cce48fcde1f6ca2da30f06aa4d8ce935cdcd450ad6b862e22ec5a7",
-    "antopt/failures.py": "8a9759710bb08e4321688ec6fd7ed72840fd165b4df0cf0456e2a2af36afc60b",
+    "aster/touchstone.py": "52dcc02f8f06890a8668769c05addbdf1e3df03349b164fb2735f142ae08b04c",
+    "aster/stall.py": "df0f630b23082999f6db108934904de5bcffe6bc1e6ca9a22f26957783cdc0ad",
+    "aster/gui/runner.py": "9e47711270cce48fcde1f6ca2da30f06aa4d8ce935cdcd450ad6b862e22ec5a7",
+    "aster/failures.py": "8a9759710bb08e4321688ec6fd7ed72840fd165b4df0cf0456e2a2af36afc60b",
     "tests/test_handover_regressions.py": "f34ddbe77bbebbff32fe94d7186238c9d2e868a7d7fe97afaea89036e5ec91da"
   }
 }

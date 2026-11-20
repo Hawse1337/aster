@@ -14,7 +14,7 @@ py -3.10 -m venv .venv
 ## From a wheel
 
 ```powershell
-python -m pip install antopt-1.51.0-py3-none-any.whl[optimizer,surrogate]
+python -m pip install aster-1.52.0-py3-none-any.whl[optimizer,surrogate]
 ```
 
 ## Optional dependencies
@@ -30,7 +30,7 @@ python -m pip install antopt-1.51.0-py3-none-any.whl[optimizer,surrogate]
 ## Verify the install
 
 ```powershell
-python -m antopt version        # 1.51.0
+python -m aster version        # 1.52.0
 python -m pytest tests -q       # offline suite, no AEDT needed
 ```
 

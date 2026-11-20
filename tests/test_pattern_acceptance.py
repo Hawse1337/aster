@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from antopt.pattern_acceptance import ASTRABB_RING_TARGET, assess_ring_pattern
+from aster.pattern_acceptance import ASTRABB_RING_TARGET, assess_ring_pattern
 
 
 def sphere(gain, *, theta_step=2, phi_step=5):

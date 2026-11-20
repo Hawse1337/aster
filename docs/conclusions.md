@@ -89,10 +89,10 @@
 
 ### 换成了什么
 
-- 参考几何从 `.aedt` 解析成**数据**（`antopt/cases/lens28_profiles.json`）：
+- 参考几何从 `.aedt` 解析成**数据**（`aster/cases/lens28_profiles.json`）：
   碗 9 点、盘 237 点、同轴 5 点、介质 5 点；
 - 新算子 `revolve_profile`（Polyline → cover_lines → sweep_around_axis），与参考工程构型一致；
-- `antopt/cases/lens28_var.py`：碗（含**环领**）、盘、孔阵列全部由参数生成，**不执行 unite**；
+- `aster/cases/lens28_var.py`：碗（含**环领**）、盘、孔阵列全部由参数生成，**不执行 unite**；
 - 接地环 = 碗端面上的**凸起领**（半高露出），从根上不需要布尔合并；
 - 孔阵列**从 AEDT 面数据量出**：6×φ2.19 @ r=4.2（馈电口耦合孔）+ 12×φ2.53 @ r=16.75，
   每碗各一套（之前按"4+6 个 φ0.6/φ0.8"猜的完全是错的）。
@@ -128,7 +128,7 @@ yadof 会话曾用 `except Exception: pass` 包住配置调用，于是真机失
 ### 3. 同一段配置代码存在三份，就一定会漂移
 
 "设 passes → 删扫频 → 建扫频"原先在 manager、yadof 会话、独立脚本各有一份，
-差异正是 `InsertFrequencySweep` 的来源。收敛到 `antopt.executor.setup_config_code` 后，
+差异正是 `InsertFrequencySweep` 的来源。收敛到 `aster.executor.setup_config_code` 后，
 顺序问题一次修、三处受益，并用测试钉住"设置在扫频之前"。
 
 ### 4. 停滞与失败是两种现象

@@ -1,4 +1,4 @@
-"""Small command line entry point for the public ``antopt`` package."""
+"""Small command line entry point for the public ``aster`` package."""
 from __future__ import annotations
 
 import argparse
@@ -6,7 +6,7 @@ import json
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="antopt", description="Physics-guided antenna optimisation library")
+    parser = argparse.ArgumentParser(prog="aster", description="Physics-guided antenna optimisation library")
     parser.add_argument("--version", action="store_true", help="print the version and exit")
     sub = parser.add_subparsers(dest="command")
 

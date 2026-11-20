@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from antopt.surrogate.botorch_acq import (available, describe, hypervolume,
+from aster.surrogate.botorch_acq import (available, describe, hypervolume,
                                           qlognehvi_batch, qlognparego_batch)
 
 HAS_BOTORCH = available()
@@ -48,7 +48,7 @@ class AvailabilityTests(unittest.TestCase):
             self.assertIn("botorch", info)
 
     def test_the_batch_backend_refuses_without_torch(self):
-        import antopt.surrogate.botorch_acq as module
+        import aster.surrogate.botorch_acq as module
 
         original = module.available
         module.available = lambda: False
@@ -63,14 +63,14 @@ class ToolchainTests(unittest.TestCase):
     """The fused kernel needs MSVC and ninja; the helper must find them without side effects."""
 
     def test_candidates_are_real_files(self):
-        from antopt.surrogate.botorch_acq import _vcvars_candidates
+        from aster.surrogate.botorch_acq import _vcvars_candidates
 
         for path in _vcvars_candidates():
             self.assertTrue(path.is_file())
             self.assertEqual(path.name, "vcvars64.bat")
 
     def test_ensure_toolchain_is_cached(self):
-        from antopt.surrogate import botorch_acq as module
+        from aster.surrogate import botorch_acq as module
 
         first = module.ensure_toolchain()
         second = module.ensure_toolchain()
@@ -80,7 +80,7 @@ class ToolchainTests(unittest.TestCase):
             self.assertTrue(shutil.which("ninja"))
 
     def test_adopting_built_extensions_is_idempotent(self):
-        from antopt.surrogate import botorch_acq as module
+        from aster.surrogate import botorch_acq as module
 
         module._adopt_built_extensions()
         again = module._adopt_built_extensions()
@@ -92,7 +92,7 @@ class NonUnitBoxTests(unittest.TestCase):
     """The tutorial fits in the unit box; a search space like 1.2-3.0 mm must survive that."""
 
     def test_a_non_unit_box_is_handled(self):
-        from antopt.surrogate.botorch_acq import qlognparego_batch
+        from aster.surrogate.botorch_acq import qlognparego_batch
 
         # everything observed sits near the top of the box and small is better
         x = np.array([[3.8, 3.9], [3.85, 3.8], [3.9, 3.85],

@@ -11,7 +11,7 @@ the two places this module connects them:
   yadof workspace expects, so a yadof run describes exactly the variables our model drives;
 * :func:`space_from_optimization_setup` reads back a table of AEDT variables (name, value,
   range, Include flag - the convention of yadof's ``aedt_parameters_gui``) into our
-  :class:`~antopt.core.ParamSpace`, exporting only the checked variables;
+  :class:`~aster.core.ParamSpace`, exporting only the checked variables;
 * :func:`to_recorded_data` writes evaluated candidates as recorded rows (parameters plus raw
   outputs plus cost), which is the interchange format yadof keeps under ``recorded_data/``
   and re-scores with ``calc_cost.py`` without re-running the simulator.
@@ -52,8 +52,8 @@ def parameters_constraints_source(
     lines = [
         '"""Parameter definitions for the yadof workspace.',
         '',
-        "Generated from the antopt parameter file by",
-        "`antopt.interop.yadof.parameters_constraints_source` - edit the antopt definition",
+        "Generated from the aster parameter file by",
+        "`aster.interop.yadof.parameters_constraints_source` - edit the aster definition",
         "and regenerate instead of editing this file, or the two systems will diverge.",
         '"""',
         'from __future__ import annotations',
@@ -80,7 +80,7 @@ def parameters_constraints_source(
         '',
         '',
         'def describe() -> dict[str, object]:',
-        '    """Physics notes from the antopt definition, for humans reading the workspace."""',
+        '    """Physics notes from the aster definition, for humans reading the workspace."""',
         '    return %r' % ({spec.name: spec.physics for spec in space.params},),
         '',
     ])

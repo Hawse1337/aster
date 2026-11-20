@@ -12,7 +12,7 @@ import unittest
 
 import numpy as np
 
-from antopt.aperture import ApertureField, diagnose_aperture, example_csv, main, read_aperture_csv
+from aster.aperture import ApertureField, diagnose_aperture, example_csv, main, read_aperture_csv
 
 
 def make_field(ez=1.0, ep=0.0, er=0.0, *, nphi=12, z=None):

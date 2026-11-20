@@ -1,12 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
-"""Offline tests for the generic optimisation layer (antopt core + module A base)."""
+"""Offline tests for the generic optimisation layer (aster core + module A base)."""
 from __future__ import annotations
 
 import math
 import os
 import unittest
 
-from antopt.core import (
+from aster.core import (
     CaseSpec,
     Constraint,
     FamilySpec,
@@ -15,7 +15,7 @@ from antopt.core import (
     ParamSpec,
     latin_hypercube,
 )
-from antopt.optimize import (
+from aster.optimize import (
     Evaluation,
     ParetoArchive,
     compare,
@@ -25,7 +25,7 @@ from antopt.optimize import (
     fast_non_dominated_sort,
     hypervolume_2d,
 )
-from antopt.synthetic import SyntheticProblem, build_case, compare_strategies, evaluate_candidate
+from aster.synthetic import SyntheticProblem, build_case, compare_strategies, evaluate_candidate
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

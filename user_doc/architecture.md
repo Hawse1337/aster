@@ -1,8 +1,8 @@
 # Architecture
 
-`antopt` is split into small layers that can be used independently.
+`aster` is split into small layers that can be used independently.
 
-## Core contracts (`antopt/core.py`, `antopt/optimize.py`)
+## Core contracts (`aster/core.py`, `aster/optimize.py`)
 
 | concept | role |
 |---|---|
@@ -15,38 +15,38 @@
 Metric kinds are strings (`peak_gain`, `s11`, `s11_bandwidth`, `ripple`, `sll`, `beam_theta`, …) so
 the acceptance layer can be replaced without changing the recorded runs.
 
-## Campaign layer (`antopt/campaign.py`, `antopt/campaigns.py`)
+## Campaign layer (`aster/campaign.py`, `aster/campaigns.py`)
 
 A campaign owns:
 
 - the case (`CaseSpec`: parameter space, objectives, constraints, reference project, setup name);
 - the evaluator (dry model or guarded real runner);
 - a budget and a stopping rule;
-- the run archive (SQLite job store under `antopt/runtime/store.py`).
+- the run archive (SQLite job store under `aster/runtime/store.py`).
 
 Campaign recipes are plain Python: generate candidates, evaluate, update the surrogate, choose the
 next batch, repeat. The same recipe runs with the dry evaluator or the real one.
 
-## Runtime engine (`antopt/runtime/`)
+## Runtime engine (`aster/runtime/`)
 
 `runtime/runner.py` (real-run manager) and `runtime/store.py` (job store) are the measured-run
 engine. They are the same code the (unpublished) GUI uses, but they do not depend on a web server.
-`antopt/worker.py` wraps the manager for command-line campaign runs.
+`aster/worker.py` wraps the manager for command-line campaign runs.
 
 ## Measurement and acceptance
 
-- `antopt/farfield.py` exports and reads far-field views; `pattern_acceptance.py` evaluates ring
+- `aster/farfield.py` exports and reads far-field views; `pattern_acceptance.py` evaluates ring
   patterns (main-lobe elevation, ripple, axial leakage, power fraction).
-- `antopt/band_acceptance.py` evaluates S11 bandwidth from Touchstone files.
-- `antopt/acceptance.py` combines the two into a verdict for a run.
+- `aster/band_acceptance.py` evaluates S11 bandwidth from Touchstone files.
+- `aster/acceptance.py` combines the two into a verdict for a run.
 
-## Surrogates (`antopt/surrogate/`)
+## Surrogates (`aster/surrogate/`)
 
 Gaussian-process and multi-fidelity models with explicit validation state. The library does not hide
 whether a prediction was validated; acquisition decisions see that state.
 
 ## What is not here
 
-The local web GUI (`antopt.gui.server`, static assets), the desktop launcher (`antopt/app.py`),
+The local web GUI (`aster.gui.server`, static assets), the desktop launcher (`aster/app.py`),
 PyInstaller/Inno packaging and the HTTP API are intentionally excluded while the GUI is under
 validation.

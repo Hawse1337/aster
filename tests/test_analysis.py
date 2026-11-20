@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.analysis import (
+from aster.analysis import (
     first_order_sensitivity,
     measured_rows,
     summarize_campaign,

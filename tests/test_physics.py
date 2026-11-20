@@ -4,11 +4,11 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.core import Constraint, Objective
-from antopt.physics.diagnosis import diagnose, pairwise_interactions
-from antopt.physics.local_opt import propose_local_step
-from antopt.physics.sensitivity import compute_sensitivity, screen_parameters
-from antopt.synthetic import build_case
+from aster.core import Constraint, Objective
+from aster.physics.diagnosis import diagnose, pairwise_interactions
+from aster.physics.local_opt import propose_local_step
+from aster.physics.sensitivity import compute_sensitivity, screen_parameters
+from aster.synthetic import build_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -35,7 +35,7 @@ class Evaluator:
         self.seen = {}
 
     def __call__(self, params):
-        from antopt.optimize import evaluate_constraints
+        from aster.optimize import evaluate_constraints
 
         key = tuple(sorted(params.items()))
         if key in self.seen:

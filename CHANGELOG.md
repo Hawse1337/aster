@@ -2,8 +2,17 @@
 
 按阶段标签整理；详细说明见 `docs/status.md` 与 `docs/final_report.md`。
 
-## 1.51.0 — 未发布
+## 1.52.0 — 2026-11-20
 
+- 项目由 `antopt` 正式更名为 **aster**（天线设计工作台）。
+- 仓库：https://github.com/Hawse1337/aster （旧 `antopt` URL 自动跳转）。
+- Python 导入、CLI（`python -m aster`、`aster`）、环境变量前缀（`ASTER_*`）与文档同步改名；
+  发布资产为 `aster-1.52.0`。
+- `1.51.0` 保留为改名前的历史版本。
+
+## 1.51.0 — 2026-11-20
+
+- 首次公开发布（当时名为 `antopt`）：设计侧库、离线测试、受控 AEDT 运行集成与 agent skill。
 
 ## 1.50.0 — 2026-11-18
 
@@ -1276,8 +1285,8 @@
 
 ## 0.1.1 — 2026-11-10
 
-- chore: explicit package __init__ files for antopt.cases and antopt.parametric
+- chore: explicit package __init__ files for aster.cases and aster.parametric
 
 ## 0.1.0 — 2026-11-10
 
-- feat: antopt design system foundation (S0) + parametric layer (S1 start)
+- feat: aster design system foundation (S0) + parametric layer (S1 start)

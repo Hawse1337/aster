@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.stall import StallMonitor, StallWatch, sample_sequence
+from aster.stall import StallMonitor, StallWatch, sample_sequence
 
 
 class WatchSemanticsTests(unittest.TestCase):

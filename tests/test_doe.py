@@ -6,10 +6,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.cases.lens28_var import build_case
-from antopt.core import latin_hypercube
-from antopt.distributed import config_hash
-from antopt.doe import already_measured, load_points, mean_nearest_neighbour, plan_doe
+from aster.cases.lens28_var import build_case
+from aster.core import latin_hypercube
+from aster.distributed import config_hash
+from aster.doe import already_measured, load_points, mean_nearest_neighbour, plan_doe
 
 
 def _space():

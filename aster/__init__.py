@@ -1,4 +1,4 @@
-"""Antenna optimisation layer (``antopt``).
+"""Antenna optimisation layer (``aster``).
 
 Generic by design: a design case is a parameter space + constraints +
 objectives + a case config. Antenna-specific knowledge lives in ``cases`` and

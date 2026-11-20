@@ -4,7 +4,7 @@ from __future__ import annotations
 import math
 import unittest
 
-from antopt.physics.directivity import (directivity_db, directivity_from_pattern,
+from aster.physics.directivity import (directivity_db, directivity_from_pattern,
                                         efficiency_from_pattern)
 
 

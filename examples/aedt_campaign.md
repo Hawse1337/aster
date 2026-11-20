@@ -1,6 +1,6 @@
 # A measured campaign through the guard
 
-This walkthrough shows the contract between `antopt` (design side) and
+This walkthrough shows the contract between `aster` (design side) and
 [ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp) (execution side). Numbers below are
 placeholders for a real study; the flow is what matters.
 
@@ -14,25 +14,25 @@ placeholders for a real study; the flow is what matters.
 ## 1. Configure the environment
 
 ```powershell
-$env:ANTOPT_AEDT_EXE         = "D:\ANSYS Inc\v261\AnsysEM\ansysedt.exe"
-$env:ANTOPT_GUARD_REPO       = "C:\ProgramData\ansys-aedt-mcp"
-$env:ANTOPT_VENV_PYTHON      = "C:\ProgramData\ansys-aedt-mcp\.venv\Scripts\python.exe"
-$env:ANTOPT_REFERENCE_PROJECT = "<path to reference project>\Reference.aedt"
-$env:ANTOPT_CAMPAIGN_ROOT    = "<campaign directory>"
-$env:ANTOPT_AEDT_VERSION     = "2026.1"
+$env:ASTER_AEDT_EXE         = "D:\ANSYS Inc\v261\AnsysEM\ansysedt.exe"
+$env:ASTER_GUARD_REPO       = "C:\ProgramData\ansys-aedt-mcp"
+$env:ASTER_VENV_PYTHON      = "C:\ProgramData\ansys-aedt-mcp\.venv\Scripts\python.exe"
+$env:ASTER_REFERENCE_PROJECT = "<path to reference project>\Reference.aedt"
+$env:ASTER_CAMPAIGN_ROOT    = "<campaign directory>"
+$env:ASTER_AEDT_VERSION     = "2026.1"
 ```
 
-The exact field names are the `Environment` dataclass in `antopt/config.py`.
+The exact field names are the `Environment` dataclass in `aster/config.py`.
 
 ## 2. Inspect the target session
 
 Start AEDT with a gRPC port, or attach to an existing session, then list it through the guard. The
-guard requires an explicit PID or port for every call; `antopt` does not guess.
+guard requires an explicit PID or port for every call; `aster` does not guess.
 
 ## 3. Prepare the case
 
 ```python
-from antopt.core import CaseSpec, FamilySpec, Objective, ParamSpec, ParamSpace
+from aster.core import CaseSpec, FamilySpec, Objective, ParamSpec, ParamSpace
 
 case = CaseSpec(
     name="ring_demo",
@@ -50,7 +50,7 @@ The real evaluator performs: copy project → apply parameters → solve with th
 export S11 and far field → score → record. A failed solve is recorded as failed, not dropped.
 
 ```python
-from antopt.runtime.runner import RealRunManager, RealJob
+from aster.runtime.runner import RealRunManager, RealJob
 
 manager = RealRunManager(campaign_root="<campaign directory>",
                          guard_repo="<guard checkout>",
@@ -70,7 +70,7 @@ report images. Keep them next to the run record.
 Because the artifacts are kept, a changed acceptance rule can be applied to the archive:
 
 ```python
-from antopt.band_acceptance import assess_touchstone_band
+from aster.band_acceptance import assess_touchstone_band
 verdict = assess_touchstone_band("<run>/artifacts/result.s1p", low_ghz=24.0, high_ghz=32.0)
 print(verdict["effective_bandwidth_ghz"], verdict["passed"])
 ```

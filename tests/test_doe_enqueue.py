@@ -6,10 +6,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.cases.lens28_var import build_case
-from antopt.distributed import config_hash
-from antopt.doe import enqueue_plan, plan_doe
-from antopt.runtime.store import JobStore
+from aster.cases.lens28_var import build_case
+from aster.distributed import config_hash
+from aster.doe import enqueue_plan, plan_doe
+from aster.runtime.store import JobStore
 
 
 def _space():
@@ -82,7 +82,7 @@ class EnqueueTests(unittest.TestCase):
 
 class PlanFileTests(unittest.TestCase):
     def test_the_script_can_read_the_committed_plan(self):
-        from antopt.doe import load_points
+        from aster.doe import load_points
 
         path = Path(__file__).resolve().parent.parent / "docs" / "evidence" / "doe_plan.json"
         if not path.is_file():

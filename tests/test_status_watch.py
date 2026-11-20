@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.status_watch import ACTIVE_STATUSES, StatusMonitor, StatusWatch
+from aster.status_watch import ACTIVE_STATUSES, StatusMonitor, StatusWatch
 
 
 class _Clock:

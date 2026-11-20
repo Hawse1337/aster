@@ -12,7 +12,7 @@ This is the English counterpart of [user_manual.md](user_manual.md); the two are
 2. Double-click `AntennaOptimizer.exe`.
 3. On the first start, if something essential is missing, the console asks for the AEDT executable,
    the guard checkout and the reference project; the answers are written to
-   `%APPDATA%\antopt\config.toml` and not asked again.
+   `%APPDATA%\aster\config.toml` and not asked again.
 
 **Python is not required**: the executable carries its own. Real solver runs do need:
 
@@ -39,7 +39,7 @@ prints the real one).
 | Batch sweep | queue several candidates, watch progress |
 | Recommend next batch | fit on measured data and propose candidates; set the count and a budget (minutes), pick a backend, and the table shows parameters, estimated solve time, feasibility (from the nearest measurement) and the run it was judged by. "Queue the proposal" submits them |
 | Bandwidth / gain weights | say which objective matters more; saved weights feed the recommendation and appear in its reason |
-| Save bounds and weights | writes `%APPDATA%\antopt\preferences.json`; it survives restarts |
+| Save bounds and weights | writes `%APPDATA%\aster\preferences.json`; it survives restarts |
 | Results table | bandwidth, gain, ripple, feasibility per candidate |
 | Export Pareto | CSV/JSON of the non-dominated front, including the per-generation progress |
 | Run status | run count, success rate, per-stage medians, slowest runs, from `GET /api/observability` |
@@ -77,7 +77,7 @@ help.
 
 ## 6. Configuration
 
-`%APPDATA%\antopt\config.toml` (override with `ANTOPT_CONFIG`):
+`%APPDATA%\aster\config.toml` (override with `ASTER_CONFIG`):
 
 ```toml
 [paths]
@@ -85,13 +85,13 @@ aedt_exe = "D:\\ANSYS Inc\\v261\\AnsysEM\\ansysedt.exe"
 guard_repo = "C:\\ProgramData\\ansys-aedt-mcp"
 venv_python = "C:\\ProgramData\\ansys-aedt-mcp\\.venv\\Scripts\\python.exe"
 reference_project = "C:\\Users\\me\\Desktop\\lensfinal\\LensFinal.aedt"
-campaign_root = "D:\\AgentAEDT_Collab\\antopt_bench"
+campaign_root = "D:\\AgentAEDT_Collab\\aster_bench"
 ```
 
-Precedence: **discovery < config file < environment variables** (`ANTOPT_AEDT_EXE` and so on).
+Precedence: **discovery < config file < environment variables** (`ASTER_AEDT_EXE` and so on).
 Current values: `AntennaOptimizer.exe --selftest`.
 
-Preferences (bounds, weights) live in `%APPDATA%\antopt\preferences.json`; a bound may narrow the
+Preferences (bounds, weights) live in `%APPDATA%\aster\preferences.json`; a bound may narrow the
 case's own limits but never widen them.
 
 ## 7. Command line
@@ -109,7 +109,7 @@ case's own limits but never widen them.
 ## 8. Uninstall
 
 1. Delete the program directory (or use the uninstaller the setup installed);
-2. optionally delete `%APPDATA%\antopt\` (configuration and preferences) and the campaign
+2. optionally delete `%APPDATA%\aster\` (configuration and preferences) and the campaign
    directories (results).
 
 AEDT and `ansys-aedt-mcp` are not affected.

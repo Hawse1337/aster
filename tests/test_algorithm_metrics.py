@@ -2,8 +2,8 @@
 from dataclasses import replace
 import unittest
 
-from antopt.cases.lens28_var import build_case
-from antopt.metrics import hypervolume_progress
+from aster.cases.lens28_var import build_case
+from aster.metrics import hypervolume_progress
 
 
 def record(identity="ok", **metrics):
@@ -40,7 +40,7 @@ class CurrentContractProgressTests(unittest.TestCase):
         self.assertEqual(result["generation"][1], 0)
 
     def test_same_case_different_recipe_is_not_progress(self):
-        from antopt.learning_contract import case_contract
+        from aster.learning_contract import case_contract
         case = build_case()
         wanted = case_contract(case)
         row = record()

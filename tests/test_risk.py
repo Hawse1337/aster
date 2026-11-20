@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.risk import fit_risk_model, measured_outcomes
+from aster.risk import fit_risk_model, measured_outcomes
 
 NAMES = ("ring_outer", "ring_height")
 

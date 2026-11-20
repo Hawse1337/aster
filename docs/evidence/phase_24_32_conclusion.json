@@ -52,7 +52,7 @@
     "tags": ["v1.46.0", "v1.46.3", "v1.46.5", "v1.46.6", "v1.47.0", "v1.47.1"],
     "installer": "dist/AntennaOptimizer-1.47.1-setup.exe",
     "portable": "dist/AntennaOptimizer-1.47.1-portable.zip",
-    "installed_version": "antopt 1.47.1 (verified via /api/about from a neutral cwd)",
+    "installed_version": "aster 1.47.1 (verified via /api/about from a neutral cwd)",
     "tests": {"design": 941, "guard": 459, "guard_skipped": 1}
   }
 }

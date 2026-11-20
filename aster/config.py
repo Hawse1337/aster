@@ -22,8 +22,8 @@ from typing import Any
 __all__ = ["Environment", "discover", "load", "default_config_path", "AEDT_DIR_GLOBS",
            "ENV_PREFIX"]
 
-ENV_PREFIX = "ANTOPT_"
-"""``ANTOPT_AEDT_EXE`` overrides ``aedt_exe``, and so on for every field."""
+ENV_PREFIX = "ASTER_"
+"""``ASTER_AEDT_EXE`` overrides ``aedt_exe``, and so on for every field."""
 
 AEDT_DIR_GLOBS = (
     r"D:\ANSYS Inc\v*\AnsysEM\ansysedt.exe",
@@ -36,11 +36,11 @@ GUARD_CANDIDATES = (
     r"C:\ProgramData\ansys-aedt-mcp",
 )
 CAMPAIGN_CANDIDATES = ()
-"""Optional discovery roots; configure them with the ANTOPT_* environment variables."""
+"""Optional discovery roots; configure them with the ASTER_* environment variables."""
 YADOF_CANDIDATES = ()
-"""Optional discovery roots; configure them with the ANTOPT_* environment variables."""
+"""Optional discovery roots; configure them with the ASTER_* environment variables."""
 PROJECT_CANDIDATES = ()
-"""Optional discovery roots; configure them with the ANTOPT_* environment variables."""
+"""Optional discovery roots; configure them with the ASTER_* environment variables."""
 
 
 @dataclass
@@ -146,14 +146,14 @@ def discover() -> Environment:
 
 
 def default_config_path() -> Path:
-    """``%APPDATA%\\antopt\\config.toml`` (or the XDG equivalent), overridable."""
+    """``%APPDATA%\\aster\\config.toml`` (or the XDG equivalent), overridable."""
     override = os.environ.get(ENV_PREFIX + "CONFIG")
     if override:
         return Path(override)
     appdata = os.environ.get("APPDATA") or os.environ.get("XDG_CONFIG_HOME")
     if appdata:
-        return Path(appdata) / "antopt" / "config.toml"
-    return Path.home() / ".config" / "antopt" / "config.toml"
+        return Path(appdata) / "aster" / "config.toml"
+    return Path.home() / ".config" / "aster" / "config.toml"
 
 
 def _read_toml(path: Path) -> dict[str, Any]:
@@ -228,7 +228,7 @@ def write(path: Path | str, env: Environment) -> Path:
     """Write the environment as TOML so it can be edited by hand or by the wizard."""
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["# antopt configuration - written by the first-run wizard", "[paths]"]
+    lines = ["# aster configuration - written by the first-run wizard", "[paths]"]
     for item in fields(Environment):
         if item.name in {"source", "aedt_version"}:
             continue
@@ -259,7 +259,7 @@ def validate(env: Environment) -> list[str]:
 
 def describe(env: Environment) -> str:
     """A short block for the console and the log file."""
-    lines = ["antopt environment:"]
+    lines = ["aster environment:"]
     for item in fields(Environment):
         if item.name == "source":
             continue

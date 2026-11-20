@@ -13,8 +13,8 @@ from collections import Counter
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.cases import lens28_var
-from antopt.parametric.aedt import render
+from aster.cases import lens28_var
+from aster.parametric.aedt import render
 
 
 def ops_by_name(ops, name):
@@ -98,14 +98,14 @@ class VariableCaseTests(unittest.TestCase):
     def test_spec_carries_the_touchstone_retry_policy(self):
         # the sweep is often still solving when the export arrives; without the retries the
         # guard sees a one-row touchstone and refuses the run
-        from antopt.cases import lens28_var as module
+        from aster.cases import lens28_var as module
 
         policy = module.build_case().to_spec()["execution_policy"]
         self.assertGreaterEqual(policy["touchstone_retries"], 60)
         self.assertGreater(policy["touchstone_retry_delay_s"], 0)
 
     def test_radiation_efficiency_is_refused_with_both_reasons(self):
-        from antopt.cases import lens28_var as module
+        from aster.cases import lens28_var as module
 
         with self.assertRaises(ValueError) as caught:
             module.build_case(include_efficiency=True)

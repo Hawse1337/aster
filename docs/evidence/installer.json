@@ -15,7 +15,7 @@
     },
     "installed_server": {
       "answered": true,
-      "about": "{\"about\": \"antopt 1.47.1 (python 3.14)\"}"
+      "about": "{\"about\": \"aster 1.47.1 (python 3.14)\"}"
     },
     "uninstaller_present": true,
     "uninstall": {

@@ -6,12 +6,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.apply import ModelApplier
-from antopt.campaign import CampaignRunner, EnvironmentUnhealthy
-from antopt.cases import lens28_builder
-from antopt.cases.lens28 import build_case
-from antopt.executor import GuardConfig
-from antopt.parametric.consistency import (
+from aster.apply import ModelApplier
+from aster.campaign import CampaignRunner, EnvironmentUnhealthy
+from aster.cases import lens28_builder
+from aster.cases.lens28 import build_case
+from aster.executor import GuardConfig
+from aster.parametric.consistency import (
     boxes_from_snippet_result,
     check_inside,
     check_structure_consistency,

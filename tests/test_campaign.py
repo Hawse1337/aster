@@ -6,10 +6,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.campaign import CampaignRunner, batch_params
-from antopt.cases import lens28_builder
-from antopt.cases.lens28 import build_case
-from antopt.executor import GuardConfig
+from aster.campaign import CampaignRunner, batch_params
+from aster.cases import lens28_builder
+from aster.cases.lens28 import build_case
+from aster.executor import GuardConfig
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -48,7 +48,7 @@ class FakeBridge:
 def _runner(bridge, tmp, prepare=True):
     case = build_case()
     model = lens28_builder.build_model()
-    from antopt.apply import ModelApplier
+    from aster.apply import ModelApplier
 
     applier = ModelApplier(model, bridge, project_path=str(Path(tmp) / "p.aedt"),
                            design_name="D", pid=1)
@@ -127,8 +127,8 @@ class CampaignRunnerTests(unittest.TestCase):
             self.assertIn("records", target.read_text(encoding="utf-8"))
 
     def test_campaign_executor_can_feed_nsga2(self):
-        from antopt.campaign import CampaignExecutor
-        from antopt.optimizer.nsga2 import run_nsga2
+        from aster.campaign import CampaignExecutor
+        from aster.optimizer.nsga2 import run_nsga2
 
         with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmp:
             bridge = FakeBridge()
@@ -185,7 +185,7 @@ class CampaignSensitivityTests(unittest.TestCase):
             self.assertFalse(matrix.complete)
 
     def test_sensitivity_uses_shared_measurement_gate(self):
-        from antopt.physics.sensitivity import BudgetedEvaluator, EvaluationBudgetExceeded
+        from aster.physics.sensitivity import BudgetedEvaluator, EvaluationBudgetExceeded
 
         with tempfile.TemporaryDirectory(dir=os.getcwd()) as tmp:
             runner = _runner(FakeBridge(), tmp)

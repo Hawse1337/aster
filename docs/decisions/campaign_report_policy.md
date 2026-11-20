@@ -5,7 +5,7 @@
 
 ## 1. 结论：结果不会被“定期删除”，但工程副本会被下一次运行覆盖
 
-代码里的事实（`antopt/campaigns.py`）：
+代码里的事实（`aster/campaigns.py`）：
 
 - **受保护、不做清理**：`campaign.sqlite`、`queue.sqlite`、`real_runs.jsonl`、`design_spec.json`、
   `dry_runs.jsonl`、**`projects/`**（含工程副本和它的 `.aedtresults` 解）。
@@ -23,14 +23,14 @@
 
 ## 2. 系统改动：每次成功测量后自动保留四张方向图（代码，不靠对话）
 
-`antopt/farfield.py` 新增 `persist_pattern_reports()`，由 `RealRunManager` 在 POSTPROCESS 阶段、
+`aster/farfield.py` 新增 `persist_pattern_reports()`，由 `RealRunManager` 在 POSTPROCESS 阶段、
 已验收的测量完成后自动调用（`keep_pattern_reports=True` 默认开启）：
 
 1. 在**已求解的工程副本**里重建并 **保存** 四个 28 GHz Report（不再像 capture 阶段那样删除）：
-   - `ANTOPT_3D_Gain_28GHz`（3D Polar Plot）
-   - `ANTOPT_E_Plane_28GHz`（Radiation Pattern，φ=0°）
-   - `ANTOPT_H_Plane_28GHz`（Radiation Pattern，θ=90°）
-   - `ANTOPT_EH_Overlay_28GHz`（E/H 两切面叠在同一极坐标图）
+   - `ASTER_3D_Gain_28GHz`（3D Polar Plot）
+   - `ASTER_E_Plane_28GHz`（Radiation Pattern，φ=0°）
+   - `ASTER_H_Plane_28GHz`（Radiation Pattern，θ=90°）
+   - `ASTER_EH_Overlay_28GHz`（E/H 两切面叠在同一极坐标图）
 2. 把四张 PNG 导出到 `<campaign>/pattern_reports/<run_id>/`（持久，不受下一次工程覆盖影响；
    也可用 `pattern_reports_dir` 改根目录）；
 3. 写 `<campaign>/pattern_reports/<run_id>/persist_result.json`（报告名、图片、错误），

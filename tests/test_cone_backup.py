@@ -11,8 +11,8 @@ import unittest
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.cases import lens28_ref
-from antopt.parametric.aedt import OperationError, render, validate_operations
+from aster.cases import lens28_ref
+from aster.parametric.aedt import OperationError, render, validate_operations
 
 
 class BackupRestoreRenderingTests(unittest.TestCase):

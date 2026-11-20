@@ -4,9 +4,9 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.experiment import run_experiment
-from antopt.executor import SyntheticExecutor
-from antopt.synthetic import SyntheticProblem, build_case
+from aster.experiment import run_experiment
+from aster.executor import SyntheticExecutor
+from aster.synthetic import SyntheticProblem, build_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

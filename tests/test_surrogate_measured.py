@@ -4,8 +4,8 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.cases.lens28 import build_case
-from antopt.surrogate.campaign_data import (
+from aster.cases.lens28 import build_case
+from aster.surrogate.campaign_data import (
     dataset_from_records,
     fit_measured_model,
     grid_prediction,

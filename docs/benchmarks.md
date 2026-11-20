@@ -58,7 +58,7 @@ point they eventually find. Earlier tables in this file were produced before the
 
 ## S2/S3 ablation on the analytic problem
 
-Measured with `scripts/run_ablation_synthetic.py 40` (`antopt.benchmark.ablation.run_ablation`),
+Measured with `scripts/run_ablation_synthetic.py 40` (`aster.benchmark.ablation.run_ablation`),
 reference point `(0.0, -30.0)` for the 2-D hypervolume.
 
 | strategy | feasible (mean of 5 seeds) | evaluations (mean) | hypervolume (mean) | first feasible at |
@@ -314,7 +314,7 @@ InsertFrequencySweep 的 setup_error 却仍然跑对——重连重试把一次�
 ## 批量采集后端对拍（2026-11-14，五臂，已修复符号错误）
 
 同一预算（初始 8 点 + 4 轮 × q=2 = **8 次新评估**）、**ZDT1**（五维、双目标）、6 个种子，
-全部经 `antopt.surrogate.backends.select_batch` 调度：
+全部经 `aster.surrogate.backends.select_batch` 调度：
 
 | 后端 | 最终超体积（均值 ± 标准差） | 相对随机 |
 |---|---|---|
@@ -380,7 +380,7 @@ BoTorch 的 qEHVI 融合 C++ 内核需要 MSVC 环境（`vcvars64.bat`）与 `ni
 两者都不在 PATH 上，而且中文 locale 下读编译器输出会触发 `cp1` codec 报错。
 
 - 本轮装了 **VS Build Tools 2022 + VCTools**；
-- `antopt/surrogate/botorch_acq.ensure_toolchain()` 自动注入 `vcvars` 环境、把 venv 的
+- `aster/surrogate/botorch_acq.ensure_toolchain()` 自动注入 `vcvars` 环境、把 venv 的
   `ninja.exe` 放进 PATH，并把已构建的扩展目录加入 `sys.path`（避免重建时踩到那个 codec 问题）。
 
 实测收益：**qLogNEHVI 1.19×、qLogEHVI 1.16×**（同一批次、多种子取最小值）——
@@ -411,7 +411,7 @@ BoTorch 的 qEHVI 融合 C++ 内核需要 MSVC 环境（`vcvars64.bat`）与 `ni
 4 个跨度才出现差异。这解释了为什么"参考点"这个旋钮在小幅调整时常显得没用：
 它是相对量，不是绝对量。默认仍按数据自动推导（+5% 跨度）。
 
-### 归一化超体积（借鉴 yadof 的约定，`antopt/metrics.py`）
+### 归一化超体积（借鉴 yadof 的约定，`aster/metrics.py`）
 
 yadof 的成本视图用**固定归一化参考点 `(1, ..., 1)`** 画超体积带：上沿是截至当前所有代的累计
 超体积，下沿是当前一代自身的超体积（见其 `user_doc/config_and_run.md` 的 "History and tools"）。

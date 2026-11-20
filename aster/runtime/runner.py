@@ -21,7 +21,7 @@ from ..failures import classify
 
 STAGES = ("QUEUED", "CONNECTING", "MODEL", "SOLVING", "POSTPROCESS", "DONE")
 
-ACF_PATH = Path(os.environ.get("ANTOPT_ACF_PATH", ""))
+ACF_PATH = Path(os.environ.get("ASTER_ACF_PATH", ""))
 DEFAULT_BASELINE = {
     "tip_offset": 1.0, "disc_factor": 1.0, "disc_radial": 1.0, "ring_inner": 1.2,
     "ring_outer": 3.0, "ring_height": 0.6, "ring_shift": 0.0, "ring2_outer": 0.0,
@@ -972,12 +972,12 @@ class RealRunManager:
         acf = str(ACF_PATH) if ACF_PATH.is_file() else ""
         start, stop = self.band_ghz
         code = (
-            "if \"_antopt_app\" not in globals():\n"
-            "    from ansys.aedt.core import Hfss as _AntoptHfss\n"
-            "    _antopt_app = _AntoptHfss(project=r\"%s\", design=r\"%s\",\n"
+            "if \"_aster_app\" not in globals():\n"
+            "    from ansys.aedt.core import Hfss as _AsterHfss\n"
+            "    _aster_app = _AsterHfss(project=r\"%s\", design=r\"%s\",\n"
             "        new_desktop=False, close_on_exit=False, non_graphical=False,\n"
             "        port=aedt_port)\n" % (target, self.design_name)
-            + "app = _antopt_app\n"
+            + "app = _aster_app\n"
             + ("try:\n"
                "    odesktop.SetRegistryFromFile(r\"%s\")\n"
                "    app.set_registry_key(r\"Desktop/ActiveDSOConfigurations/HFSS\",\n"

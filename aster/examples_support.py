@@ -1,4 +1,4 @@
-"""Helpers used by the examples and the ``antopt dry-demo`` command (no AEDT needed)."""
+"""Helpers used by the examples and the ``aster dry-demo`` command (no AEDT needed)."""
 from __future__ import annotations
 
 import math

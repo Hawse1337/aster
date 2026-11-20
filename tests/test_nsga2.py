@@ -4,11 +4,11 @@ from __future__ import annotations
 import os
 import unittest
 
-from antopt.benchmark.harness import compare, run_strategy
-from antopt.optimizer.nsga2 import MISSING_PENALTY, CachedEvaluator, run_nsga2
-from antopt.optimize import Evaluation, ParetoArchive
-from antopt.executor import SyntheticExecutor
-from antopt.synthetic import SyntheticProblem, build_case
+from aster.benchmark.harness import compare, run_strategy
+from aster.optimizer.nsga2 import MISSING_PENALTY, CachedEvaluator, run_nsga2
+from aster.optimize import Evaluation, ParetoArchive
+from aster.executor import SyntheticExecutor
+from aster.synthetic import SyntheticProblem, build_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
@@ -47,7 +47,7 @@ class Nsga2Tests(unittest.TestCase):
 
             def evaluate(self, candidate):
                 self.count += 1
-                from antopt.synthetic import evaluate_candidate
+                from aster.synthetic import evaluate_candidate
 
                 return evaluate_candidate(case, candidate.params, SyntheticProblem())
 

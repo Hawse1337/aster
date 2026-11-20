@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt import faults
+from aster import faults
 
 
 class ScenarioTests(unittest.TestCase):
@@ -56,7 +56,7 @@ class ScenarioTests(unittest.TestCase):
 
 class FailureCatalogueTests(unittest.TestCase):
     def test_licence_errors_are_classified(self):
-        from antopt.failures import classify
+        from aster.failures import classify
 
         failure = classify("LICENSE_ERROR", "Failed to check out license hfss_solve")
         self.assertEqual(failure.title, "许可证不可用")
@@ -64,7 +64,7 @@ class FailureCatalogueTests(unittest.TestCase):
         self.assertIn("许可证", failure.action)
 
     def test_a_licence_error_is_not_confused_with_geometry(self):
-        from antopt.failures import classify
+        from aster.failures import classify
 
         failure = classify("LICENSE_ERROR", "license checkout failed")
         self.assertNotIn("几何", failure.title)

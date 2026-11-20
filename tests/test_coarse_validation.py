@@ -12,11 +12,11 @@ import unittest
 
 import numpy as np
 
-from antopt.learning_contract import _hash
-from antopt.surrogate.coarse_validation import (
+from aster.learning_contract import _hash
+from aster.surrogate.coarse_validation import (
     CoarseScreeningGate, GatePolicy, audit_history, main, pair_records,
 )
-from antopt.surrogate.multifidelity import MultiFidelityModel, MultiFidelitySample
+from aster.surrogate.multifidelity import MultiFidelityModel, MultiFidelitySample
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 

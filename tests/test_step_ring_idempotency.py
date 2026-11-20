@@ -20,8 +20,8 @@ import unittest
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.cases import lens28_ref
-from antopt.parametric.aedt import render
+from aster.cases import lens28_ref
+from aster.parametric.aedt import render
 
 
 class StepRingTests(unittest.TestCase):
@@ -34,8 +34,8 @@ class StepRingTests(unittest.TestCase):
 
     def test_ring_is_created_and_united(self):
         code = self._code()
-        self.assertIn("app.modeler.subtract('antopt_ring_out', 'antopt_ring_in'", code)
-        self.assertIn("app.modeler.unite(['coax_outer', 'antopt_ring_out', 'cone_dn'])",
+        self.assertIn("app.modeler.subtract('aster_ring_out', 'aster_ring_in'", code)
+        self.assertIn("app.modeler.unite(['coax_outer', 'aster_ring_out', 'cone_dn'])",
                       code)
 
     def test_unite_still_names_the_lower_cone(self):
@@ -45,7 +45,7 @@ class StepRingTests(unittest.TestCase):
         self.assertIn("'cone_dn'", code.split("app.modeler.unite(")[-1])
 
     def test_ring_arguments_are_still_validated(self):
-        from antopt.parametric.aedt import OperationError, validate_operations
+        from aster.parametric.aedt import OperationError, validate_operations
 
         with self.assertRaises(OperationError):
             validate_operations([{"op": "add_step_ring",

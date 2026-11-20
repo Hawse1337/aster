@@ -11,8 +11,8 @@ import unittest
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.parametric.aedt import OperationError, render, validate_operations
-from antopt.parametric.profile import (BOWL_TEMPLATE, bowl_profile, with_ground_ring,
+from aster.parametric.aedt import OperationError, render, validate_operations
+from aster.parametric.profile import (BOWL_TEMPLATE, bowl_profile, with_ground_ring,
                                        with_ring_collar)
 
 

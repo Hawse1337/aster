@@ -61,7 +61,7 @@ def build_case(base_frequency_ghz: float = 28.0) -> CaseSpec:
         family_id="lwa_periodic_v1",
         antenna_type="leaky_wave",
         param_space=space(),
-        builder="antopt.cases.lwa:build_model",
+        builder="aster.cases.lwa:build_model",
         notes="periodic perturbation on a rectangular guide; -1 spatial harmonic",
     )
     return CaseSpec(

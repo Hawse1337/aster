@@ -5,8 +5,8 @@ import unittest
 
 import numpy as np
 
-from antopt.cases import lens28
-from antopt.optimizer.nsga3 import reference_directions, run_nsga3
+from aster.cases import lens28
+from aster.optimizer.nsga3 import reference_directions, run_nsga3
 
 
 class Recorder:
@@ -17,7 +17,7 @@ class Recorder:
         self.seen = []
 
     def evaluate(self, candidate):
-        from antopt.optimize import Evaluation
+        from aster.optimize import Evaluation
 
         self.calls += 1
         self.seen.append(dict(candidate.params))

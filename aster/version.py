@@ -8,14 +8,14 @@ from pathlib import Path
 
 __all__ = ["__version__", "describe", "VERSION_INFO"]
 
-__version__ = "1.51.0"
+__version__ = "1.52.0"
 
 VERSION_INFO = tuple(int(part) for part in re.findall(r"\d+", __version__)[:3])
 
 
 def describe() -> str:
     """A one-line description used in the console banner and the /api/about route."""
-    return "antopt %s (python %s)" % (__version__, ".".join(map(str, sys.version_info[:2])))
+    return "aster %s (python %s)" % (__version__, ".".join(map(str, sys.version_info[:2])))
 
 
 def frozen() -> bool:

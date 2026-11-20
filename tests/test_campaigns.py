@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt import campaigns
+from aster import campaigns
 
 
 def make_campaign(root: Path, runs: int = 6) -> Path:

@@ -10,7 +10,7 @@ HERE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(HERE))
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
 
-from antopt.parametric.aedt import KNOWN_OPERATIONS
+from aster.parametric.aedt import KNOWN_OPERATIONS
 
 CATALOG = HERE / "docs" / "operator_catalog.md"
 

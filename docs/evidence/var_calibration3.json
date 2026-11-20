@@ -1,6 +1,6 @@
 {
   "run_id": "20261112T081146979616",
-  "campaign": "D:\\AgentAEDT_Collab\\antopt_bench\\campaign_var_cal3",
+  "campaign": "D:\\AgentAEDT_Collab\\aster_bench\\campaign_var_cal3",
   "geometry": "bowls with ring collar + 20 drilled holes, disc scaled, coax untouched",
   "metrics": {
     "s11_bandwidth": 2.0,

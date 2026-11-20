@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from antopt.watchdog import StallDetector, watch
+from aster.watchdog import StallDetector, watch
 
 
 class StallDetectorTests(unittest.TestCase):

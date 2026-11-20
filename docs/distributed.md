@@ -1,7 +1,7 @@
 # 多机协同（分布式 campaign）
 
-本说明对应 `antopt/distributed.py`（中心调度）、`antopt/dist_agent.py`（节点协议）与
-`antopt/worker.py --agent`（节点入口）。设计参考了 yadof 0.8.1 的 `distributed` 模式：中心调度、
+本说明对应 `aster/distributed.py`（中心调度）、`aster/dist_agent.py`（节点协议）与
+`aster/worker.py --agent`（节点入口）。设计参考了 yadof 0.8.1 的 `distributed` 模式：中心调度、
 每台机器本地执行、结果按身份回传合并（其文档 `user_doc/config_and_run.md` 的 "Choose the program
 and execution mode" 一节并建议多机不要共享网络 SQLite）；我们只用 HTTP + 租约，不依赖 HTCondor。
 
@@ -9,7 +9,7 @@ and execution mode" 一节并建议多机不要共享网络 SQLite）；我们�
 
 | 角色 | 在哪 | 职责 |
 |---|---|---|
-| 协调器（coordinator） | 一台机器，`python -m antopt.app` 或打包 exe | 写任务表 `<campaign>/dist.sqlite`、发租约、收结果、合并去重 |
+| 协调器（coordinator） | 一台机器，`python -m aster.app` 或打包 exe | 写任务表 `<campaign>/dist.sqlite`、发租约、收结果、合并去重 |
 | 节点（agent） | 每台有 AEDT 的机器 | 认领任务 → **本地** campaign + 项目副本执行 → 回传结果 |
 | 设计系统 | 两处都有 | 计算、校验、KPI 一律在节点本地完成；协调器不算 |
 
@@ -35,7 +35,7 @@ and execution mode" 一节并建议多机不要共享网络 SQLite）；我们�
 协调器（已有 campaign 目录即可）：
 
 ```powershell
-python -m antopt.app --real --port 8765 --campaign D:\campaigns\dist-demo
+python -m aster.app --real --port 8765 --campaign D:\campaigns\dist-demo
 # 页面或 HTTP 入队：
 Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8765/api/dist/enqueue -ContentType application/json `
   -Body '{"case":"lens28_var","variants":[{"ring_outer":2.30},{"ring_outer":2.35}]}'
@@ -44,7 +44,7 @@ Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8765/api/dist/enqueue -Cont
 每台节点（各自有 AEDT 与本地 campaign 目录）：
 
 ```powershell
-python -m antopt.worker --agent --server http://<coordinator>:8765 --real `
+python -m aster.worker --agent --server http://<coordinator>:8765 --real `
   --campaign D:\campaigns\node1 --case lens28_var --passes 8 --max-tasks 4
 ```
 

@@ -5,7 +5,7 @@ All integrals below are squared *electric-field* integrals (V^2), not radiated
 power (W). Magnetic fields, equivalent currents, materials and an exterior
 Green function would be needed for a radiation calculation.
 
-CSV contract (``python -m antopt.aperture --example`` prints a complete file):
+CSV contract (``python -m aster.aperture --example`` prints a complete file):
 metadata lines ``# key=value`` precede a table with columns
 ``phi,z,frequency,phase_reference,ex_re,ex_im,ey_re,ey_im,ez_re,ez_im``.
 Required metadata: frequency, frequency_unit, radius, length_unit, angle_unit,

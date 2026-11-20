@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from antopt.interop.yadof_templates import (cost_source, evaluation_source,
+from aster.interop.yadof_templates import (cost_source, evaluation_source,
                                            write_workspace_files)
 
 HAS_YADOF = importlib.util.find_spec("yadof") is not None
