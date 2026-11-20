@@ -109,10 +109,13 @@ class InProcessBridge:
     def connect(self, *, pid: int | None = None, port: int | None = None) -> dict[str, Any]:
         import asyncio  # noqa: PLC0415
 
-        coro = self._mcp.connect_to_aedt(pid=pid, port=port, non_graphical=False)
-        if asyncio.iscoroutine(coro):
-            return asyncio.run(coro)
-        return coro
+        # The guard broker worker is spawned by the first call (usually connect). It must
+        # inherit the opt-in, otherwise a later execute_code reuses a worker that denies it.
+        with _trusted_bridge_code():
+            coro = self._mcp.connect_to_aedt(pid=pid, port=port, non_graphical=False)
+            if asyncio.iscoroutine(coro):
+                return asyncio.run(coro)
+            return coro
 
     def clear_stale_lock(self, project_path: str) -> dict[str, Any]:
         return self._mcp.clear_stale_lock(project_path)
