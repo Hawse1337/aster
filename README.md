@@ -93,6 +93,8 @@ runs = [Evaluation("c%02d" % i, "ring", p,
 front = pareto_archive(runs, objectives)
 ```
 
+- 系统理论与优化方法（中文）：[docs/THEORY_AND_OPTIMIZATION_ZH.md](docs/THEORY_AND_OPTIMIZATION_ZH.md)
+
 ## Runtime safety, by construction
 
 Real solves go through the companion guard
