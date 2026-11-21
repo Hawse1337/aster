@@ -2,9 +2,17 @@
 """10 GHz dielectric lens omnidirectional antenna case (Lens2G4 scaled).
 
 This is the case registration for the dielectric-lens project.  The AEDT
-project is ``LensOmni_10GHz_trunc.aedt`` (truncated biconical center + coax).
-The parametric model is intentionally declared as an operation list for now;
-the real executor will apply the operations through the guard/PyAEDT.
+project default is ``LensOmni_10GHz_trunc_ntype3.aedt`` (truncated biconical
+center + coax), overridable with ``LENS2G4_PROJECT``.  The parametric model is
+intentionally declared as an operation list for now; the real executor will
+apply the operations through the guard/PyAEDT.
+
+Status (2026-11-21, see ``memory/design/plan_20261121.md`` of the antenna
+project): the geometry is NOT yet rebuilt from HFSS design variables, so
+``GAP``/``R_TIP``/``CONE_ANGLE`` are not exposed as optimizer parameters yet.
+P0 first establishes the trusted baseline (truncated geometry + ideal port,
+discrete 5-18 GHz) and the cone-angle study; the parametric rebuild follows.
+Every apply must keep ``PROTECTED_TOPOLOGY`` intact (hard topology gate).
 """
 from __future__ import annotations
 
@@ -14,6 +22,17 @@ from ..parametric.model import OperationModel
 
 PROJECT_PATH = ""  # configure a reference project before running this case
 DESIGN_NAME = "Trunc_10GHz"
+
+#: Objects that must exist after every apply; the model must never drop the
+#: biconical cones, the lens (with its conical cavity) or the feed port.
+PROTECTED_TOPOLOGY = ("Lens", "BiconeUp", "BiconeDn", "FeedPort")
+
+
+def validate_topology(object_names) -> list[str]:
+    """Return the list of missing protected objects (empty when the gate passes)."""
+    present = set(object_names or ())
+    return [name for name in PROTECTED_TOPOLOGY if name not in present]
+
 
 H_RIM = ParamSpec(
     name="H_RIM", unit="mm", low=0.15, high=1.56, default=0.3,
@@ -68,8 +87,8 @@ def build_case() -> CaseSpec:
             Objective(id="s11_obj", kind="s11", direction="minimize"),
         ],
         evaluation={
-            "frequencies_ghz": [5.0, 8.0, 10.0, 12.0, 15.0, 18.0],
-            "max_frequency_points": 6,
+            "frequencies_ghz": [5.0 + i for i in range(14)],
+            "max_frequency_points": 14,
             "theta_cut_phi_deg": [0, 90],
             "horiz_theta_deg": 90,
             "main_lobe_exclusion_deg": 10,
@@ -87,10 +106,13 @@ def build_case() -> CaseSpec:
         project_path=PROJECT_PATH,
         setup_name="Setup1",
         notes=(
-            "Target: 5-18 GHz, |S11| <= -10 dB; peak gain >= 5 dBi; azimuth "
-            "ripple <= 3 dB; axial (theta near 0/180) suppressed. Feed is SMA "
-            "(N-type is limited to about 11 GHz and was dropped). Every run must "
-            "produce a Discrete 5-18 GHz S11 curve and a 3D realised-gain pattern."
+            "Target: 5-18 GHz, every 1 GHz one DISCRETE point, |S11| <= -10 dB "
+            "(hard requirement); peak gain >= 5 dBi; azimuth ripple <= 3 dB; axial "
+            "(theta near 0/180) suppressed. Feed: N-type up to ~11 GHz, SMA/3.5 mm "
+            "for 12-18 GHz; no stepped coax matching (manufacturability). Every run "
+            "must produce a Discrete 5-18 GHz S11 curve, a 3D realised-gain pattern "
+            "and the native convergence evidence. Protected topology: "
+            + ", ".join(PROTECTED_TOPOLOGY) + "."
         ),
     )
 

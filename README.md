@@ -93,16 +93,6 @@ runs = [Evaluation("c%02d" % i, "ring", p,
 front = pareto_archive(runs, objectives)
 ```
 
-## Latest working source
-
-This repository publishes the packaged library/CLI/skill/releases. The latest full working source
-(including the acceptance/evidence layer and the internal P0 modeling scripts) lives at:
-
-- **https://github.com/Hawse1337/aster-source**
-
-Use that repository when reviewing or extending the algorithms; use this repository for installable
-packages and documentation.
-
 ## Runtime safety, by construction
 
 Real solves go through the companion guard

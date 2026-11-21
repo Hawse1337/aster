@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Synced the latest algorithm working tree: conservative band/pattern acceptance,
+  aperture field diagnostics, measured coarse/fine validation, paired multifidelity
+  correction and the 10 GHz lens case update. Packaged GUI is intentionally excluded.
+
 ## 1.54.0 — 2026-11-20
 
 **2026-11-21 — same-version asset rebuild.** The v1.54.0 wheel/sdist were rebuilt from main
