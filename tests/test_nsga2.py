@@ -4,6 +4,8 @@ from __future__ import annotations
 import os
 import unittest
 
+import numpy as np
+
 from aster.benchmark.harness import compare, run_strategy
 from aster.optimizer.nsga2 import MISSING_PENALTY, CachedEvaluator, run_nsga2
 from aster.optimize import Evaluation, ParetoArchive
@@ -55,6 +57,44 @@ class Nsga2Tests(unittest.TestCase):
         result = run_nsga2(case, counting, pop_size=6, generations=3, seed=0, budget=8)
         self.assertGreaterEqual(counting.count, 1)
         self.assertLessEqual(counting.count, 8)
+
+    def test_pymoo_uses_normalised_constraint_violations(self):
+        from aster.optimizer.nsga2 import _case_problem
+        from aster.optimize import evaluate_constraints
+
+        case, _ = _setup()
+        metrics = {"s11": -7.0, "peak_gain": 1.0}
+        entry = Evaluation("c", "f", {}, metrics=metrics, feasible=False)
+        problem = _case_problem(case, lambda params: entry)
+
+        [g] = problem.evaluate(np.array([[0.5, 0.5]]), return_values_of=["G"])
+        self.assertEqual(list(g), [1.0, 2.0, 0.0])
+        self.assertEqual(sum(g), evaluate_constraints(metrics, case)[2])
+
+    def test_both_optimizers_exclude_failed_or_incomplete_objectives(self):
+        from aster.core import Objective
+        from aster.optimizer.nsga3 import run_nsga3
+
+        case, _ = _setup()
+        case.objectives = [Objective("horizontal", "realized_gain_h", "maximize"),
+                           Objective("sll", "sll", "minimize")]
+        # Hard gain/matching measurements may both pass before the SLL export fails.
+        for run in (run_nsga2, run_nsga3):
+            for status, gain, sll in [("COMPLETED", None, -30.0),
+                                      ("COMPLETED", 11.0, float("nan")),
+                                      ("FAILED", 11.0, -40.0)]:
+                with self.subTest(algorithm=run.__name__, status=status, gain=gain, sll=sll):
+                    class IncompleteExecutor:
+                        def evaluate(self, candidate):
+                            metrics = {"s11": -15.0, "peak_gain": 10.0,
+                                       "realized_gain_h": gain, "sll": sll}
+                            return Evaluation(candidate.candidate_id, candidate.family_id,
+                                              candidate.params, metrics=metrics,
+                                              feasible=status == "COMPLETED", status=status)
+
+                    result = run(case, IncompleteExecutor(), pop_size=6, budget=6,
+                                 generations=1, seed=1)
+                    self.assertIsNone(result["result_x"])
 
     def test_cached_evaluator_never_repeats_work(self):
         case, executor = _setup()

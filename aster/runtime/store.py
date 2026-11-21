@@ -19,7 +19,7 @@ from typing import Any, Iterable
 
 __all__ = ["JobStore", "finished_states"]
 
-finished_states = ("COMPLETED", "FAILED", "CANCELLED")
+finished_states = ("COMPLETED", "FAILED", "CANCELLED", "APPROVAL_REQUIRED")
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS jobs (
@@ -131,7 +131,7 @@ class JobStore:
                 ":metrics, :violations, :feasible, :error_code, :error_detail, :failure, "
                 ":guard_run_id, :timings, :telemetry, :total_seconds, :started_utc, "
                 ":updated_utc) "
-                "ON CONFLICT(run_id) DO UPDATE SET batch_id=:batch_id, "
+                "ON CONFLICT(run_id) DO UPDATE SET batch_id=COALESCE(excluded.batch_id, jobs.batch_id), "
                 "case_name=:case_name, params=:params, status=:status, stage=:stage, "
                 "metrics=:metrics, violations=:violations, feasible=:feasible, "
                 "error_code=:error_code, error_detail=:error_detail, failure=:failure, "
@@ -167,13 +167,25 @@ class JobStore:
             conn.execute("BEGIN IMMEDIATE")
             occupied = set()
             if learning_contract:
-                from ..learning_contract import compatibility
+                from ..learning_contract import compatibility, stored_contract
                 for record in conn.execute("SELECT * FROM jobs WHERE case_name = ?",
                                            (case_name,)):
                     row = self._job_row(record)
-                    if (row.get("status") in {"COMPLETED", "QUEUED", "RUNNING", "RECOVERY_REQUIRED"}
-                            and compatibility(row, learning_contract)[0]):
+                    status = row.get("status")
+                    if status not in {"COMPLETED", "QUEUED", "RUNNING", "RECOVERY_REQUIRED", "APPROVAL_REQUIRED"}:
+                        continue
+                    matches, _ = compatibility(row, learning_contract)
+                    if status == "APPROVAL_REQUIRED" and learning_contract.get("measurement_recipe_binding") == "execution":
+                        # A queued request from a dry GUI acquires the worker's exact recipe on claim.
+                        contract = stored_contract(row)
+                        matches = all(contract.get(k) == learning_contract[k]
+                                      for k in ("case_id", "family_id", "structure_hash"))
+                    if matches:
                         occupied.add(key(row["params"]))
+            else:
+                for row in conn.execute("SELECT params FROM jobs WHERE case_name=? "
+                                        "AND status='APPROVAL_REQUIRED'", (case_name,)):
+                    occupied.add(key(_loads(row["params"], {})))
             for index, params in enumerate(params_list):
                 identity = key(params)
                 if identity in occupied:
@@ -194,7 +206,7 @@ class JobStore:
                     run_ids.append(run_id)
         return run_ids
 
-    def claim_next(self, worker: str) -> dict[str, Any] | None:
+    def claim_next(self, worker: str, *, case_name: str | None = None) -> dict[str, Any] | None:
         """Atomically take the oldest QUEUED row; None when the queue is empty.
 
         SQLite serialises the UPDATE, so two workers polling at the same instant still get
@@ -202,7 +214,8 @@ class JobStore:
         """
         with self._session() as conn:
             row = conn.execute(
-                "SELECT run_id FROM jobs WHERE status = 'QUEUED' ORDER BY started_utc LIMIT 1"
+                "SELECT run_id FROM jobs WHERE status = 'QUEUED' AND (? IS NULL OR case_name = ?) "
+                "ORDER BY started_utc LIMIT 1", (case_name, case_name)
             ).fetchone()
             if row is None:
                 return None
@@ -215,6 +228,18 @@ class JobStore:
                 return None
             claimed = conn.execute("SELECT * FROM jobs WHERE run_id = ?", (run_id,)).fetchone()
         return self._job_row(claimed) if claimed is not None else None
+
+    def claim_approval_retry(self, run_id: str, case_name: str, worker: str) -> dict | None:
+        """Claim the same paused row without granting approval or changing its parameters."""
+        with self._session() as conn:
+            updated = conn.execute(
+                "UPDATE jobs SET status='RUNNING', stage='CLAIMED', updated_utc=?, error_detail=? "
+                "WHERE run_id=? AND case_name=? AND status='APPROVAL_REQUIRED'",
+                (_now(), "worker:%s" % worker, run_id, case_name))
+            if updated.rowcount != 1:
+                return None
+            row = conn.execute("SELECT * FROM jobs WHERE run_id=?", (run_id,)).fetchone()
+        return self._job_row(row)
 
     def requeue_claim(self, run_id: str) -> bool:
         """Put a claimed-but-abandoned row back in the queue (worker crashed before starting)."""

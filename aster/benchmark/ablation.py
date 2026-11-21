@@ -18,6 +18,7 @@ from ..surrogate.dataset import Dataset, Sample
 from ..surrogate.models import GaussianProcessModel, cross_validate, model_is_usable
 from ..surrogate.selection import select_candidates
 from .harness import StrategyResult, run_strategy
+from .measured_surface import MeasuredSurfaceExecutor
 
 SEARCH_STRATEGIES = ("random", "lhs", "nsga2", "nsga3", "surrogate")
 
@@ -37,6 +38,11 @@ def run_surrogate_assisted(
     space = case.family.param_space
     target = case.objectives[0]
     archive = ParetoArchive(case.objectives)
+    # This dataset is private to one benchmark run. A fitted surface is an
+    # offline oracle whose observations retain their prediction provenance.
+    surface_run = isinstance(executor, MeasuredSurfaceExecutor)
+    sample_status = "PREDICTED" if surface_run else "COMPLETED"
+    sample_source = "predicted" if surface_run else "measured"
     dataset = Dataset()
     history: list[dict[str, Any]] = []
     evaluated = 0
@@ -59,12 +65,15 @@ def run_surrogate_assisted(
         archive.add(entry)
         evaluated += 1
         value = entry.metrics.get(target.kind)
-        targets = {target.kind: float(value) if value is not None else float("-inf")}
+        if (entry.status != sample_status or value is None or not np.isfinite(value)
+                or not np.isfinite(entry.total_violation)):
+            return entry
+        targets = {target.kind: float(value)}
         targets["violation"] = max(0.0, float(entry.total_violation))
         dataset.add(Sample(candidate_id=candidate.candidate_id,
                            params={k: float(v) for k, v in entry.params.items()},
                            targets=targets,
-                           source="measured", run_id=entry.run_id,
+                           source=sample_source, run_id=entry.run_id,
                            status=entry.status))
         return entry
 
@@ -78,10 +87,10 @@ def run_surrogate_assisted(
     have_violation_model = False
     while evaluated < budget:
         if len(dataset) >= 4:
-            x, y = dataset.matrix(target.kind, param_names)
+            x, y = dataset.matrix(target.kind, param_names, measured_only=not surface_run)
             report = cross_validate(model, x, y, folds=3)
             model.fit(x, y)
-            vx, vy = dataset.matrix("violation", param_names)
+            vx, vy = dataset.matrix("violation", param_names, measured_only=not surface_run)
             if len(vx) >= 4:
                 violation_model.fit(vx, vy)
                 have_violation_model = True
@@ -101,7 +110,7 @@ def run_surrogate_assisted(
         remaining = min(batch, budget - evaluated)
         if report is not None and dataset:
             mean, std = model.predict(pool_x)
-            best = float(max(dataset.matrix(target.kind, param_names)[1]))
+            best = float(np.max(y))
             if have_violation_model:
                 predicted, _ = violation_model.predict(pool_x)
                 feasible_mask = predicted <= 1e-6
@@ -132,8 +141,7 @@ def run_surrogate_assisted(
                         "feasible": len(archive.feasible()),
                         "model_rmse": None if report is None else round(report.rmse, 4),
                         "model_usable": False if report is None else model_is_usable(
-                            report, float(max(dataset.matrix(target.kind, param_names)[1])
-                                          - min(dataset.matrix(target.kind, param_names)[1])))})
+                            report, float(np.ptp(y)))})
     front = archive.feasible_front()
     best_entry = archive.best_by(target.kind, maximize=target.direction == "maximize")
     volume = None
@@ -163,9 +171,11 @@ def run_ablation(
 ) -> dict[str, Any]:
     """Aggregate strategy results over seeds (mean / worst / best)."""
     rows: dict[str, list[StrategyResult]] = {name: [] for name in strategies}
+    surface_only = True
     for seed in seeds:
         for name in strategies:
             executor = executor_factory()
+            surface_only = surface_only and isinstance(executor, MeasuredSurfaceExecutor)
             if name == "surrogate":
                 result = run_surrogate_assisted(case, executor, budget=budget,
                                                 seed=seed, reference=reference)
@@ -188,4 +198,7 @@ def run_ablation(
             "evaluations_mean": round(float(np.mean(evaluations)), 2),
             "hypervolume_mean": None if not volumes else round(float(np.mean(volumes)), 4),
         }
-    return {"case": case.case_id, "budget": budget, "seeds": list(seeds), "summary": summary}
+    report = {"case": case.case_id, "budget": budget, "seeds": list(seeds), "summary": summary}
+    if summary and surface_only:
+        report["evaluation_source"] = "fitted_surface_predictions"
+    return report

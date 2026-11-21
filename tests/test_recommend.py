@@ -5,7 +5,7 @@ import unittest
 
 import numpy as np
 
-from aster.recommend import recommend_from_runs, training_set
+from aster.recommend import recommend_from_runs, tighten_bounds, training_set
 
 NAMES = ("ring_outer", "ring_height", "tip_offset")
 BOUNDS = [(1.2, 3.0), (0.3, 1.2), (0.9, 1.4)]
@@ -51,6 +51,17 @@ class TrainingSetTests(unittest.TestCase):
 
 
 class RecommendationTests(unittest.TestCase):
+    def test_both_refined_edges_are_accepted_and_close_to_the_rule(self):
+        def accepts(params):
+            return 0.33 <= params["x"] <= 0.65
+
+        [(low, high)] = tighten_bounds([(0.0, 1.0)], accepts, {"x": 0.5},
+                                      ["x"], samples=5)
+        self.assertTrue(accepts({"x": low}))
+        self.assertTrue(accepts({"x": high}))
+        self.assertAlmostEqual(low, 0.33, delta=0.001)
+        self.assertAlmostEqual(high, 0.65, delta=0.001)
+
     def test_too_few_runs_are_reported_not_guessed(self):
         result = recommend_from_runs(campaign(2), count=2, names=NAMES, bounds=BOUNDS)
         self.assertEqual(result["recommendations"], [])

@@ -24,6 +24,7 @@ surrogate = ["scikit-learn>=1.4"]
 acquisition = ["torch>=2.0", "botorch>=0.13", "gpytorch>=1.11"]
 plot = ["matplotlib>=3.7"]
 dev = ["pytest>=8.0"]
+guard-client = ["mcp>=1.0,<2"]
 
 [project.scripts]
 aster = "aster.cli:main"
@@ -37,6 +38,7 @@ packages = [
 
 [tool.setuptools.package-data]
 "aster.skills" = ["**/*"]
+"aster.cases" = ["*.json"]
 aster = ["skills/**/*"]
 
 [tool.pytest.ini_options]

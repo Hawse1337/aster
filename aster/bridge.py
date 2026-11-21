@@ -13,16 +13,18 @@ Both expose the same four calls used by the optimisation loop.
 """
 from __future__ import annotations
 
-from contextlib import contextmanager
-
 import json
 import os
-import subprocess
 import sys
+from contextlib import ExitStack, asynccontextmanager
 from typing import Any, Protocol
 
 
 class GuardBridge(Protocol):
+    def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
+                             params: dict[str, Any], pid: int | None = None,
+                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]: ...
+
     def create_spec(self, campaign_dir: str, spec: dict[str, Any]) -> dict[str, Any]: ...
 
     def submit(self, **kwargs: Any) -> dict[str, Any]: ...
@@ -37,31 +39,6 @@ class GuardBridge(Protocol):
     def connect(self, *, pid: int | None = None, port: int | None = None) -> dict[str, Any]: ...
 
 
-_GUARD_CODE_ENV = "AEDT_MCP_ALLOW_ARBITRARY_CODE"
-
-
-@contextmanager
-def _trusted_bridge_code():
-    """Temporarily allow modelling snippets for aster's own trusted broker.
-
-    The guard denies ``run_python_code`` by default so an agent cannot use it as a
-    forge/recovery hatch. aster is the operator's local design tool: its measured-run bridge
-    must execute modelling snippets. The opt-in is scoped to this call (the broker worker
-    spawns during it and inherits the flag) and restored afterwards. DSH/Codex MCP servers are
-    separate processes and keep the default-deny gate; do not co-host aster with them in one
-    Python process.
-    """
-    previous = os.environ.get(_GUARD_CODE_ENV)
-    os.environ[_GUARD_CODE_ENV] = "1"
-    try:
-        yield
-    finally:
-        if previous is None:
-            os.environ.pop(_GUARD_CODE_ENV, None)
-        else:
-            os.environ[_GUARD_CODE_ENV] = previous
-
-
 class InProcessBridge:
     """Imports the installed guard package (``AEDT_MCP_REPO/mcp_server.py``)."""
 
@@ -72,6 +49,15 @@ class InProcessBridge:
         import mcp_server  # noqa: PLC0415
 
         self._mcp = mcp_server
+
+    def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
+                             params: dict[str, Any], pid: int | None = None,
+                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]:
+        import asyncio
+
+        result = self._mcp.run_approved_builder(builder_id=builder_id, project_path=project_path,
+            outdir=outdir, params=params, pid=pid, port=port, timeout=timeout)
+        return asyncio.run(result) if asyncio.iscoroutine(result) else result
 
     def create_spec(self, campaign_dir: str, spec: dict[str, Any]) -> dict[str, Any]:
         from pathlib import Path  # noqa: PLC0415
@@ -95,27 +81,19 @@ class InProcessBridge:
         """Run a modelling snippet in the guarded broker (never a solve)."""
         import asyncio  # noqa: PLC0415
 
-        with _trusted_bridge_code():
-            coro = self._mcp.run_python_code(
-                code=code,
-                pid=pid,
-                port=port,
-                **({"timeout": timeout} if timeout is not None else {}),
-            )
-            if asyncio.iscoroutine(coro):
-                return asyncio.run(coro)
-            return coro
+        coro = self._mcp.run_python_code(code=code, pid=pid, port=port,
+                                        **({"timeout": timeout} if timeout is not None else {}))
+        if asyncio.iscoroutine(coro):
+            return asyncio.run(coro)
+        return coro
 
     def connect(self, *, pid: int | None = None, port: int | None = None) -> dict[str, Any]:
         import asyncio  # noqa: PLC0415
 
-        # The guard broker worker is spawned by the first call (usually connect). It must
-        # inherit the opt-in, otherwise a later execute_code reuses a worker that denies it.
-        with _trusted_bridge_code():
-            coro = self._mcp.connect_to_aedt(pid=pid, port=port, non_graphical=False)
-            if asyncio.iscoroutine(coro):
-                return asyncio.run(coro)
-            return coro
+        coro = self._mcp.connect_to_aedt(pid=pid, port=port, non_graphical=False)
+        if asyncio.iscoroutine(coro):
+            return asyncio.run(coro)
+        return coro
 
     def clear_stale_lock(self, project_path: str) -> dict[str, Any]:
         return self._mcp.clear_stale_lock(project_path)
@@ -144,14 +122,17 @@ class StdioBridge:
         self.command = command or os.environ.get("AEDT_MCP_PYTHON") or sys.executable
         self.args = args or [os.path.join(repo, "mcp_server.py")]
         self.env = dict(os.environ)
-        self.env.setdefault(_GUARD_CODE_ENV, "1")
         self.env.update(env or {})
-        self._session = None
+        self._stack = None
+        self._portal = None
         self._client = None
 
     # --- context management -------------------------------------------------
     def __enter__(self) -> "StdioBridge":
+        if self._stack is not None:
+            raise RuntimeError("StdioBridge is already open")
         try:
+            from anyio.from_thread import start_blocking_portal
             from mcp import ClientSession, StdioServerParameters  # noqa: PLC0415
             from mcp.client.stdio import stdio_client  # noqa: PLC0415
         except ImportError as exc:  # pragma: no cover - optional dependency
@@ -159,36 +140,42 @@ class StdioBridge:
                 "StdioBridge requires the 'mcp' client package; install it or use "
                 "InProcessBridge"
             ) from exc
-        self._stdio = stdio_client(
-            StdioServerParameters(command=self.command, args=self.args, env=self.env)
-        )
-        read, write = self._stdio.__enter__()
-        self._session = ClientSession(read, write)
-        self._session.__enter__()
-        self._client = self._session
-        import asyncio  # noqa: PLC0415
+        @asynccontextmanager
+        async def connected():
+            params = StdioServerParameters(command=self.command, args=self.args, env=self.env)
+            async with stdio_client(params) as (read, write):
+                async with ClientSession(read, write) as session:
+                    await session.initialize()
+                    yield session
 
-        asyncio.get_event_loop().run_until_complete(self._session.initialize())
+        # The two MCP context managers own AnyIO cancel scopes. Enter and
+        # exit them in one task, including when the GUI calls from a worker.
+        with ExitStack() as stack:
+            portal = stack.enter_context(start_blocking_portal())
+            client = stack.enter_context(portal.wrap_async_context_manager(connected()))
+            self._portal = portal
+            self._client = client
+            self._stack = stack.pop_all()
         return self
 
     def __exit__(self, *exc: Any) -> None:
-        if self._session is not None:
-            self._session.__exit__(*exc)
-        if hasattr(self, "_stdio"):
-            self._stdio.__exit__(*exc)
+        if self._stack is not None:
+            try:
+                self._stack.__exit__(*exc)
+            finally:
+                self._stack = self._portal = self._client = None
 
     # --- calls --------------------------------------------------------------
     def _call(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
-        import asyncio  # noqa: PLC0415
-
         if self._client is None:
             raise RuntimeError("StdioBridge must be used as a context manager")
-        result = asyncio.get_event_loop().run_until_complete(
-            self._client.call_tool(name, arguments)
-        )
+        result = self._portal.call(self._client.call_tool, name, arguments)
         text = "".join(getattr(item, "text", "") or "" for item in result.content)
         if result.isError:
             raise RuntimeError(f"guard tool {name} failed: {text[:400]}")
+        structured = getattr(result, "structuredContent", None)
+        if isinstance(structured, dict):
+            return structured
         try:
             return json.loads(text)
         except json.JSONDecodeError:
@@ -196,9 +183,8 @@ class StdioBridge:
 
     def create_spec(self, campaign_dir: str, spec: dict[str, Any]) -> dict[str, Any]:
         metrics = spec.get("metrics") or []
-        constraints = [m for m in metrics if m.get("hard", True)]
         objectives = spec.get("objectives") or []
-        return self._call(
+        result = self._call(
             "spec_create",
             {
                 "campaign_dir": campaign_dir,
@@ -206,10 +192,21 @@ class StdioBridge:
                 "design_type": spec["design_type"],
                 "frequency_ghz": list(spec["frequency_ghz"]),
                 "metrics": metrics,
+                **({"objectives": objectives} if objectives else {}),
                 "evaluation": spec.get("evaluation"),
                 "execution_policy": spec.get("execution_policy"),
             },
-        ) if constraints or objectives else {"skipped": True}
+        )
+        if objectives and result.get("spec", {}).get("objectives") != objectives:
+            raise RuntimeError("Guard spec_create did not preserve the requested objectives")
+        return result
+
+    def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
+                             params: dict[str, Any], pid: int | None = None,
+                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]:
+        return self._call("run_approved_builder", {"builder_id": builder_id,
+            "project_path": project_path, "outdir": outdir, "params": params,
+            "pid": pid, "port": port, "timeout": timeout})
 
     def submit(self, **kwargs: Any) -> dict[str, Any]:
         return self._call("submit_guarded_run", kwargs)

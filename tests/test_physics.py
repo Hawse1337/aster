@@ -1,13 +1,14 @@
 ﻿"""Module C tests: sensitivity recovery, coupling, local proposal, diagnosis."""
 from __future__ import annotations
 
+import math
 import os
 import unittest
 
 from aster.core import Constraint, Objective
 from aster.physics.diagnosis import diagnose, pairwise_interactions
 from aster.physics.local_opt import propose_local_step
-from aster.physics.sensitivity import compute_sensitivity, screen_parameters
+from aster.physics.sensitivity import SensitivityMatrix, compute_sensitivity, screen_parameters
 from aster.synthetic import build_case
 
 os.environ.setdefault("AEDT_GUARD_NO_DAEMON", "1")
@@ -122,6 +123,32 @@ class LocalOptTests(unittest.TestCase):
             protected={"s11": 0.01}, trust_region=0.3,
         )
         self.assertFalse(proposal.accepted)
+
+    def test_zero_budget_still_allows_motion_in_the_null_space(self):
+        matrix = SensitivityMatrix(base_params={}, raw={
+            "gain": {"x": 1, "y": 1}, "protected": {"x": 1, "y": 0}},
+            params=["x", "y"], steps={"x": .01, "y": .02}, parameter_spans={"x": 1, "y": 1})
+        proposal = propose_local_step(matrix, target_kind="gain", desired_change=1,
+                                      protected={"protected": 0}, trust_region=1)
+        self.assertTrue(proposal.accepted, proposal.reason)
+        self.assertAlmostEqual(proposal.delta["x"], 0)
+        self.assertAlmostEqual(proposal.delta["y"], 1)
+        self.assertAlmostEqual(proposal.predicted_target_change, 1)
+
+    def test_nonzero_slabs_and_trust_ball_in_scaled_coordinates(self):
+        # With u=x/span the normalised target gradient is [1,1,1]. At the
+        # negative support point two slabs bind and the last coordinate uses
+        # the remaining radius. The requested change is beyond that support.
+        matrix = SensitivityMatrix(base_params={}, raw={"gain": {"x": .5, "y": 2, "z": 1},
+            "p": {"x": .5}, "q": {"y": 2}}, params=["x","y","z"],
+            steps={"x":.1,"y":.01,"z":.1}, parameter_spans={"x":2,"y":.5,"z":1})
+        proposal = propose_local_step(matrix, target_kind="gain", desired_change=-2,
+                                      protected={"p": .2, "q": .3}, trust_region=1)
+        self.assertTrue(proposal.accepted, proposal.reason)
+        self.assertAlmostEqual(proposal.delta["x"], -.4)
+        self.assertAlmostEqual(proposal.delta["y"], -.15)
+        self.assertAlmostEqual(proposal.delta["z"], -math.sqrt(.87))
+        self.assertAlmostEqual(proposal.predicted_target_change, -.5 - math.sqrt(.87))
 
     def test_unknown_target_rejected(self):
         proposal = propose_local_step(self.matrix, target_kind="nope", desired_change=1.0)

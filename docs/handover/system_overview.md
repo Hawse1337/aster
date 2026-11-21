@@ -25,6 +25,23 @@
 `AntennaOptimizer.exe` 是**启动器**：冻结包内无法直接 import PyAEDT，所以它用 venv 解释器重跑
 `python -m aster.app`；`--worker` 则重跑到 `python -m aster.worker`。源码路径与打包路径是同一份代码。
 
+### 在已批准的模型范围内自动运行
+
+对已入队的 `lens2g4_10g` 候选，可以把三个尺寸交给守卫登记的 `p0_lens_dimensions`。使用守卫管理的 AEDT PID，选择已经具备设计、求解设置、扫频和远场球的基线工程。下面的 PowerShell 命令采用 P0 示例的设置名和扫频名。将变量替换为本机配置。
+
+```powershell
+$modelArgs = @(
+    '--real', '--once', '--case', 'lens2g4_10g',
+    '--approved-builder', 'p0_lens_dimensions', '--pid', "$managedPid",
+    '--project', $baseline, '--builder-outdir', $outputDirectory,
+    '--design', 'Trunc_10GHz', '--setup', 'Setup1', '--sweep', 'Sweep_5_18',
+    '--campaign', $campaign
+)
+python -m aster.worker @modelArgs
+```
+
+守卫校验通过后，worker 仅提交 builder 创建的独立工程。超出已配置范围时，任务保存为 `APPROVAL_REQUIRED`，终端给出原任务 ID 和请求 JSON 路径。对于 `approval_mode=once` 的请求，操作者在守卫仓库执行 `python scripts/approve_builder_request.py <请求文件>`，核对实际项目、设计和参数并确认。保持原参数和 PID，执行 `python -m aster.worker @modelArgs --retry-approval <原任务ID>`。返回码 3 表示批次中仍有待审批任务。缺少策略或请求字段时，根据响应的 `reason` 修正配置。模型或输入校验失败后不会提交求解。
+
 ## 3. 关键文件地图
 
 ### 3.1 设计仓（`<repo>`）
@@ -96,8 +113,8 @@
 $py = "<guard-repo>\.venv\Scripts\python.exe"
 & $py -m aster.app --real                 # 页面控制台（浏览器打开提示的地址）
 & $py -m aster.app --selftest             # 自检（导入/页面/配置）
-& $py -m aster.worker --campaign <dir> --real --once          # 后台执行队列
-& $py -m aster.worker --campaign <dir> --real --watch 60 --aedt-ng
+& $py -m aster.worker --campaign <dir> --real --supervised --once          # 后台执行队列
+& $py -m aster.worker --campaign <dir> --real --supervised --watch 60 --aedt-ng
 & $py -m unittest discover -s tests        # 713 项
 ```
 

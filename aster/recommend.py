@@ -57,10 +57,10 @@ def tighten_bounds(bounds: Sequence[tuple[float, float]],
         step = (high - low) / max(1, samples - 1)
         if first > low:
             first = _edge(lambda value: _accepts(name, value, accepts, defaults),
-                          first - step, first, increasing=True)
+                          first - step, first)
         if last < high:
             last = _edge(lambda value: _accepts(name, value, accepts, defaults),
-                         last, last + step, increasing=False)
+                         last + step, last)
         result.append((float(first), float(last)))
     return result
 
@@ -76,7 +76,7 @@ def _accepts(name: str, value: float, accepts: Callable[[dict[str, float]], bool
 
 
 def _edge(check: Callable[[float], bool], bad: float, good: float, *,
-          increasing: bool, rounds: int = 8) -> float:
+          rounds: int = 8) -> float:
     """Find where ``check`` flips between ``bad`` (rejected) and ``good`` (accepted)."""
     for _ in range(rounds):
         middle = (bad + good) / 2.0
@@ -313,7 +313,8 @@ def recommend_from_runs(runs: Sequence[dict[str, Any]], *, count: int = 2,
     occupied = set()
     for row in compatible:
         if str(row.get("status") or "").upper() not in (
-                "COMPLETED", "QUEUED", "RUNNING", "SOLVING", "PREPARING", "RECOVERY_REQUIRED"):
+                "COMPLETED", "QUEUED", "RUNNING", "SOLVING", "PREPARING", "RECOVERY_REQUIRED",
+                "APPROVAL_REQUIRED"):
             continue
         try:
             point = _vector(row.get("params") or {}, names, parameter_specs)

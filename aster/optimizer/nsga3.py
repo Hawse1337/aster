@@ -20,7 +20,7 @@ from typing import Any
 import numpy as np
 
 from ..core import CaseSpec
-from .nsga2 import MISSING_PENALTY, CachedEvaluator, _g_value
+from .nsga2 import CachedEvaluator, _case_problem
 
 
 def reference_directions(n_obj: int, pop_size: int) -> np.ndarray:
@@ -59,44 +59,15 @@ def run_nsga3(
     """Run NSGA-III and return the evaluated archive plus generation history."""
     try:
         from pymoo.algorithms.moo.nsga3 import NSGA3  # noqa: PLC0415
-        from pymoo.core.problem import Problem  # noqa: PLC0415
         from pymoo.optimize import minimize  # noqa: PLC0415
     except ImportError as exc:  # pragma: no cover - dependency guard
         raise RuntimeError("pymoo is required for module A (pip install pymoo)") from exc
 
-    space = case.family.param_space
     objectives = case.objectives
-    constraints = case.constraints
     evaluator = CachedEvaluator(case, executor, budget=budget)
     history: list[dict[str, Any]] = []
 
-    class CaseProblem(Problem):  # noqa: D401 - pymoo interface
-        def __init__(self) -> None:
-            super().__init__(
-                n_var=len(space),
-                n_obj=len(objectives),
-                n_ieq_constr=len(constraints),
-                xl=np.zeros(len(space)),
-                xu=np.ones(len(space)),
-            )
-
-        def _evaluate(self, X, out, *args, **kwargs):  # noqa: N802
-            f_values = []
-            g_values = []
-            for row in X:
-                params = space.from_vector(row)
-                entry = evaluator(params)
-                f_row = []
-                for objective in objectives:
-                    value = entry.metrics.get(objective.kind)
-                    value = MISSING_PENALTY if value is None else float(value)
-                    f_row.append(-value if objective.direction == "maximize" else value)
-                f_values.append(f_row)
-                g_values.append([_g_value(entry.metrics, c) for c in constraints])
-            out["F"] = np.asarray(f_values, dtype=float)
-            out["G"] = np.asarray(g_values, dtype=float)
-
-    problem = CaseProblem()
+    problem = _case_problem(case, evaluator)
     directions = reference_directions(len(objectives), int(pop_size))
     algorithm = NSGA3(pop_size=int(pop_size), ref_dirs=directions)
     result = minimize(

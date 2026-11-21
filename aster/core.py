@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import random
 from dataclasses import dataclass, field
 from typing import Any, Callable, Iterable, Sequence
@@ -174,8 +175,10 @@ class Constraint:
             raise SpecError(f"constraint {self.id}: unknown kind {self.kind}")
         if self.operator not in OPERATORS:
             raise SpecError(f"constraint {self.id}: unknown operator {self.operator}")
-        if self.violation_scale <= 0:
-            raise SpecError(f"constraint {self.id}: violation_scale must be positive")
+        if not math.isfinite(self.target):
+            raise SpecError(f"constraint {self.id}: target must be finite")
+        if not math.isfinite(self.violation_scale) or self.violation_scale <= 0:
+            raise SpecError(f"constraint {self.id}: violation_scale must be finite and positive")
 
     def to_spec_metric(self) -> dict[str, Any]:
         metric = {

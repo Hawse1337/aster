@@ -431,8 +431,9 @@ def _csv_samples(directory: Path) -> list[list[float]]:
     return result
 
 
-def _normalise(samples: list) -> dict[float, dict[tuple[float, float], float]]:
+def _normalise(samples: list) -> tuple[dict[float, dict[tuple[float, float], float]], set[float]]:
     groups: dict[float, dict[tuple[float, float], float]] = {}
+    conflicts: set[float] = set()
     for row in samples:
         if not isinstance(row, (list, tuple)) or len(row) != 4:
             continue
@@ -446,8 +447,11 @@ def _normalise(samples: list) -> dict[float, dict[tuple[float, float], float]]:
         if theta > 180:
             theta, phi = 360 - theta, (phi + 180) % 360
         point = (round(theta, 7), round(phi, 7))
-        groups.setdefault(round(freq, 9), {}).setdefault(point, gain)
-    return groups
+        freq = round(freq, 9)
+        group = groups.setdefault(freq, {})
+        if abs(group.setdefault(point, gain) - gain) > 1e-6:
+            conflicts.add(freq)
+    return groups, conflicts
 
 
 def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dict[str, Any]:
@@ -460,7 +464,7 @@ def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dic
         except (OSError, ValueError):
             raw = {"detail": "Saved far-field snapshot is unreadable"}
     samples = raw.get("samples") or _csv_samples(directory / "farfield")
-    groups = _normalise(samples)
+    groups, conflicts = _normalise(samples)
     frequencies = sorted(groups)
     selected = (frequencies[0] if frequencies else None) if frequency_ghz is None else frequency_ghz
     selected = next((f for f in frequencies if abs(f - selected) < 1e-8), selected) if selected is not None else None
@@ -468,8 +472,12 @@ def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dic
     native = raw.get("native_reports") or {}
     selected_set = next((item for item in native.get("sets", [])
                          if selected is not None and abs(item.get("frequency_ghz", -1) - selected) < 1e-8), {})
-    response = {"run_id": run_id, "artifact_run_id": run_id, "status": "unavailable", "source": "MEASURED",
-                "quantity": QUANTITY, "frequencies_ghz": frequencies, "frequency_ghz": selected,
+    source = raw.get("source", "MEASURED")
+    if raw.get("run_id") not in (None, "", run_id):
+        source = "UNVERIFIED"
+    quantity = raw.get("quantity", QUANTITY)
+    response = {"run_id": run_id, "artifact_run_id": run_id, "status": "unavailable", "source": source,
+                "quantity": quantity, "frequencies_ghz": frequencies, "frequency_ghz": selected,
                 "sphere": None, "e_plane": None, "h_plane": None, "warnings": [],
                 "ring_pattern": None,
                 "detail": raw.get("detail", ""), "sphere_name": raw.get("sphere_name", ""),
@@ -486,6 +494,9 @@ def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dic
             response["native_image_url"] = "/api/farfield-image?" + urlencode({"run_id": run_id, "frequency_ghz": selected})
     if raw.get("native_report_error"):
         response["warnings"].append(raw["native_report_error"])
+    if selected in conflicts:
+        response["detail"] = "Conflicting gain samples at equivalent angular coordinates"
+        return response
     if not data:
         response["detail"] = response["detail"] or "No saved far-field data for this run/frequency"
         return response
@@ -515,11 +526,8 @@ def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dic
     else:
         response["warnings"].append("Full measured sphere grid is unavailable; 3D plot cannot be reconstructed from cuts")
     from .pattern_acceptance import assess_ring_pattern
-    source = raw.get("source", "MEASURED")
-    if raw.get("run_id") not in (None, "", run_id):
-        source = "UNVERIFIED"
     response["ring_pattern"] = assess_ring_pattern(response["sphere"],
-                                                   quantity=raw.get("quantity", QUANTITY), source=source)
+                                                   quantity=quantity, source=source)
     count = sum(response[key] is not None for key in ("sphere", "e_plane", "h_plane"))
     response["status"] = "available" if count == 3 else "partial" if count else "unavailable"
     return response

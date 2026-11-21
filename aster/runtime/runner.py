@@ -157,6 +157,9 @@ class RealRunManager:
     pattern_reports_dir: Path | None = None
     """Optional root for the persisted PNG/report manifests (default: campaign/pattern_reports)."""
 
+    approved_builder: str | None = None
+    builder_outdir: Path | None = None
+
     def __post_init__(self) -> None:
         self.campaign_dir = Path(self.campaign_dir)
         # a fresh manager starts with no bridge, no sweep and no report
@@ -176,7 +179,7 @@ class RealRunManager:
         from ..learning_contract import case_contract
         from ..parametric.registry import get_case
 
-        from .server import ensure_registry
+        from ..registry_bootstrap import ensure_registry
         ensure_registry()
         registration = get_case(case_name)
         source = Path(self.project_source) if self.project_source is not None else None
@@ -190,6 +193,12 @@ class RealRunManager:
                   "actual_aedt_version": self.aedt_version or "unknown",
                   "project_source_hash": hashlib.sha256(source.read_bytes()).hexdigest()
                   if source is not None and source.is_file() else None}
+        if self.approved_builder:
+            spec = registration.build_case()
+            recipe = {"builder": self.approved_builder, "project_source_hash": recipe["project_source_hash"],
+                      "design": self.design_name, "setup": self.setup_name, "sweep": self.sweep_name,
+                      "frequencies_ghz": spec.evaluation.get("frequencies_ghz"),
+                      "aedt_version": self.aedt_version or "unknown"}
         return case_contract(registration.build_case(), registration.build_model(), recipe)
 
     def _bind_contract(self, job: RealJob) -> None:
@@ -262,6 +271,8 @@ class RealRunManager:
         worker thread reached a different loop and had the guard try to start AEDT on port 0.
         Doing this part here keeps the session on the loop that owns it.
         """
+        if self.approved_builder:
+            return None  # The baseline already contains the analysis setup.
         if self.project_source is None:
             return None
         source = Path(self.project_source)
@@ -413,10 +424,12 @@ class RealRunManager:
 
     def _run_job(self, job: RealJob) -> None:
         try:
+            if self.approved_builder and job.case != self.case_name:
+                raise RealRunError("BUILDER_CASE_MISMATCH", job.case)
             self._update(job, stage="CONNECTING", status="RUNNING")
             # a previous stall may have killed AEDT; bring it back before asking for a pid,
             # otherwise every later job in the batch fails instantly with NO_AEDT
-            if self.ensure_aedt is not None:
+            if self.ensure_aedt is not None and not self.approved_builder:
                 try:
                     ready = bool(self.ensure_aedt())
                 except Exception:  # noqa: BLE001 - treated as "not ready"
@@ -432,7 +445,7 @@ class RealRunManager:
                 # every attempt gets its own pid, bridge, project copy and executor: reusing the
                 # previous ones is how a retry ended up queued behind a blocked call. AEDT may have
                 # been killed by the previous attempt, so bring it back before asking for a pid.
-                if self.ensure_aedt is not None:
+                if self.ensure_aedt is not None and not self.approved_builder:
                     try:
                         ready = bool(self.ensure_aedt())
                     except Exception:  # noqa: BLE001 - treated as "not ready"
@@ -451,6 +464,10 @@ class RealRunManager:
                 project, executor = self._prepare(bridge, pid, job)
                 attempt.executor = executor
                 self._update(job, stage="SOLVING")
+                if self.approved_builder:
+                    # The guard owns the solver lifecycle, timeout and evidence on this session.
+                    entry = executor.evaluate(self._candidate(job))
+                    break
                 outcome = self._evaluate_attempt(job, executor, attempt)
                 if outcome.result is not None:
                     entry = outcome.result
@@ -476,40 +493,47 @@ class RealRunManager:
                        if isinstance(v, (int, float))}
             guard_run_id = getattr(entry, "run_id", None) or job.run_id
             self._update(job, stage="POSTPROCESS", guard_run_id=guard_run_id)
-            from ..farfield import capture
+            if self.approved_builder:
+                job.pattern_reports = {"source": "guard_artifacts", "guard_run_id": guard_run_id}
+            else:
+                from ..farfield import capture
 
-            # Read already-solved fields before the next candidate can change the project.
-            # Visualisation has its own artifact and does not alter accepted KPI results.
-            try:
-                snapshot = capture(bridge, campaign=self.campaign_dir, run_id=guard_run_id,
-                                   project=project, design=self.design_name,
-                                   setup=(getattr(getattr(executor, "config", None),
-                                                  "farfield_setup_name", None) or self.setup_name), pid=pid)
-                job.farfield_warning = snapshot.get("detail", "")
-            except Exception as exc:  # noqa: BLE001 - optional artifact I/O failure
-                job.farfield_warning = str(exc)[:500]
-            if self.keep_pattern_reports:
-                # The capture above creates and deletes the reports to keep PyAEDT quiet; this
-                # rebuilds the same four reports and KEEPS them (plus the PNGs) so the user can
-                # open Results of the solved project and replot 3D / E / H / EH overlay.
+                # Read already-solved fields before the next candidate can change the project.
+                # Visualisation has its own artifact and does not alter accepted KPI results.
                 try:
-                    from ..farfield import persist_pattern_reports
+                    snapshot = capture(bridge, campaign=self.campaign_dir, run_id=guard_run_id,
+                                       project=project, design=self.design_name,
+                                       setup=(getattr(getattr(executor, "config", None),
+                                                      "farfield_setup_name", None) or self.setup_name), pid=pid)
+                    job.farfield_warning = snapshot.get("detail", "")
+                except Exception as exc:  # noqa: BLE001 - optional artifact I/O failure
+                    job.farfield_warning = str(exc)[:500]
+                if self.keep_pattern_reports:
+                    # The capture above creates and deletes the reports to keep PyAEDT quiet; this
+                    # rebuilds the same four reports and KEEPS them (plus the PNGs) so the user can
+                    # open Results of the solved project and replot 3D / E / H / EH overlay.
+                    try:
+                        from ..farfield import persist_pattern_reports
 
-                    job.pattern_reports = persist_pattern_reports(
-                        bridge, campaign=self.campaign_dir, run_id=guard_run_id,
-                        project=project, design=self.design_name,
-                        setup=(getattr(getattr(executor, "config", None),
-                                       "farfield_setup_name", None) or self.setup_name),
-                        pid=pid,
-                        output_dir=((Path(self.pattern_reports_dir) / guard_run_id)
-                                    if self.pattern_reports_dir is not None else None))
-                except Exception as exc:  # noqa: BLE001 - optional artifact
-                    job.pattern_reports = {"ok": False, "error": str(exc)[:500]}
+                        job.pattern_reports = persist_pattern_reports(
+                            bridge, campaign=self.campaign_dir, run_id=guard_run_id,
+                            project=project, design=self.design_name,
+                            setup=(getattr(getattr(executor, "config", None),
+                                           "farfield_setup_name", None) or self.setup_name),
+                            pid=pid,
+                            output_dir=((Path(self.pattern_reports_dir) / guard_run_id)
+                                        if self.pattern_reports_dir is not None else None))
+                    except Exception as exc:  # noqa: BLE001 - optional artifact
+                        job.pattern_reports = {"ok": False, "error": str(exc)[:500]}
             # keep the job id stable for the page; the guard id locates artifacts
             self._finish(job, stage="DONE", status="COMPLETED",
                          metrics=metrics, violations=dict(entry.violations or {}),
                          feasible=bool(entry.feasible), guard_run_id=guard_run_id)
         except RealRunError as exc:
+            if exc.code == "APPROVAL_REQUIRED":
+                self._finish(job, stage="APPROVAL_REQUIRED", status="APPROVAL_REQUIRED",
+                             error_code=exc.code, error_detail=exc.detail)
+                return
             self._finish(job, stage="DONE", status="FAILED",
                          error_code=exc.code, error_detail=exc.detail,
                          failure=classify(exc.code, exc.detail).to_dict())
@@ -878,6 +902,61 @@ class RealRunManager:
 
         return InProcessBridge()
 
+    def _prepare_approved(self, bridge, pid: int, job: RealJob, source: Path, registration):
+        from ..executor import GuardConfig, GuardExecutor
+
+        model = registration.build_model()
+        for check in (model.validate_geometry, model.validate_em_setup):
+            verdict = check(dict(job.params))
+            if not verdict.valid:
+                raise RealRunError("MODEL_FAILED", "; ".join(verdict.messages))
+        outdir = Path(self.builder_outdir or self.campaign_dir / "candidates").resolve()
+        previous = job.telemetry.get("builder_approval") or {}
+        if previous and (previous.get("outdir") != str(outdir) or previous.get("pid") != pid):
+            raise RealRunError("APPROVAL_REQUIRED", "retry using the original output directory and PID")
+        existing = {path.stem.casefold() for path in outdir.glob("*.aedt")}
+        response = bridge.run_approved_builder(
+            builder_id=self.approved_builder, project_path=str(source.resolve()), outdir=str(outdir),
+            params={**job.params, "design": self.design_name}, pid=pid)
+        if response.get("approval_required") is True and response.get("refused") is True:
+            from hashlib import sha256
+            from tempfile import NamedTemporaryFile
+
+            directory = self.campaign_dir / "approval_requests"
+            directory.mkdir(parents=True, exist_ok=True)
+            request_file = directory / (sha256(job.run_id.encode()).hexdigest() + ".json")
+            with NamedTemporaryFile("w", dir=directory, delete=False, encoding="utf-8") as handle:
+                json.dump(response, handle, ensure_ascii=False, indent=2)
+            Path(handle.name).replace(request_file)
+            job.telemetry["builder_approval"] = {
+                **response, "request_file": str(request_file.resolve()), "outdir": str(outdir),
+                "pid": pid, "submitted": False}
+            raise RealRunError("APPROVAL_REQUIRED", str(response.get("reason") or "review required"))
+        payload = response.get("result")
+        if (response.get("refused") or response.get("executed") is not True
+                or not isinstance(payload, dict) or payload.get("validated") is not True
+                or payload.get("design") != self.design_name or not isinstance(payload.get("saved"), str)):
+            raise RealRunError("MODEL_FAILED", str(response.get("reason") or "invalid builder result"))
+        target = Path(payload["saved"]).resolve()
+        if (target.parent != outdir or target.suffix.lower() != ".aedt" or not target.is_file()
+                or target.samefile(source) or target.stem.casefold() == source.stem.casefold()
+                or target.stem.casefold() in existing):
+            raise RealRunError("MODEL_FAILED", "builder did not return an isolated candidate project")
+        case = registration.build_case()
+        bridge.create_spec(str(self.campaign_dir), case.to_spec())
+        config = GuardConfig(campaign_dir=str(self.campaign_dir), project_name=str(target),
+                             design_name=self.design_name, setup_name=self.setup_name,
+                             sweep_name=self.sweep_name,
+                             frequencies_ghz=case.evaluation.get("frequencies_ghz"),
+                             pid=pid, timeout_s=float(self.solve_budget_s))
+        job.telemetry.pop("builder_approval", None)
+        job.telemetry["builder_result"] = {
+            "builder": self.approved_builder, "script_sha256": response.get("script_sha256"),
+            "authorization": response.get("authorization"), "request_id": response.get("request_id"),
+            "saved": str(target), "design": self.design_name}
+
+        return target, GuardExecutor(case, config, bridge=bridge)
+
     def _prepare(self, bridge: Any, pid: int, job: RealJob) -> tuple[Path, Any]:
         # Validate identity and complete parameter coverage before touching AEDT.
         from ..parametric.registry import get_case
@@ -893,6 +972,10 @@ class RealRunManager:
         source = Path(self.project_source)
         if not source.is_file():
             raise RealRunError("NO_PROJECT", str(source))
+        if self.approved_builder:
+            if self.case_name != job.case:
+                raise RealRunError("BUILDER_CASE_MISMATCH", job.case)
+            return self._prepare_approved(bridge, pid, job, source, registration)
         projects = self.campaign_dir / "projects"
         projects.mkdir(parents=True, exist_ok=True)
         target = projects / ("%s.aedt" % job.case)

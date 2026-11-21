@@ -1,7 +1,7 @@
 """Headless batch worker: execute the persisted queue without the page.
 
-    python -m aster.worker --campaign DIR --case lens28_var --real --once
-    python -m aster.worker --campaign DIR --case lens28_var --real --watch 60
+    python -m aster.worker --campaign DIR --case lens28_var --real --supervised --once
+    python -m aster.worker --campaign DIR --case lens28_var --real --supervised --watch 60
 
 Why this exists: the page is a control surface, and running a twenty-five minute solve inside the
 same process as an HTTP server means a crash, a mis-click or a restart costs the run. The worker
@@ -10,7 +10,7 @@ same ``RealRunManager`` (no second implementation of the solver discipline), and
 a supervisor can restart it.
 
 Exit codes: 0 when the queue drained cleanly, 1 when a job failed, 2 for a usage or configuration
-problem.
+problem, 3 when the one-shot local queue encounters pending approval.
 """
 from __future__ import annotations
 
@@ -44,7 +44,7 @@ def _manager(args: argparse.Namespace, env: config.Environment) -> RealRunManage
     from .registry_bootstrap import ensure_registry  # noqa: PLC0415
 
     ensure_registry()
-    project = env.reference_project
+    project = getattr(args, "project", None) or env.reference_project
     if project is None or not Path(project).is_file():
         raise SystemExit("no reference project configured; run `AntennaOptimizer.exe --wizard`")
     campaign = Path(args.campaign)
@@ -62,6 +62,12 @@ def _manager(args: argparse.Namespace, env: config.Environment) -> RealRunManage
             time.sleep(5)
         return start_aedt(env.aedt_exe or Path("ansysedt.exe"), args.grpc,
                           non_graphical=bool(getattr(args, "aedt_ng", False)))
+
+    if getattr(args, "approved_builder", None):
+        return RealRunManager(
+            campaign_dir=campaign, project_source=Path(project), case_name=args.case,
+            **approved_model_options(args),
+            solve_budget_s=float(args.solve_budget))
 
     manager = RealRunManager(
         campaign_dir=campaign,
@@ -81,9 +87,17 @@ def _manager(args: argparse.Namespace, env: config.Environment) -> RealRunManage
     return manager
 
 
-def run_once(manager: RealRunManager, store: JobStore, worker: str, handle=None) -> str | None:
+def run_once(manager: RealRunManager, store: JobStore, worker: str, handle=None,
+             retry_approval: str | None = None) -> str | None:
     """Claim and execute one queued row; returns the run id, or None when the queue is empty."""
-    row = store.claim_next(worker)
+    if retry_approval:
+        if not manager.approved_builder:
+            raise ValueError("approval retries require an approved builder")
+        row = store.claim_approval_retry(retry_approval, manager.case_name, worker)
+    elif manager.approved_builder:
+        row = store.claim_next(worker, case_name=manager.case_name)
+    else:
+        row = store.claim_next(worker)
     if row is None:
         return None
     run_id = str(row["run_id"])
@@ -99,6 +113,10 @@ def run_once(manager: RealRunManager, store: JobStore, worker: str, handle=None)
         return run_id
     final = manager.status(run_id)
     status = getattr(final, "status", "UNKNOWN")
+    if status == "APPROVAL_REQUIRED":
+        request = final.telemetry.get("builder_approval", {})
+        _log(handle, "approval required for %s: %s (request %s)" %
+             (run_id, request.get("reason"), request.get("request_file")))
     _log(handle, "run %s finished: %s" % (run_id, status))
     return run_id
 
@@ -108,6 +126,7 @@ def drain(manager: RealRunManager, store: JobStore, worker: str, limit: int | No
     """Run until the queue is empty; returns a small summary."""
     done = 0
     failed = 0
+    pending = 0
     while limit is None or done < limit:
         run_id = run_once(manager, store, worker, handle=handle)
         if run_id is None:
@@ -116,7 +135,9 @@ def drain(manager: RealRunManager, store: JobStore, worker: str, limit: int | No
         row = next((item for item in store.jobs() if item["run_id"] == run_id), {})
         if str(row.get("status") or "").upper() == "FAILED":
             failed += 1
-    return {"done": done, "failed": failed}
+        elif row.get("status") == "APPROVAL_REQUIRED":
+            pending += 1
+    return {"done": done, "failed": failed, **({"approval_required": pending} if pending else {})}
 
 
 def agent_main(args: argparse.Namespace, env: config.Environment) -> int:
@@ -158,11 +179,35 @@ def agent_main(args: argparse.Namespace, env: config.Environment) -> int:
             handle.close()
 
 
+def add_model_arguments(parser: argparse.ArgumentParser) -> None:
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--approved-builder", help="operator-registered builder for --case")
+    mode.add_argument("--supervised", action="store_true", help="use the legacy scripted workflow")
+    parser.add_argument("--pid", type=int, help="guard-managed AEDT PID")
+    parser.add_argument("--builder-outdir", type=Path, help="persistent allowed builder output root")
+    parser.add_argument("--design", help="existing baseline design name")
+    parser.add_argument("--setup", help="existing solution setup name")
+    parser.add_argument("--sweep", help="existing frequency sweep name")
+
+
+def approved_model_options(args: argparse.Namespace) -> dict:
+    if not getattr(args, "approved_builder", None):
+        return {}
+    if not (args.pid and args.pid > 0 and args.design and args.setup and args.sweep):
+        raise ValueError("--approved-builder requires --pid, --design, --setup and --sweep")
+    return dict(approved_builder=args.approved_builder, builder_outdir=args.builder_outdir,
+                design_name=args.design, setup_name=args.setup, sweep_name=args.sweep,
+                pid_provider=lambda: args.pid)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="aster.worker",
                                      description="run the persisted queue without the page")
     parser.add_argument("--campaign", required=True, help="campaign directory")
     parser.add_argument("--case", default="lens28_var")
+    add_model_arguments(parser)
+    parser.add_argument("--project", type=Path, help="approved baseline .aedt")
+    parser.add_argument("--retry-approval", metavar="RUN_ID", help="retry the same paused row")
     parser.add_argument("--real", action="store_true", help="required; the worker is for real runs")
     parser.add_argument("--once", action="store_true", help="drain the queue and exit")
     parser.add_argument("--watch", type=float, default=0.0,
@@ -201,8 +246,18 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--agent needs --server URL")
     if not args.once and args.watch <= 0:
         parser.error("choose --once or --watch SECONDS")
+    if not (args.supervised or args.approved_builder):
+        parser.error("select --approved-builder ID or --supervised")
+    try:
+        approved_model_options(args)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if args.retry_approval and not (args.approved_builder and args.once and not args.agent):
+        parser.error("--retry-approval requires --approved-builder and --once on the local worker")
+    if args.agent and args.approved_builder:
+        parser.error("approval-aware jobs must use the local persistent queue")
     env = config.load()
-    if not env.aedt_exe or not Path(env.aedt_exe).is_file():
+    if not args.approved_builder and (not env.aedt_exe or not Path(env.aedt_exe).is_file()):
         print("no AEDT configured; run `AntennaOptimizer.exe --wizard`", file=sys.stderr)
         return 2
     if args.agent:
@@ -213,11 +268,20 @@ def main(argv: list[str] | None = None) -> int:
         _log(handle, "worker started: %s, queue %s" % (describe(), store.path))
         manager = _manager(args, env)
         worker = "worker-%d" % id(manager)
+        if args.retry_approval:
+            run_id = run_once(manager, store, worker, handle, retry_approval=args.retry_approval)
+            if not run_id:
+                _log(handle, "no matching paused job")
+                return 2
+            status = manager.status(run_id).status
+            return 0 if status == "COMPLETED" else (3 if status == "APPROVAL_REQUIRED" else 1)
         total = {"done": 0, "failed": 0}
         if args.once:
             summary = drain(manager, store, worker, limit=args.limit, handle=handle)
             total["done"] += summary["done"]
             total["failed"] += summary["failed"]
+            if summary.get("approval_required") and not total["failed"]:
+                return 3
         else:
             while True:
                 summary = drain(manager, store, worker, limit=args.limit, handle=handle)

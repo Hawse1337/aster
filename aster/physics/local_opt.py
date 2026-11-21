@@ -10,8 +10,8 @@ The solution is a *proposal*: it must still be validated by a real run.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Sequence
+from dataclasses import dataclass
+from typing import Sequence
 import math
 
 import numpy as np
@@ -54,37 +54,41 @@ def propose_local_step(
         raise ValueError("desired_change must be finite")
     if any(not math.isfinite(limit) or limit < 0 for limit in protected.values()):
         raise ValueError("protected limits must be finite and non-negative")
-    names = [n for n in (parameter_names or matrix.params) if n in matrix.steps]
+    names = list(dict.fromkeys(n for n in (parameter_names or matrix.params) if n in matrix.steps))
     if not names:
         return LocalProposal({}, 0.0, {}, False, "no differentiable parameters")
     parameter_scales, basis = _parameter_scales(matrix, names)
     note = "; legacy finite-difference step units (parameter ranges unavailable)" \
         if basis == "finite_difference_steps_legacy" else ""
     target_row = np.array([matrix.raw.get(target_kind, {}).get(n, 0.0) for n in names])
-    if not np.any(np.abs(target_row) > 1e-12):
+    norm_target = target_row * parameter_scales
+    rows = np.array([[matrix.raw.get(kind, {}).get(n, 0.0) for n in names]
+                     for kind in protected], dtype=float).reshape(-1, len(names))
+    norm_rows = rows * parameter_scales
+    if not np.all(np.isfinite(norm_target)) or not np.all(np.isfinite(norm_rows)):
+        raise ValueError("sensitivities must be finite in the trust-region basis")
+    if not np.any(norm_target):
         return LocalProposal({}, 0.0, {}, False, f"target {target_kind} has no sensitivity" + note,
                              trust_region=trust_region, trust_region_basis=basis)
-
-    def normalised_to_units(vector: np.ndarray) -> np.ndarray:
-        return vector * parameter_scales
-
-    # step in normalised units that achieves the desired change (best fit)
-    norm_target = target_row * parameter_scales
-    base_step_norm = norm_target / max(float(np.dot(norm_target, norm_target)), 1e-12) \
-        * float(desired_change)
-    base_step_norm = _project(base_step_norm, protected, names, matrix, trust_region, parameter_scales)
-    delta_units = normalised_to_units(base_step_norm)
+    normalised = _constrained_step(norm_target, desired_change, norm_rows,
+                                   np.array(list(protected.values())), trust_region)
+    if normalised is None:
+        return LocalProposal({}, 0.0, {}, False, "local constraint search budget exhausted" + note,
+                             trust_region=trust_region, trust_region_basis=basis)
+    delta_units = normalised * parameter_scales
+    if not np.all(np.isfinite(delta_units)) or math.hypot(*normalised) > trust_region * (1 + 1e-12):
+        return LocalProposal({}, 0.0, {}, False, "invalid physical step or trust-region violation" + note,
+                             trust_region=trust_region, trust_region_basis=basis)
 
     predicted_target = float(np.dot(target_row, delta_units))
-    predicted_protected = {
-        kind: float(np.dot(
-            np.array([matrix.raw.get(kind, {}).get(n, 0.0) for n in names]), delta_units
-        ))
-        for kind in protected
-    }
+    predicted_protected = dict(zip(protected, map(float, rows @ delta_units)))
+    if not math.isfinite(predicted_target):
+        return LocalProposal({}, 0.0, {}, False, "non-finite target prediction" + note,
+                             trust_region=trust_region, trust_region_basis=basis)
     violated = [
         kind for kind, limit in protected.items()
-        if abs(predicted_protected.get(kind, 0.0)) > float(limit) + 1e-12 * max(1.0, abs(float(limit)))
+        if not math.isfinite(predicted_protected[kind])
+        or abs(predicted_protected[kind]) > limit + 1e-12 * max(1.0, limit)
     ]
     if violated:
         return LocalProposal(
@@ -126,21 +130,75 @@ def _parameter_scales(matrix: SensitivityMatrix, names: Sequence[str]) -> tuple[
     return scales, "case_parameter_ranges" if use_ranges else "finite_difference_steps_legacy"
 
 
-def _project(step: np.ndarray, protected: dict[str, float], names: Sequence[str],
-             matrix: SensitivityMatrix, trust_region: float, parameter_scales: np.ndarray) -> np.ndarray:
-    """Shrink the step until the trust region and protected limits hold."""
-    step = np.array(step, dtype=float)
-    norm = float(np.linalg.norm(step))
-    if norm > trust_region:
-        step *= trust_region / norm
-    delta_units = step * parameter_scales
-    factor = 1.0
-    for kind, limit in protected.items():
-        row = np.array([matrix.raw.get(kind, {}).get(n, 0.0) for n in names])
-        movement = abs(float(np.dot(row, delta_units)))
-        if movement > float(limit):
-            factor = min(factor, float(limit) / movement)
-    # Every protected constraint is homogeneous in this radial step. Scaling
-    # by the most restrictive ratio preserves the trust bound without a
-    # finite-difference-dependent series of arbitrary halvings.
-    return step * factor
+def _constrained_step(target, desired, rows, limits, radius):
+    """Solve a scalar least-squares problem on a ball intersected by slabs.
+
+    The feasible set contains the origin and is symmetric. Maximise the signed
+    target projection, then scale back if the requested change is attainable.
+    On an affine face the support point of a ball has a closed form. If that
+    point violates a slab, some violated boundary blocks the segment from a
+    constrained optimum to it. Searching those faces therefore suffices.
+    """
+    if desired == 0:
+        return np.zeros_like(target)
+    magnitude = math.hypot(*target)
+    direction = math.copysign(1.0, desired) * target / magnitude
+    wanted = abs(desired) / magnitude / radius
+    # Every vector below is in a unit-radius ball, with unit-length slab rows.
+    lengths = np.array([math.hypot(*row) for row in rows])
+    keep = lengths > 0
+    normals = rows[keep] / lengths[keep, None]
+    bounds = limits[keep] / lengths[keep] / radius
+    equalities = normals[bounds == 0]
+    limited = (bounds > 0) & (bounds < 1)
+    walls = np.concatenate((normals[limited], -normals[limited]))
+    offsets = np.tile(bounds[limited], 2)
+    best = np.zeros_like(target)
+    best_value = 0.0
+    faces = [()]
+    visited = set()
+    tol = 1e-13
+    while faces:
+        face = faces.pop()
+        if face in visited:
+            continue
+        visited.add(face)
+        # Many nearly redundant protected metrics can generate exponentially
+        # many faces. Fail explicitly instead of returning an uncertified step.
+        if len(visited) > 4096:
+            return None
+        active = np.concatenate((equalities, walls[list(face)]))
+        centre = np.zeros_like(target)
+        tangent = direction
+        if len(active):
+            rhs = np.concatenate((np.zeros(len(equalities)), offsets[list(face)]))
+            left, singular, right = np.linalg.svd(active, full_matrices=False)
+            rank = singular > singular[0] * np.finfo(float).eps * max(active.shape)
+            basis = right[rank]
+            centre = basis.T @ ((left[:, rank].T @ rhs) / singular[rank])
+            if np.max(np.abs(active @ centre - rhs)) > tol:
+                continue
+            tangent = direction - basis.T @ (basis @ direction)
+        squared = float(centre @ centre)
+        if squared > 1 + tol:
+            continue
+        point = centre
+        length = math.hypot(*tangent)
+        if length > tol:
+            point = centre + (tangent / length) * math.sqrt(max(0.0, 1 - squared))
+        upper = float(direction @ point)
+        if upper <= best_value:
+            continue
+        # Scaling towards zero preserves all original equalities and slabs.
+        step = point * min(1.0, wanted / upper)
+        violations = walls @ step - offsets
+        if not np.any(violations > tol):
+            best, best_value = step, min(upper, wanted)
+            if upper >= wanted:
+                break
+            continue
+        # Branch on the unscaled support point, whose value bounds the face.
+        for index in np.flatnonzero(walls @ point - offsets > tol):
+            if index not in face:
+                faces.append(tuple(sorted((*face, int(index)))))
+    return best * radius

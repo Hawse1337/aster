@@ -116,6 +116,32 @@ class ModuleATests(unittest.TestCase):
         missing = constraint_violation(None, s11_constraint)
         self.assertGreater(missing, 100.0)  # never feasible without a measurement
 
+    def test_nonfinite_constraint_measurements_do_not_pass(self):
+        case = build_case()
+        for value in [math.nan, math.inf, -math.inf]:
+            with self.subTest(value=value):
+                feasible, violations, total = evaluate_constraints(
+                    {"s11": value, "peak_gain": 6.0}, case)
+                self.assertFalse(feasible)
+                self.assertEqual(set(violations), {"s11"})
+                self.assertTrue(math.isfinite(total) and total > 0)
+
+    def test_nonfinite_constraint_definitions_are_rejected(self):
+        for target, scale in [(math.nan, 1), (-10, math.nan), (-10, math.inf)]:
+            with self.subTest(target=target, scale=scale), self.assertRaises(ValueError):
+                Constraint(id="s", kind="s11", operator="<=", target=target,
+                           violation_scale=scale)
+
+    def test_archive_front_requires_complete_nondominated_objectives(self):
+        case = build_case()
+        best = self._eval(6.0, -20.0)
+        worse = self._eval(5.5, -15.0)
+        archive = ParetoArchive(case.objectives)
+        archive.update([worse, best, self._eval(7.0, math.nan), self._eval(None, -18)])
+        self.assertEqual(archive.feasible_front(), [best])
+        self.assertEqual(archive.first_front(), [best])
+        self.assertEqual(len(archive), 4)
+
     def test_feasibility_first_comparison(self):
         case = build_case()
         a = self._eval(6.0, -12.0, feasible=True)

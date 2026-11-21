@@ -61,6 +61,31 @@ class MeasuredSurfaceTests(unittest.TestCase):
         self.assertGreater(entry.metrics["s11_bandwidth"], 2.5)
         self.assertGreater(entry.metrics["peak_gain"], 6.0)
 
+    def test_surrogate_trains_on_isolated_predictions_only_for_the_surface_executor(self):
+        from aster.benchmark.ablation import run_surrogate_assisted
+        from aster.surrogate.dataset import Dataset
+        from unittest.mock import patch
+
+        samples = Dataset()
+        with patch("aster.benchmark.ablation.Dataset", return_value=samples):
+            result = run_surrogate_assisted(self.case, self.executor, budget=8,
+                                            initial=4, seed=0)
+        self.assertEqual(result.evaluations, 8)
+        self.assertIsNotNone(result.history[-1]["model_rmse"])
+        self.assertTrue(all(s.source == "predicted" and s.status == "PREDICTED"
+                            for s in samples.samples()))
+        names = [spec.name for spec in self.case.family.param_space]
+        with self.assertRaises(ValueError):
+            samples.matrix(self.case.objectives[0].kind, names)
+
+        # Other executors returning predictions do not receive the surface exception.
+        class OtherExecutor:
+            evaluate = self.executor.evaluate
+
+        result = run_surrogate_assisted(self.case, OtherExecutor(), budget=8,
+                                        initial=4, seed=0)
+        self.assertIsNone(result.history[-1]["model_rmse"])
+
     def test_strategies_run_on_the_fitted_landscape(self):
         result = run_strategy(self.case, self.executor, "random", budget=3, seed=0)
         self.assertEqual(result.evaluations, 3)

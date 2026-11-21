@@ -44,7 +44,7 @@ Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8765/api/dist/enqueue -Cont
 每台节点（各自有 AEDT 与本地 campaign 目录）：
 
 ```powershell
-python -m aster.worker --agent --server http://<coordinator>:8765 --real `
+python -m aster.worker --agent --server http://<coordinator>:8765 --real --supervised `
   --campaign D:\campaigns\node1 --case lens28_var --passes 8 --max-tasks 4
 ```
 

@@ -143,8 +143,8 @@ class GuardExecutor:
     def __init__(self, case: CaseSpec, config: GuardConfig, bridge: Any = None):
         self.case = case
         self.config = config
-        if config.pid is None and config.port is None:
-            raise ValueError("GuardConfig needs an explicit AEDT pid or grpc port")
+        if (config.pid is None) == (config.port is None):
+            raise ValueError("GuardConfig needs exactly one explicit AEDT pid or grpc port")
         if bridge is None:
             from .bridge import InProcessBridge  # noqa: PLC0415
 
@@ -212,11 +212,16 @@ class GuardExecutor:
             timeout_s=self.config.timeout_s,
         )
         if submitted.get("cached") and submitted.get("status") == "COMPLETED":
-            metrics = self._metrics_by_kind(
-                {name: {"value": value} for name, value in (submitted.get("metrics") or {}).items()}
-            )
+            metrics = self._metrics_by_kind(submitted.get("metrics") or {})
             status = "COMPLETED"
             run_id = submitted.get("run_id")
+            checks = submitted.get("metric_checks")
+            if checks is None:
+                # Older servers only include scalar values in cache hits.
+                final = self.bridge.status(self.config.campaign_dir, run_id) if run_id else {}
+                details = final.get("metrics", {}) if (
+                    final.get("run_id") == run_id and final.get("status") == "COMPLETED") else {}
+                checks = {name: row.get("passed") for name, row in details.items() if isinstance(row, dict)}
         else:
             run_id = submitted.get("run_id")
             # expose the id while the run is still going: the stall watcher polls the guard status,
@@ -227,17 +232,25 @@ class GuardExecutor:
             finally:
                 self.current_run_id = None
             status = str(final.get("status") or "FAILED")
-            metrics = self._metrics_by_kind(final.get("metrics") or {})
+            details = final.get("metrics") or {}
+            metrics = self._metrics_by_kind(details)
+            checks = {name: row.get("passed") for name, row in details.items() if isinstance(row, dict)}
         metrics = self._with_radiation_efficiency(metrics)
-        feasible, violations, total = evaluate_constraints(metrics, self.case)
+        _, violations, _ = evaluate_constraints(metrics, self.case)
+        if status == "COMPLETED":
+            for constraint in self.case.constraints:
+                # A summary can satisfy the target while another required
+                # frequency failed. Both the guard and local checks must pass.
+                if checks.get(constraint.id) not in (True, 1):
+                    violations.setdefault(constraint.id, 1000.0)
         return Evaluation(
             candidate_id=candidate.candidate_id,
             family_id=candidate.family_id,
             params=dict(candidate.params),
             metrics=metrics,
-            feasible=feasible if status == "COMPLETED" else False,
+            feasible=status == "COMPLETED" and not violations,
             violations=violations,
-            total_violation=total,
+            total_violation=sum(violations.values()),
             run_id=run_id,
             status=status,
             origin=dict(candidate.origin),
@@ -257,6 +270,10 @@ def run_campaign(
     from .core import latin_hypercube
     from .optimize import ParetoArchive
 
+    if type(budget) is not int or budget < 0:
+        raise ValueError("budget must be a nonnegative integer")
+    if type(batch) is not int or batch < 1:
+        raise ValueError("batch must be a positive integer")
     archive = ParetoArchive(case.objectives)
     evaluated = 0
     round_index = 0
@@ -265,6 +282,8 @@ def run_campaign(
     while evaluated < budget:
         count = min(batch, budget - evaluated)
         params_list = sampler(case, count, seed + round_index)
+        if not 1 <= len(params_list) <= count:
+            raise ValueError(f"strategy must return 1 to {count} candidates this round")
         for params in params_list:
             candidate = case.make_candidate(params, algorithm="lhs", round=round_index)
             entry = executor.evaluate(candidate)

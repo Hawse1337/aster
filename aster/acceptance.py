@@ -37,7 +37,8 @@ def replay(campaign: Path, run_id: str, spec: BandAcceptanceSpec, *,
         selected = initial if initial["frequency_ghz"] == frequency else view(campaign, run_id, frequency)
         result = selected["ring_pattern"]
         if result is None:
-            result = assess_ring_pattern(None)
+            result = assess_ring_pattern(None, source=selected["source"], quantity=selected["quantity"])
+            result["reason"] = selected["detail"] or result["reason"]
         elif astrabb_target and result["metrics"]:
             if not selected["coordinate_system_recorded"] or selected["coordinate_system"] != "Global":
                 result = {**assess_ring_pattern(None), "reason": "AstraBB target requires recorded Global axes"}

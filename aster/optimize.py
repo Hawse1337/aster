@@ -6,6 +6,7 @@ refuses to replace a feasible best with an infeasible candidate.
 """
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Sequence
 
@@ -28,16 +29,17 @@ class Evaluation:
     origin: dict[str, Any] = field(default_factory=dict)
 
     def objective_values(self, objectives: Sequence[Objective]) -> list[float | None]:
-        return [self.metrics.get(o.kind) for o in objectives]
+        return [metric_value(self.metrics, o.kind) for o in objectives]
 
 
 def metric_value(metrics: dict[str, float | None], kind: str) -> float | None:
-    return metrics.get(kind)
+    value = metrics.get(kind)
+    return value if value is not None and math.isfinite(value) else None
 
 
 def constraint_violation(value: float | None, constraint: Constraint) -> float:
     """Normalised violation: 0 when satisfied, positive when not."""
-    if value is None:
+    if value is None or not math.isfinite(value):
         return 1000.0  # missing measurement must never look feasible
     target = float(constraint.target)
     if constraint.operator == "<=":
@@ -70,8 +72,8 @@ def dominates(left: Evaluation, right: Evaluation, objectives: Sequence[Objectiv
         raise ValueError("dominance is only defined for feasible candidates")
     better = False
     for objective in objectives:
-        a = left.metrics.get(objective.kind)
-        b = right.metrics.get(objective.kind)
+        a = metric_value(left.metrics, objective.kind)
+        b = metric_value(right.metrics, objective.kind)
         if a is None or b is None:
             raise ValueError("objectives require measured values")
         if objective.direction == "maximize":
@@ -111,13 +113,13 @@ def fast_non_dominated_sort(
     population: Sequence[Evaluation], objectives: Sequence[Objective]
 ) -> list[list[Evaluation]]:
     """NSGA-II style layering over the feasible part of the population."""
-    feasible = [entry for entry in population if entry.feasible]
+    feasible = [entry for entry in population
+                if entry.feasible and None not in entry.objective_values(objectives)]
     if not feasible:
         return []
     dominates_map: dict[str, list[Evaluation]] = {e.candidate_id: [] for e in feasible}
     dominated_count: dict[str, int] = {e.candidate_id: 0 for e in feasible}
     fronts: list[list[Evaluation]] = [[]]
-    by_id = {e.candidate_id: e for e in feasible}
     for left in feasible:
         for right in feasible:
             if left is right:
@@ -154,8 +156,8 @@ def hypervolume_2d(
     for entry in population:
         if not entry.feasible:
             continue
-        x = entry.metrics.get(x_objective.kind)
-        y = entry.metrics.get(y_objective.kind)
+        x = metric_value(entry.metrics, x_objective.kind)
+        y = metric_value(entry.metrics, y_objective.kind)
         if x is None or y is None:
             continue
         if x_objective.direction == "minimize":
@@ -180,9 +182,9 @@ def hypervolume_2d(
 def pareto_archive(
     population: Iterable[Evaluation], objectives: Sequence[Objective]
 ) -> list[Evaluation]:
-    """Flatten the first non-dominated fronts into one archive list."""
+    """Return only the feasible, non-dominated candidates."""
     fronts = fast_non_dominated_sort(list(population), objectives)
-    return [entry for front in fronts for entry in front] if fronts else []
+    return fronts[0] if fronts else []
 
 
 class ParetoArchive:
@@ -213,16 +215,10 @@ class ParetoArchive:
         return pareto_archive(self.feasible(), self.objectives)
 
     def first_front(self) -> list[Evaluation]:
-        """Only the non-dominated front itself; ``feasible_front`` flattens every front.
-
-        The export needs the true Pareto front, so candidates from the second and later
-        fronts must not appear in a "Pareto front" file.
-        """
-        fronts = fast_non_dominated_sort(self.feasible(), self.objectives)
-        return list(fronts[0]) if fronts else []
+        return self.feasible_front()
 
     def best_by(self, kind: str, maximize: bool = True) -> Evaluation | None:
-        pool = [e for e in self.feasible() if e.metrics.get(kind) is not None]
+        pool = [e for e in self.feasible() if metric_value(e.metrics, kind) is not None]
         if not pool:
             return None
         return (max if maximize else min)(pool, key=lambda e: e.metrics[kind])
