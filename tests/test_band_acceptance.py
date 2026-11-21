@@ -266,5 +266,101 @@ class TouchstoneBandTests(unittest.TestCase):
         self.assertIsNone(guarded["continuous_band_pass"])
 
 
+
+class BandRequirementTests(unittest.TestCase):
+    def score(self, points, spec=None, **kwargs):
+        from aster.band_acceptance import assess_s11_requirement
+        if spec is None:
+            spec = BandAcceptanceSpec((5, 10), max_gap_ghz=1.0, threshold_db=-10, guard_margin_db=0.5)
+        return assess_s11_requirement(points, spec, source=kwargs.pop("source", "MEASURED"), **kwargs)
+
+    def test_fixed_s11_margin_and_suggested_brackets(self):
+        score = self.score([(6, -11), (7, -9), (10, -12)])
+        self.assertEqual(score["interval_ghz"], [6.0, 10.0])
+        self.assertEqual(score["worst_margin_db"], -1.0)
+        self.assertEqual(score["worst_guarded_margin_db"], -1.5)
+        self.assertEqual(score["worst_frequency_ghz"], 7.0)
+        self.assertFalse(score["coverage_complete"])
+        self.assertFalse(score["measured_pass"])
+        suggestions = {row["reason"]: row for row in score["suggestions"]}
+        self.assertEqual(suggestions["MISSING_LOW_ENDPOINT"]["frequency_ghz"], 5.0)
+        self.assertEqual(suggestions["SAMPLING_GAP"]["bracket_ghz"], [7.0, 10.0])
+        self.assertEqual(suggestions["THRESHOLD_CROSSING"]["frequency_ghz"], 6.5)
+        nearby = self.score([(5, -11), (6, -11.2)])
+        self.assertIn("NEAR_THRESHOLD", {row["reason"] for row in nearby["suggestions"]})
+
+    def test_supported_window_uses_actual_endpoints_and_best_worst_margin(self):
+        points = [(5, -8.4), (6, -11), (7, -17), (8, -14), (9, -13), (10, -9)]
+        result = self.score(points, required_width_ghz=1.8)
+        self.assertEqual(result["interval_ghz"], [7, 9])
+        self.assertEqual(result["worst_guarded_margin_db"], 2.5)
+        self.assertEqual(result["longest_passing_interval_ghz"], [6, 9])
+        self.assertTrue(result["measured_pass"])
+        self.assertFalse(result["continuous_band_proven"])
+        for kwargs, verdict in [({"source": "PREDICTED"}, "PREDICTED_ONLY"),
+                                 ({"expected_contract": {"identity": "needed"}}, "INCOMPATIBLE_EVIDENCE")]:
+            other = self.score(points, required_width_ghz=1.8, **kwargs)
+            self.assertEqual(other["verdict"], verdict)
+            self.assertFalse(other["measured_pass"])
+        pred = self.score(points, required_width_ghz=1.8, source="PREDICTED")
+        self.assertEqual(pred["suggestions"][0]["reason"], "VERIFY_PREDICTED_WORST")
+
+    def test_sparse_invalid_and_all_failing_windows(self):
+        points = [(5, -16), (6, -15), (8, -14), (9, -13)]
+        result = self.score(points, required_width_ghz=2)
+        self.assertIsNone(result["interval_ghz"])
+        self.assertEqual(result["verdict"], "INSUFFICIENT_EVIDENCE")
+        self.assertEqual(result["sampled_width_shortfall_ghz"], 1.0)
+        repaired = self.score(points + [(7, -12)], required_width_ghz=2)
+        self.assertTrue(repaired["measured_pass"])
+        invalid = self.score(points + [(7, -12), (7, float("nan"))], required_width_ghz=2)
+        self.assertFalse(invalid["measured_pass"])
+        self.assertIn("INVALID_SAMPLE", [r["reason"] for r in invalid["suggestions"]])
+        bad = self.score([(i, -9) for i in range(5, 11)], required_width_ghz=2)
+        self.assertEqual(bad["verdict"], "NO_PASSING_SAMPLED_WINDOW")
+        self.assertEqual(bad["worst_margin_db"], -1)
+        self.assertFalse(bad["measured_pass"])
+
+    def test_touchstone_window_shares_strict_reader_and_provenance(self):
+        import hashlib
+        from aster.band_acceptance import assess_touchstone_requirement
+        from tempfile import TemporaryDirectory
+        from pathlib import Path
+
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "candidate.s1p"
+            data = b"# MHz S DB R 50\n5000 -16 1\n6000 -18 1\n7000 -17 1\n"
+            path.write_bytes(data)
+            spec = BandAcceptanceSpec((5, 7), max_gap_ghz=1)
+            score = assess_touchstone_requirement(path, spec, source="MEASURED", required_width_ghz=1.5)
+            self.assertTrue(score["measured_pass"])
+            self.assertEqual(score["interval_ghz"], [5, 7])
+            self.assertEqual(score["worst_margin_db"], 6)
+            self.assertEqual(score["artifact"]["sha256"], hashlib.sha256(data).hexdigest())
+            for malformed in (b"6250 missing 0\n", b"6250 -20 0 7\n", b"0 -14 0\n"):
+                path.write_bytes(data + malformed)
+                with self.assertRaises(ValueError):
+                    assess_touchstone_requirement(path, spec, source="MEASURED", required_width_ghz=1)
+
+    def test_window_matches_exhaustive_search_on_irregular_grids(self):
+        import random
+        rng = random.Random(94)
+        for _ in range(30):
+            axis = sorted(rng.sample(range(5, 31), 13))
+            points = [(f, -rng.randrange(8, 18)) for f in axis]
+            spec = BandAcceptanceSpec((5, 30), max_gap_ghz=3.0)
+            score = self.score(points, spec, required_width_ghz=4, max_suggestions=0)
+            spans = []
+            for i, (start, _) in enumerate(points):
+                for j in range(i + 1, len(points)):
+                    end = axis[j]
+                    if end - start >= 4 and max(b - a for a, b in zip(axis[i:j], axis[i+1:j+1])) <= 3:
+                        spans.append((max(y for _, y in points[i:j+1]), end - start, start, end))
+            expected = min(spans) if spans else None
+            self.assertEqual(score["interval_ghz"], list(expected[2:]) if expected else None)
+            self.assertEqual(score["worst_s11_db"], expected[0] if expected else None)
+            self.assertEqual(score["suggestions"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

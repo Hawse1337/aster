@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import threading
 import time
 from dataclasses import asdict, dataclass, field
@@ -937,6 +938,17 @@ class RealRunManager:
                 or not isinstance(payload, dict) or payload.get("validated") is not True
                 or payload.get("design") != self.design_name or not isinstance(payload.get("saved"), str)):
             raise RealRunError("MODEL_FAILED", str(response.get("reason") or "invalid builder result"))
+        action = job.telemetry.get("study_action") or {}
+        if "builder_sha256" in action:
+            expected = action["builder_sha256"]
+            returned = response.get("script_sha256")
+            actual = (returned.lower() if isinstance(returned, str)
+                      and re.fullmatch(r"[0-9a-fA-F]{64}", returned) else None)
+            if actual is None or expected != actual:
+                job.telemetry["builder_identity_check"] = {
+                    "expected_sha256": expected, "actual_sha256": actual, "submitted": False}
+                raise RealRunError("BUILDER_SHA256_MISMATCH",
+                                   f"Expected study builder {expected}, guard returned {actual or 'no valid SHA-256'}.")
         target = Path(payload["saved"]).resolve()
         if (target.parent != outdir or target.suffix.lower() != ".aedt" or not target.is_file()
                 or target.samefile(source) or target.stem.casefold() == source.stem.casefold()

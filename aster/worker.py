@@ -93,9 +93,11 @@ def run_once(manager: RealRunManager, store: JobStore, worker: str, handle=None,
     if retry_approval:
         if not manager.approved_builder:
             raise ValueError("approval retries require an approved builder")
-        row = store.claim_approval_retry(retry_approval, manager.case_name, worker)
+        row = store.claim_approval_retry(retry_approval, manager.case_name, worker,
+                                         study_contract_for=manager.contract_for)
     elif manager.approved_builder:
-        row = store.claim_next(worker, case_name=manager.case_name)
+        row = store.claim_next(worker, case_name=manager.case_name,
+                               study_contract_for=manager.contract_for)
     else:
         row = store.claim_next(worker)
     if row is None:

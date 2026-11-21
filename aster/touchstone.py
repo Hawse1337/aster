@@ -20,11 +20,17 @@ def read_touchstone(path: str | Path) -> list[tuple[float, float]]:
     are skipped. A row that cannot be parsed is ignored rather than aborting the
     whole curve, but the caller can compare ``count_rows`` with the expected count.
     """
+    text = Path(path).read_text(encoding="utf-8", errors="replace")
+    return _parse_touchstone(text)
+
+
+def _parse_touchstone(text: str) -> list[tuple[float, float]]:
+    """Parse a single captured file image; callers may validate that same image."""
     freqs: list[float] = []
     values: list[float] = []
     fmt = "MA"
     frequency_scale = 1.0  # Touchstone option defaults: GHz S MA R 50.
-    for line in Path(path).read_text(encoding="utf-8", errors="replace").splitlines():
+    for line in text.splitlines():
         stripped = line.split("!", 1)[0].strip()
         if not stripped or stripped.startswith("!"):
             continue

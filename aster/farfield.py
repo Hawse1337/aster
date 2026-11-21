@@ -531,3 +531,101 @@ def view(campaign: Path, run_id: str, frequency_ghz: float | None = None) -> dic
     count = sum(response[key] is not None for key in ("sphere", "e_plane", "h_plane"))
     response["status"] = "available" if count == 3 else "partial" if count else "unavailable"
     return response
+
+def load_coverage_snapshots(path: str | Path) -> list[dict[str, Any]]:
+    """Read an explicitly identified realized-gain JSON snapshot or native CSV.
+
+    A CSV requires a sibling <file>.csv.meta.json naming the coordinate system,
+    source and SHA-256 of the exact CSV bytes. JSON samples use the existing
+    [GHz, theta degrees, phi degrees, absolute realized dBi] snapshot convention.
+    """
+    import hashlib
+    import io
+
+    path = Path(path)
+    raw = path.read_bytes()
+    quantity = "dB(RealizedGainTotal)"
+    native_units = {"frequency": "GHz", "theta": "deg", "phi": "deg", "gain": "dBi"}
+    if path.suffix.lower() == ".csv":
+        sidecar = path.with_name(path.name + ".meta.json")
+        if not sidecar.is_file():
+            raise ValueError(f"missing coordinate-system metadata {sidecar}")
+        meta = json.loads(sidecar.read_text(encoding="utf-8-sig"))
+        if not isinstance(meta, dict) or meta.get("sha256", "") != hashlib.sha256(raw).hexdigest():
+            raise ValueError("metadata SHA-256 does not match CSV")
+        if meta.get("quantity", quantity) != quantity:
+            raise ValueError("metadata quantity differs from absolute realized gain")
+        reader = csv.reader(io.StringIO(raw.decode("utf-8-sig"), newline=""))
+        header = next(reader, [])
+        indices, units = [], []
+        for name in ("Freq", "Theta", "Phi", quantity):
+            pattern = re.escape(name) + r"\s*(?:\[([^\]]*)\])?"
+            matches = [(i, hit.group(1)) for i,title in enumerate(header)
+                       if (hit := re.fullmatch(pattern, title.strip(), re.IGNORECASE))]
+            if len(matches) != 1:
+                raise ValueError(f"expected one native CSV column {name}")
+            i, unit = matches[0]
+            indices.append(i)
+            units.append((unit or "").strip().lower())
+        frequency_scale = {"hz": 1e-9, "khz": 1e-6, "mhz": 1e-3, "ghz": 1}
+        angle_scale = {"deg": 1, "rad": 180/math.pi}
+        if (units[0] not in frequency_scale or any(unit not in angle_scale for unit in units[1:3])
+                or units[3] not in ("", "db", "dbi")):
+            raise ValueError("unsupported or missing native frequency, angle or gain unit")
+        native_units = dict(zip(("frequency", "theta", "phi", "gain"), units))
+        scales = (frequency_scale[units[0]], angle_scale[units[1]], angle_scale[units[2]], 1)
+        # Additional sweep-family columns must identify one variation. Mixing two
+        # variations on disjoint grid cells could fabricate a passing response.
+        other_gain = re.compile(r"dB\((GainTotal|DirectivityTotal)\)\s*(?:\[[^\]]*\])?", re.IGNORECASE)
+        extra = [i for i, title in enumerate(header)
+                 if i not in indices and not other_gain.fullmatch(title.strip())]
+        variation = None
+        samples = []
+        for row in reader:
+            if not row:
+                continue
+            if len(row) != len(header):
+                raise ValueError(f"incomplete far-field CSV line {reader.line_num}")
+            current = tuple(row[i] for i in extra)
+            if variation is not None and current != variation:
+                raise ValueError("export a single realized-gain trace and design variation")
+            variation = current
+            samples.append([float(row[i])*scale for i,scale in zip(indices, scales)])
+    elif path.suffix.lower() == ".json":
+        meta = json.loads(raw.decode("utf-8-sig"))
+        if not isinstance(meta, dict) or meta.get("quantity") != quantity:
+            raise ValueError("expected explicit dB(RealizedGainTotal) data")
+        if "units" in meta and meta["units"] != native_units:
+            raise ValueError("JSON sample units must be GHz, degrees and dBi")
+        samples = meta.get("samples")
+    else:
+        raise ValueError("expected a .csv or .json far-field file")
+    if meta.get("normalized") or meta.get("normalised"):
+        raise ValueError("normalized patterns cannot supply absolute realized gain")
+    if (meta.get("source") != "MEASURED" or not isinstance(meta.get("coordinate_system"), str)
+            or not meta["coordinate_system"].strip() or meta.get("angle_definition", "Theta-Phi") != "Theta-Phi"):
+        raise ValueError("requires solved data and a recorded theta-phi coordinate system")
+    if not isinstance(samples, list) or not samples:
+        raise ValueError("empty or missing far-field samples")
+    for row in samples:
+        if (not isinstance(row, (list, tuple)) or len(row) != 4
+                or not all(isinstance(v, (int,float)) and not isinstance(v, bool) and math.isfinite(v) for v in row)
+                or row[0] <= 0):
+            raise ValueError("invalid far-field sample")
+    groups, conflicts = _normalise(samples)
+    if conflicts:
+        raise ValueError("conflicting gains at equivalent angular coordinates")
+    snapshots = []
+    for frequency, points in sorted(groups.items()):
+        theta = sorted({t for t,_ in points})
+        phi = sorted({p for _,p in points})
+        if len(points) != len(theta)*len(phi):
+            raise ValueError(f"incomplete angular grid at {frequency} GHz")
+        snapshots.append({"frequency_ghz": frequency, "source": meta["source"], "quantity": quantity,
+                          "coordinate_system": meta["coordinate_system"], "coordinate_system_recorded": True,
+                          "run_id": meta.get("run_id"), "solution": meta.get("solution"),
+                          "sphere_name": meta.get("sphere_name"), "source_file": str(path.resolve()),
+                          "native_units": native_units,
+                          "sphere": {"theta_deg": theta, "phi_deg": phi,
+                                     "gain_db": [[points[t,p] for p in phi] for t in theta]}})
+    return snapshots

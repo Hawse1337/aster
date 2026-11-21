@@ -51,10 +51,26 @@ def register_case(registration: CaseRegistration) -> CaseRegistration:
 
 
 def get_case(name: str) -> CaseRegistration:
-    try:
+    if name in _REGISTRY:
         return _REGISTRY[name]
-    except KeyError as exc:
-        raise KeyError(f"unknown case {name!r}; registered: {sorted(_REGISTRY)}") from exc
+    from importlib import import_module, metadata, util
+    import re
+    if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,95}", name):
+        raise KeyError("invalid case identifier")
+    builtin = __package__.rsplit(".", 1)[0] + ".cases." + name
+    if name.isidentifier() and util.find_spec(builtin):
+        factory = getattr(import_module(builtin), "register", None)
+    else:
+        entries = list(metadata.entry_points(group="aster.antenna_cases", name=name))
+        if len(entries) > 1:
+            raise ValueError(f"ambiguous installed case: {name}")
+        factory = entries[0].load() if entries else None
+    if factory is None:
+        raise KeyError(f"unknown case {name!r}; registered: {sorted(_REGISTRY)}")
+    registration = factory()
+    if registration.name != name:
+        raise ValueError("case registration returned a different name")
+    return _REGISTRY.setdefault(name, registration)
 
 
 def list_cases() -> list[str]:

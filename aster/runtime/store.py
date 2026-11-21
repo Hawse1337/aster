@@ -15,7 +15,7 @@ import sqlite3
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 __all__ = ["JobStore", "finished_states"]
 
@@ -152,10 +152,13 @@ class JobStore:
 
     # -- queue (control plane writes, worker claims) ----------------------
     def enqueue(self, params_list: list[dict[str, float]], case_name: str,
-                batch_id: str, learning_contract: dict[str, Any] | None = None) -> list[str]:
+                batch_id: str, learning_contract: dict[str, Any] | None = None, *,
+                study_actions: list[dict[str, Any]] | None = None) -> list[str]:
         """Write candidates as QUEUED rows; returns the run ids that were created."""
         import time as _time
 
+        if study_actions is not None and len(study_actions) != len(params_list):
+            raise ValueError("each parameter point requires its study action")
         run_ids: list[str] = []
         stamp = _time.strftime("%Y%m%dT%H%M%S", _time.gmtime())
         def key(params):
@@ -192,7 +195,15 @@ class JobStore:
                     continue
                 occupied.add(identity)
                 import uuid
-                run_id = "queued-%s-%02d-%s" % (stamp, index, uuid.uuid4().hex[:8])
+                telemetry = {"learning_contract": learning_contract} if learning_contract else {}
+                if study_actions is None:
+                    run_id = "queued-%s-%02d-%s" % (stamp, index, uuid.uuid4().hex[:8])
+                else:
+                    action = study_actions[index]
+                    run_id = "study-" + action["id"]
+                    if conn.execute("SELECT 1 FROM jobs WHERE run_id=?", (run_id,)).fetchone():
+                        continue  # A failed or cancelled previous attempt is still the same action.
+                    telemetry["study_action"] = action
                 index_conn = conn.execute(
                     "INSERT INTO jobs (run_id, batch_id, case_name, params, status, stage, "
                     "metrics, violations, feasible, error_code, error_detail, failure, "
@@ -200,46 +211,67 @@ class JobStore:
                     "(?, ?, ?, ?, 'QUEUED', 'QUEUED', '{}', '{}', 0, NULL, '', '{}', NULL, "
                     "'{}', ?, 0.0, ?, ?)",
                     (run_id, batch_id, case_name, _dumps(params),
-                     _dumps({"learning_contract": learning_contract} if learning_contract else {}),
+                     _dumps(telemetry),
                      _now(), _now()))
                 if index_conn.rowcount:
                     run_ids.append(run_id)
         return run_ids
 
-    def claim_next(self, worker: str, *, case_name: str | None = None) -> dict[str, Any] | None:
-        """Atomically take the oldest QUEUED row; None when the queue is empty.
+    def claim_next(self, worker: str, *, case_name: str | None = None,
+                   study_contract_for: Callable[[str], dict] | None = None) -> dict[str, Any] | None:
+        """Take the oldest eligible queued job; a study job needs its exact approved recipe."""
+        return self._claim(worker, "QUEUED", case_name, None, study_contract_for)
 
-        SQLite serialises the UPDATE, so two workers polling at the same instant still get
-        different rows - the check and the claim are one statement (``WHERE status = 'QUEUED'``).
-        """
-        with self._session() as conn:
-            row = conn.execute(
-                "SELECT run_id FROM jobs WHERE status = 'QUEUED' AND (? IS NULL OR case_name = ?) "
-                "ORDER BY started_utc LIMIT 1", (case_name, case_name)
-            ).fetchone()
-            if row is None:
-                return None
-            run_id = row["run_id"]
-            updated = conn.execute(
-                "UPDATE jobs SET status = 'RUNNING', stage = 'CLAIMED', updated_utc = ?, "
-                "error_detail = ? WHERE run_id = ? AND status = 'QUEUED'",
-                (_now(), "worker:%s" % worker, run_id))
-            if updated.rowcount != 1:
-                return None
-            claimed = conn.execute("SELECT * FROM jobs WHERE run_id = ?", (run_id,)).fetchone()
-        return self._job_row(claimed) if claimed is not None else None
+    def claim_approval_retry(self, run_id: str, case_name: str, worker: str, *,
+                             study_contract_for: Callable[[str], dict] | None = None) -> dict | None:
+        """Claim one paused job with the same checks as its initial claim."""
+        return self._claim(worker, "APPROVAL_REQUIRED", case_name, run_id, study_contract_for)
 
-    def claim_approval_retry(self, run_id: str, case_name: str, worker: str) -> dict | None:
-        """Claim the same paused row without granting approval or changing its parameters."""
+    def _claim(self, worker, status, case_name, run_id, study_contract_for):
+        from ..learning_contract import compatibility
+
         with self._session() as conn:
-            updated = conn.execute(
-                "UPDATE jobs SET status='RUNNING', stage='CLAIMED', updated_utc=?, error_detail=? "
-                "WHERE run_id=? AND case_name=? AND status='APPROVAL_REQUIRED'",
-                (_now(), "worker:%s" % worker, run_id, case_name))
-            if updated.rowcount != 1:
-                return None
-            row = conn.execute("SELECT * FROM jobs WHERE run_id=?", (run_id,)).fetchone()
-        return self._job_row(row)
+            candidates = conn.execute(
+                "SELECT run_id, case_name, telemetry FROM jobs WHERE status=? "
+                "AND (? IS NULL OR case_name=?) AND (? IS NULL OR run_id=?) "
+                "ORDER BY started_utc, rowid",
+                (status, case_name, case_name, run_id, run_id)).fetchall()
+            # Hash the worker's template only if an actual study job needs it.
+            # No write transaction is held while reading its potentially large file.
+            expected_by_case = {}
+            for candidate in candidates:
+                telemetry = _loads(candidate["telemetry"], {})
+                if "study_action" in telemetry:
+                    action = telemetry["study_action"]
+                    bound = telemetry.get("learning_contract")
+                    name = candidate["case_name"]
+                    if not (study_contract_for and isinstance(action, dict) and isinstance(bound, dict)
+                            and action.get("case_id") == name and action.get("recipe_id")
+                            and action["recipe_id"] == bound.get("identity")
+                            and bound.get("measurement_recipe_binding") != "execution"):
+                        continue
+                    if name not in expected_by_case:
+                        expected_by_case[name] = study_contract_for(name)
+                    expected = expected_by_case[name]
+                    record = {"case": name, "learning_contract": bound}
+                    if (not expected.get("measurement_recipe", {}).get("builder")
+                            or bound.get("measurement_recipe") != expected.get("measurement_recipe")
+                            or not compatibility(record, expected)[0]
+                            or bound.get("parameter_schema") != expected.get("parameter_schema")):
+                        continue
+                # Compare the row snapshot as well as its state in the atomic
+                # UPDATE: a competing claim or changed binding requires a fresh read.
+                updated = conn.execute(
+                    "UPDATE jobs SET status='RUNNING', stage='CLAIMED', updated_utc=?, error_detail=? "
+                    "WHERE run_id=? AND status=? AND case_name IS ? AND telemetry IS ?",
+                    (_now(), "worker:%s" % worker, candidate["run_id"], status,
+                     candidate["case_name"], candidate["telemetry"]))
+                if updated.rowcount == 1:
+                    row = conn.execute("SELECT * FROM jobs WHERE run_id=?",
+                                       (candidate["run_id"],)).fetchone()
+                    return self._job_row(row)
+                conn.rollback()  # Release the no-op write before testing another candidate.
+        return None
 
     def requeue_claim(self, run_id: str) -> bool:
         """Put a claimed-but-abandoned row back in the queue (worker crashed before starting)."""

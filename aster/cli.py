@@ -119,6 +119,9 @@ def main(argv: list[str] | None = None) -> int:
     demo = sub.add_parser("dry-demo", help="run a small dry optimisation on a synthetic objective")
     demo.add_argument("--samples", type=int, default=64)
 
+    from .design_study import cli as study_arguments
+    study_arguments(sub.add_parser("design-study", help="plan budgeted measurements for a versioned design profile"))
+
     doctor = sub.add_parser("doctor", help="check the environment needed for real runs")
     doctor.add_argument("--strict", action="store_true", help="exit non-zero on errors")
 
@@ -152,6 +155,12 @@ def main(argv: list[str] | None = None) -> int:
         from .examples_support import dry_demo
 
         return dry_demo(args.samples)
+    if args.command == "design-study":
+        from .design_study import run_cli
+        try:
+            return run_cli(args)
+        except (ImportError, KeyError, ValueError, TypeError, OSError) as exc:
+            parser.exit(2, f"{exc}\n")
     if args.command == "doctor":
         return _doctor(strict=args.strict)
     if args.command == "skill":

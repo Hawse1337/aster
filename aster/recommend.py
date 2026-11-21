@@ -249,7 +249,8 @@ def recommend_from_runs(runs: Sequence[dict[str, Any]], *, count: int = 2,
                         case: Any = None, contract: Mapping[str, Any] | None = None,
                         parameter_specs: Sequence[Any] | None = None,
                         cold_start: bool | None = None, exploration_radius: float = 0.1,
-                        fallback_cost_seconds: float | None = None
+                        fallback_cost_seconds: float | None = None,
+                        geometry_estimator: Callable[[dict[str, Any]], dict[str, Any]] | None = None
                         ) -> dict[str, Any]:
     """Propose unmeasured designs; feasibility remains unknown until actual acceptance.
 
@@ -381,8 +382,8 @@ def recommend_from_runs(runs: Sequence[dict[str, Any]], *, count: int = 2,
         limit = int(count)
 
     # Risk/cost see only the same physical recipe, while retaining failed runs as evidence.
-    cost_model = fit_cost_model(compatible, names) if compatible else None
-    risk_model = fit_risk_model(compatible, names) if compatible else None
+    cost_model = fit_cost_model(compatible, names) if compatible and geometry_estimator is None else None
+    risk_model = fit_risk_model(compatible, names) if compatible and geometry_estimator is None else None
     candidates, rejected, over_budget, over_risk = [], [], [], []
     dropped, conservative_total = 0, 0.0
     warning = []
@@ -407,10 +408,14 @@ def recommend_from_runs(runs: Sequence[dict[str, Any]], *, count: int = 2,
             if not valid:
                 rejected.append(params)
                 continue
-        predicted_cost = cost_model.predict(params).to_dict() if cost_model else {}
+        estimate = geometry_estimator(params) if geometry_estimator else None
+        predicted_cost = (dict(estimate["cost"]) if estimate is not None else
+                          cost_model.predict(params).to_dict() if cost_model else {})
         conservative = predicted_cost.get("conservative_seconds",
             predicted_cost.get("upper_seconds", (float(predicted_cost.get("seconds") or 0) +
                                       2 * float(predicted_cost.get("spread") or 0))))
+        if estimate is not None:
+            conservative = estimate["estimated_seconds"]
         if not conservative or not np.isfinite(conservative):
             conservative = fallback_cost_seconds
         if budget_seconds is not None:
@@ -421,7 +426,8 @@ def recommend_from_runs(runs: Sequence[dict[str, Any]], *, count: int = 2,
             if conservative_total + float(conservative) > float(budget_seconds):
                 over_budget.append(params)
                 continue
-        risk = risk_model.predict(params).to_dict() if risk_model else {"known": False}
+        risk = (dict(estimate["risk"]) if estimate is not None else
+                risk_model.predict(params).to_dict() if risk_model else {"known": False})
         risk_known = bool(risk.get("known", risk.get("neighbours", 0) > 0))
         risk_bound = risk.get("risk_upper", risk.get("failure_rate"))
         if max_failure_risk is not None and risk_known and risk_bound is not None:

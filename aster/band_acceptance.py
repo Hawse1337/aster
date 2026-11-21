@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
-from .touchstone import FORMATS, FREQUENCY_TO_GHZ, read_touchstone
+from .touchstone import FORMATS, FREQUENCY_TO_GHZ, _parse_touchstone
 
 _FREQUENCY_TOLERANCE_GHZ = 1e-9
 
@@ -300,17 +300,164 @@ def assess_s11_band(points: Iterable[Any], spec: BandAcceptanceSpec, *, source: 
         "warnings": warnings, "artifact": None}
 
 
-def assess_touchstone_band(path: str | Path, spec: BandAcceptanceSpec, *, source: str,
+def _best_supported_window(samples, width, max_gap):
+    """Find the lowest window maximum with a monotone deque in O(n) time."""
+    from collections import deque
+
+    worst = deque()
+    left = 0
+    best_key = best = None
+    tolerance = _FREQUENCY_TOLERANCE_GHZ
+    for right, sample in enumerate(samples):
+        frequency, value = sample["frequency_ghz"], sample["s11_db"]
+        if sample["has_invalid_duplicate"] or value is None:
+            worst.clear()
+            left = right + 1
+            continue
+        if right > left and frequency - samples[right - 1]["frequency_ghz"] > max_gap + tolerance:
+            worst.clear()
+            left = right
+        while worst and samples[worst[-1]]["s11_db"] < value:
+            worst.pop()
+        worst.append(right)
+        # Of all windows ending here, the shortest one spanning the requested
+        # width cannot have a worse maximum than any longer one.
+        while left < right and frequency - samples[left + 1]["frequency_ghz"] >= width - tolerance:
+            left += 1
+        while worst[0] < left:
+            worst.popleft()
+        start = samples[left]["frequency_ghz"]
+        if frequency - start < width - tolerance:
+            continue
+        peak = samples[worst[0]]
+        key = (peak["s11_db"], frequency - start, start)
+        if best_key is None or key < best_key:
+            best_key, best = key, ([start, frequency], peak)
+    return best
+
+
+def _frequency_suggestions(samples, band, spec, critical_margin, limit, predicted_worst=None):
+    """Choose the next measurements, starting with missing endpoints and invalid rows."""
+    if not limit:
+        return []
+    low, high = band
+    selected = [r for r in samples if low <= r["frequency_ghz"] <= high]
+    by_freq = {r["frequency_ghz"]: r["s11_db"] for r in selected
+               if r["s11_db"] is not None and not r["has_invalid_duplicate"]}
+    invalid = {r["frequency_ghz"] for r in selected if r["has_invalid_duplicate"]}
+    tolerance = _FREQUENCY_TOLERANCE_GHZ
+    threshold = spec.threshold_db - spec.guard_margin_db
+    candidates = []
+
+    def add(priority, score, frequency, reason, bracket):
+        candidates.append((priority, score, frequency, {
+            "frequency_ghz": frequency, "reason": reason, "bracket_ghz": list(bracket),
+            "bracket_s11_db": [by_freq.get(f) for f in bracket]}))
+
+    for endpoint, reason in ((low, "MISSING_LOW_ENDPOINT"), (high, "MISSING_HIGH_ENDPOINT")):
+        if endpoint not in by_freq:
+            add(0, 0, endpoint, reason, (endpoint, endpoint))
+    for frequency in invalid:
+        add(1, 0, frequency, "INVALID_SAMPLE", (frequency, frequency))
+    if predicted_worst is not None:
+        add(2, 0, predicted_worst, "VERIFY_PREDICTED_WORST", (predicted_worst, predicted_worst))
+    axis = sorted(set(by_freq) | {low, high})
+    for a, b in zip(axis, axis[1:]):
+        gap = b - a
+        if gap <= 2 * tolerance:
+            continue
+        midpoint = a + gap * 0.5
+        margins = [threshold - by_freq[f] for f in (a, b) if f in by_freq]
+        crossing = len(margins) == 2 and min(margins) < 0 <= max(margins)
+        closest = min(map(abs, margins), default=math.inf)
+        if gap > spec.max_gap_ghz + tolerance:
+            # For equally wide holes, refine threshold crossings and the most
+            # marginal sampled brackets before flat, comfortably matched areas.
+            add(3, (-gap, not crossing, closest), midpoint, "SAMPLING_GAP", (a, b))
+        elif crossing:
+            add(4, -gap, midpoint, "THRESHOLD_CROSSING", (a, b))
+        elif len(margins) == 2 and closest <= critical_margin:
+            add(5, closest, midpoint, "NEAR_THRESHOLD", (a, b))
+    suggestions, chosen = [], []
+    for _, _, frequency, row in sorted(candidates, key=lambda item: item[:3]):
+        if any(abs(old - frequency) <= tolerance for old in chosen):
+            continue
+        chosen.append(frequency)
+        suggestions.append(row)
+        if len(suggestions) >= limit:
+            break
+    return suggestions
+
+
+def assess_s11_requirement(points: Iterable[Any], spec: BandAcceptanceSpec, *, source: str,
+                           required_width_ghz: float | None = None,
                            learning_contract: Mapping[str, Any] | None = None,
                            expected_contract: Mapping[str, Any] | None = None,
-                           preview_frequencies_ghz: Iterable[float] | None = None) -> dict[str, Any]:
-    """Read an S1P with the shared MA/DB/RI parser, retaining dropped-row risk.
+                           max_suggestions: int = 6,
+                           critical_margin_db: float = 1.0) -> dict[str, Any]:
+    """Score a fixed band or find a sample-supported window of at least the specified width.
 
-    The permissive shared reader skips malformed rows. This wrapper counts them
-    and invalidates a sampled-pass claim instead of hiding that lost evidence.
-    A file's existence does not establish convergence, provenance or a contract;
-    callers must obtain those from the completed run record.
+    Positive margin is favourable. Window endpoints are input frequencies and can
+    span more than the requested width; interpolated endpoints are never accepted.
+    Coverage is local to the selected interval. The full search-domain coverage
+    is reported separately. Suggestions are candidate frequencies for the next
+    solve and carry no acceptance weight.
     """
+    if isinstance(max_suggestions, bool) or not isinstance(max_suggestions, int) or max_suggestions < 0:
+        raise ValueError("max_suggestions must be a nonnegative integer")
+    critical_margin_db = _finite_number(critical_margin_db)
+    if critical_margin_db < 0:
+        raise ValueError("critical_margin_db must be nonnegative")
+    low, high = spec.band_ghz
+    width = None if required_width_ghz is None else _finite_number(required_width_ghz)
+    if width is not None and not 2 * _FREQUENCY_TOLERANCE_GHZ < width <= high - low + _FREQUENCY_TOLERANCE_GHZ:
+        raise ValueError("required_width_ghz must fit inside the search band and exceed frequency tolerance")
+    fixed = assess_s11_band(points, spec, source=source, learning_contract=learning_contract,
+                            expected_contract=expected_contract)
+    evidence = fixed["discrete_evidence"]
+    samples = evidence["points"]
+    domain_complete = evidence["complete_for_sampling_policy"]
+    support = evidence["frequency_ghz"]
+    interval = [support[0], support[-1]] if support else None
+    worst = fixed["worst_point"]
+    coverage = domain_complete
+    verdict = fixed["status"]
+    if width is not None:
+        match = _best_supported_window(samples, width, spec.max_gap_ghz)
+        interval, worst = match if match else (None, None)
+        # A malformed row with an unknown location could lie inside any window.
+        coverage = bool(match and not any(i["frequency_ghz"] is None for i in evidence["invalid_rows"]))
+        if evidence["trusted"]:
+            if coverage and worst["s11_db"] <= spec.threshold_db - spec.guard_margin_db:
+                verdict = "SAMPLED_PASS"
+            elif domain_complete:
+                verdict = "NO_PASSING_SAMPLED_WINDOW"
+            else:
+                verdict = "INSUFFICIENT_EVIDENCE"
+    margin = spec.threshold_db - worst["s11_db"] if worst is not None else None
+    guarded_margin = margin - spec.guard_margin_db if margin is not None else None
+    worst_f = worst["frequency_ghz"] if worst else None
+    # A passing window needs local refinement. In a sparse or failing search,
+    # gaps elsewhere in the search band can still contain a better window.
+    refine_band = interval if width is not None and coverage and guarded_margin >= 0 else spec.band_ghz
+    proposals = _frequency_suggestions(samples, refine_band, spec, critical_margin_db,
+                                       max_suggestions, worst_f if fixed["source"] == "PREDICTED" else None)
+    longest = max(fixed["passing_sample_ranges"], key=lambda span: span["span_ghz"], default=None)
+    passing_width = longest["span_ghz"] if longest else 0.0
+    return {"mode": "fixed" if width is None else "window", "required_width_ghz": width,
+            "longest_passing_span_ghz": passing_width,
+            "longest_passing_interval_ghz": [longest["low_ghz"], longest["high_ghz"]] if longest else None,
+            "sampled_width_shortfall_ghz": None if width is None else max(0.0, width - passing_width),
+            "source": fixed["source"], "search_band_ghz": [low, high], "interval_ghz": interval,
+            "worst_s11_db": worst["s11_db"] if worst else None, "worst_frequency_ghz": worst_f,
+            "worst_margin_db": margin, "worst_guarded_margin_db": guarded_margin,
+            "measured_pass": verdict == "SAMPLED_PASS", "verdict": verdict,
+            "coverage_complete": coverage, "search_coverage_complete": domain_complete,
+            "continuous_band_proven": False, "contract_compatible": fixed["contract_compatible"],
+            "config": fixed["config"], "suggestions": proposals}
+
+
+def _read_s1p_evidence(path):
     path = Path(path)
     if path.suffix.lower() != ".s1p":
         raise ValueError("band acceptance file input must be a one-port .s1p")
@@ -319,7 +466,8 @@ def assess_touchstone_band(path: str | Path, spec: BandAcceptanceSpec, *, source
     frequency_scale = 1.0
     fmt = "MA"
     invalid_points = []
-    for line in data.decode("utf-8", errors="replace").splitlines():
+    text_image = data.decode("utf-8", errors="replace")
+    for line in text_image.splitlines():
         text = line.split("!", 1)[0].strip()
         if not text:
             continue
@@ -350,13 +498,46 @@ def assess_touchstone_band(path: str | Path, spec: BandAcceptanceSpec, *, source
                     raise ValueError("reflection magnitude cannot be negative")
             except (ValueError, TypeError, IndexError, OverflowError):
                 invalid_points.append((frequency, math.nan))
-    points = read_touchstone(path)
+    points = _parse_touchstone(text_image)
+    omitted = max(0, candidates - len(points))
+    artifact = {"path": str(path), "sha256": hashlib.sha256(data).hexdigest(),
+                          "data_rows": candidates, "parsed_rows": len(points), "omitted_rows": omitted}
+    return points, invalid_points, artifact
+
+
+def assess_touchstone_requirement(path: str | Path, spec: BandAcceptanceSpec, *, source: str,
+                                  required_width_ghz: float | None = None,
+                                  learning_contract: Mapping[str, Any] | None = None,
+                                  expected_contract: Mapping[str, Any] | None = None,
+                                  max_suggestions: int = 6, critical_margin_db: float = 1.0):
+    """Score a one-port artifact after strict row validation, retaining its byte digest."""
+    points, invalid, artifact = _read_s1p_evidence(path)
+    if not points or invalid or artifact["omitted_rows"] or any(f <= 0 for f, _ in points):
+        raise ValueError("Touchstone file is empty or contains invalid or omitted data rows")
+    result = assess_s11_requirement(points, spec, source=source, required_width_ghz=required_width_ghz,
+                                    learning_contract=learning_contract, expected_contract=expected_contract,
+                                    max_suggestions=max_suggestions, critical_margin_db=critical_margin_db)
+    result["artifact"] = artifact
+    return result
+
+
+def assess_touchstone_band(path: str | Path, spec: BandAcceptanceSpec, *, source: str,
+                           learning_contract: Mapping[str, Any] | None = None,
+                           expected_contract: Mapping[str, Any] | None = None,
+                           preview_frequencies_ghz: Iterable[float] | None = None) -> dict[str, Any]:
+    """Read an S1P with the shared MA/DB/RI parser, retaining dropped-row risk.
+
+    The permissive shared reader skips malformed rows. This wrapper counts them
+    and invalidates a sampled-pass claim instead of hiding that lost evidence.
+    A file's existence does not establish convergence, provenance or a contract;
+    callers must obtain those from the completed run record.
+    """
+    points, invalid_points, artifact = _read_s1p_evidence(path)
     result = assess_s11_band([*points, *invalid_points], spec, source=source, learning_contract=learning_contract,
                              expected_contract=expected_contract,
                              preview_frequencies_ghz=preview_frequencies_ghz)
-    omitted = max(0, candidates - len(points))
-    result["artifact"] = {"path": str(path), "sha256": hashlib.sha256(data).hexdigest(),
-                          "data_rows": candidates, "parsed_rows": len(points), "omitted_rows": omitted}
+    result["artifact"] = artifact
+    omitted = artifact["omitted_rows"]
     if omitted:
         result["discrete_evidence"]["complete_for_sampling_policy"] = False
         result["discrete_evidence"]["invalid_rows"].append({"index": None, "frequency_ghz": None,
