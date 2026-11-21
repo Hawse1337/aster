@@ -1,0 +1,27 @@
+{
+  "profile_id": "lens28_ref_horizontal_ring_example",
+  "revision": 2,
+  "case_id": "lens28_ref",
+  "recipe_id": "example-lens28-template-mesh-port-v1",
+  "band": {
+    "band_ghz": [24, 30], "threshold_db": -10, "guard_margin_db": 0.5,
+    "max_gap_ghz": 0.5, "required_width_ghz": 3
+  },
+  "coverage": {
+    "frequencies_ghz": [26, 28, 30], "coordinate_system": "Global",
+    "theta_deg": [90, 90], "phi_deg": [0, 360],
+    "min_realized_gain_dbi": 3, "max_ripple_db": 2, "max_step_deg": 10
+  },
+  "objectives": ["band_margin_db", "coverage_margin_db"],
+  "interaction_steps": {"ring_outer": 0.2, "ring_shift": 0.1},
+  "tolerance": {
+    "tolerances": {
+      "ring_outer": {"delta": 0.05, "unit": "mm"},
+      "ring_shift": {"delta": 0.03, "unit": "mm"}
+    },
+    "corners": true, "required_repeats": 1
+  },
+  "cost_seconds": {
+    "geometry": 1200, "frequency": 180, "coverage": 300, "interaction": 1200, "tolerance": 1200
+  }
+}

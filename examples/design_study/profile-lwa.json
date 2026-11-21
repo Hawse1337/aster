@@ -1,0 +1,26 @@
+{
+  "profile_id": "lwa_forward_sector_example",
+  "revision": 1,
+  "case_id": "lwa",
+  "recipe_id": "example-lwa-template-mesh-port-v1",
+  "band": {
+    "band_ghz": [25, 31], "threshold_db": -10, "guard_margin_db": 0.5, "max_gap_ghz": 0.5
+  },
+  "coverage": {
+    "frequencies_ghz": [26.5, 28, 29.5], "coordinate_system": "Global",
+    "theta_deg": [60, 80], "phi_deg": [330, 30],
+    "min_realized_gain_dbi": 4, "max_step_deg": 5
+  },
+  "objectives": ["min_realized_gain_dbi", "band_margin_db"],
+  "interaction_steps": {"p_mm": 0.2, "h_mm": 0.1},
+  "tolerance": {
+    "tolerances": {
+      "p_mm": {"delta": 0.05, "unit": "mm"},
+      "h_mm": {"delta": 0.04, "unit": "mm"}
+    },
+    "corners": false, "required_repeats": 1
+  },
+  "cost_seconds": {
+    "geometry": 900, "frequency": 120, "coverage": 240, "interaction": 900, "tolerance": 900
+  }
+}
