@@ -125,6 +125,33 @@ The contract, the run lifecycle and the artifact layout are in
 [user_doc/aedt_integration.md](user_doc/aedt_integration.md), with a walkthrough in
 [examples/aedt_campaign.md](examples/aedt_campaign.md).
 
+## Guard-approved optimisation adapter
+
+`aster.approved_builder` is the no-arbitrary-code path for the AEDT guard:
+`ApprovedBuilderExecutor` submits each candidate through `run_approved_builder`, reads the
+returned `result.s1p` / optional `farfield_metrics.json`, and returns an `Evaluation`.
+`run_approved_campaign` writes `optimization_manifest.json` and the completion gate
+(`optimization_gate.py`): an aster manifest, real completed runs, a Pareto front and an
+acceptance result are required before a campaign can be called complete. The guard records
+campaign/candidate provenance so its approver GUI can show whether a run came from aster or
+from a manual command.
+
+```python
+from aster.approved_builder import ApprovedBuilderConfig, run_approved_campaign
+
+config = ApprovedBuilderConfig(
+    campaign_id="lens-20261123",
+    campaign_dir=r"C:\...\campaign",
+    builder_id="p0_model",
+    project_path=r"C:\...\base.aedt",
+    outdir_root=r"C:\...\runs",
+    port=51679,
+    design="Trunc_10GHz",
+)
+result = run_approved_campaign(case, config, budget=2)
+print(result["gate"])
+```
+
 ## Drop it into an agent
 
 The skill lives in [`skills/aster/`](skills/aster/): `SKILL.md` plus `references/` (API map, AEDT

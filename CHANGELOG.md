@@ -5,6 +5,11 @@
 - Synced the latest algorithm working tree: conservative band/pattern acceptance,
   aperture field diagnostics, measured coarse/fine validation, paired multifidelity
   correction and the 10 GHz lens case update. Packaged GUI is intentionally excluded.
+- **Guard-approved optimiser adapter.** `aster.approved_builder` evaluates candidates through
+  `run_approved_builder` (no arbitrary code), reads `result.s1p` / optional
+  `farfield_metrics.json`, writes `optimization_manifest.json`, and applies a completion gate
+  (`optimization_gate.py`). `InProcessBridge`/`StdioBridge` forward campaign/candidate provenance
+  to the guard. `CampaignRunner` now accepts an injected executor for this path.
 
 ## 1.54.0 — 2026-11-20
 

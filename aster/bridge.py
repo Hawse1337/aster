@@ -23,7 +23,8 @@ from typing import Any, Protocol
 class GuardBridge(Protocol):
     def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
                              params: dict[str, Any], pid: int | None = None,
-                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]: ...
+                             port: int | None = None, timeout: float | None = None,
+                             provenance: dict[str, Any] | None = None) -> dict[str, Any]: ...
 
     def create_spec(self, campaign_dir: str, spec: dict[str, Any]) -> dict[str, Any]: ...
 
@@ -52,11 +53,19 @@ class InProcessBridge:
 
     def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
                              params: dict[str, Any], pid: int | None = None,
-                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]:
+                             port: int | None = None, timeout: float | None = None,
+                             provenance: dict[str, Any] | None = None) -> dict[str, Any]:
         import asyncio
 
-        result = self._mcp.run_approved_builder(builder_id=builder_id, project_path=project_path,
-            outdir=outdir, params=params, pid=pid, port=port, timeout=timeout)
+        kwargs: dict[str, Any] = dict(
+            builder_id=builder_id, project_path=project_path, outdir=outdir,
+            params=params, pid=pid, port=port, timeout=timeout,
+        )
+        for key in ("campaign_id", "campaign_dir", "candidate_id", "purpose",
+                    "source", "optimizer"):
+            if provenance and key in provenance:
+                kwargs[key] = provenance[key]
+        result = self._mcp.run_approved_builder(**kwargs)
         return asyncio.run(result) if asyncio.iscoroutine(result) else result
 
     def create_spec(self, campaign_dir: str, spec: dict[str, Any]) -> dict[str, Any]:
@@ -203,10 +212,16 @@ class StdioBridge:
 
     def run_approved_builder(self, *, builder_id: str, project_path: str, outdir: str,
                              params: dict[str, Any], pid: int | None = None,
-                             port: int | None = None, timeout: float | None = None) -> dict[str, Any]:
-        return self._call("run_approved_builder", {"builder_id": builder_id,
+                             port: int | None = None, timeout: float | None = None,
+                             provenance: dict[str, Any] | None = None) -> dict[str, Any]:
+        arguments: dict[str, Any] = {"builder_id": builder_id,
             "project_path": project_path, "outdir": outdir, "params": params,
-            "pid": pid, "port": port, "timeout": timeout})
+            "pid": pid, "port": port, "timeout": timeout}
+        for key in ("campaign_id", "campaign_dir", "candidate_id", "purpose",
+                    "source", "optimizer"):
+            if provenance and key in provenance:
+                arguments[key] = provenance[key]
+        return self._call("run_approved_builder", arguments)
 
     def submit(self, **kwargs: Any) -> dict[str, Any]:
         return self._call("submit_guarded_run", kwargs)

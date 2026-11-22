@@ -66,9 +66,11 @@ class CampaignRunner:
         controller: StrategyController | None = None,
         reference: tuple[float, float] | None = None,
         health_probe: Any = None,
+        executor: Any = None,
     ):
         self.case = case
         self.applier = applier
+        self.executor = executor
         self.config = config
         self.campaign_dir = Path(campaign_dir)
         self.bridge = bridge
@@ -96,8 +98,9 @@ class CampaignRunner:
             # candidate must show up as MODEL_FAILED, not crash the campaign.
             candidate = self.case.make_candidate(params, algorithm="campaign",
                                                  round=len(self.records))
-            executor = GuardExecutor(self.case, self.config, bridge=self.bridge)
-            self.config.prepare = self._prepare
+            executor = self.executor or GuardExecutor(self.case, self.config, bridge=self.bridge)
+            if self.executor is None:
+                self.config.prepare = self._prepare
             entry = executor.evaluate(candidate)
             applied = self._last_apply is not None
             validated = bool(getattr(self._last_apply, "validated", False)) if applied else False
