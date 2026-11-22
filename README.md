@@ -188,7 +188,7 @@ mkdocs.yml     documentation site
 
 ## Status
 
-- Offline suite: **782 passed, 80 subtests**; CI runs it on Windows / CPython 3.12.
+- Offline suite: **880 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
 - Wheel and sdist: [v1.54.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.54.0);
