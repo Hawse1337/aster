@@ -37,6 +37,7 @@ class CampaignRecord:
     validated: bool
     error: str | None = None
     at_utc: str = ""
+    origin: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -51,6 +52,7 @@ class CampaignRecord:
             "validated": self.validated,
             "error": self.error,
             "at_utc": self.at_utc,
+            "origin": dict(self.origin),
         }
 
 
@@ -114,6 +116,7 @@ class CampaignRunner:
                 violations=dict(entry.violations),
                 applied=applied,
                 validated=validated,
+                origin=dict(getattr(entry, "origin", None) or {}),
                 at_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             )
         except Exception as exc:  # noqa: BLE001 - a modelling failure must be recorded, not raised

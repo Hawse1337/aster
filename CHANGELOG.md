@@ -12,7 +12,9 @@
 - **Optional `GuardedSolveExecutor`.** `aster.solve_adapter` adds a generic build → guarded
   solve → export adapter for projects whose approved builder only builds/saves. It submits through
   the guard bridge, waits for a terminal run, copies S11/far-field artifacts, and records the guard
-  campaign/run in `Evaluation.origin`. See `docs/optimization_workflow.md`.
+  campaign/run in `Evaluation.origin`; `CampaignRecord`/manifest rows now retain that origin so a
+  selected full-model run can be replayed without losing its guard campaign path. See
+  `docs/optimization_workflow.md`.
 - **Solve-capable executor injection.** `WorkflowRunner` accepts an `executor_factory` and
   `run_approved_campaign(..., executor=...)` accepts a custom executor, so a project can use an
   approved builder plus `submit_guarded_run`/native export without forking the workflow. Also
