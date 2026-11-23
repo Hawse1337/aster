@@ -5,6 +5,12 @@
 - Synced the latest algorithm working tree: conservative band/pattern acceptance,
   aperture field diagnostics, measured coarse/fine validation, paired multifidelity
   correction and the 10 GHz lens case update. Packaged GUI is intentionally excluded.
+- **Standard optimisation workflow.** `aster.opt_workflow` adds a machine-readable
+  `OptimizationPlan`, a baseline -> screening -> search -> acceptance -> delivery state machine and
+  a `WorkflowRunner`. Screening uses LHS/DOE through the guard-approved builder; search wraps
+  `optimizer.nsga2`/`nsga3`; each stage records artifacts in
+  `optimization_workflow.json` and cannot be skipped. Acceptance/delivery are explicit evidence
+  gates, not invented metrics. See `docs/optimization_workflow.md`.
 - **Guard-approved optimiser adapter.** `aster.approved_builder` evaluates candidates through
   `run_approved_builder` (no arbitrary code), reads `result.s1p` / optional
   `farfield_metrics.json`, writes `optimization_manifest.json`, and applies a completion gate

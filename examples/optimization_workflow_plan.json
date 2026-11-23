@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "case_id": "lens2g4_10g",
+  "route": "structural_search",
+  "stage": "definition",
+  "strategy": {
+    "screening": "lhs",
+    "optimizer": "nsga2",
+    "verification": "full_model"
+  },
+  "budget": {
+    "screening_candidates": 8,
+    "optimizer_evaluations": 24,
+    "full_model_runs": 4
+  },
+  "parameter_space": {
+    "H_RIM": {"low": 0.15, "high": 1.56, "step": 0.05},
+    "R_KNEE": {"low": 18.0, "high": 24.0, "step": 0.4},
+    "H_KNEE": {"low": 5.0, "high": 7.0, "step": 0.25}
+  },
+  "objectives": [
+    {"kind": "peak_gain", "direction": "maximize"},
+    {"kind": "s11", "direction": "minimize"}
+  ],
+  "constraints": [
+    {"kind": "s11", "operator": "<=", "target": -10.0, "band_ghz": [5.0, 18.0]}
+  ],
+  "required_artifacts": {
+    "baseline": ["baseline_run_id"],
+    "screening": ["campaign_dir", "manifest", "gate"],
+    "search": ["archive", "manifest", "gate"],
+    "acceptance": ["acceptance_report"],
+    "delivery": ["report"]
+  },
+  "notes": "Structural-search workflow: baseline -> LHS screening -> NSGA-II -> acceptance."
+}

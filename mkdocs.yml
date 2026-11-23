@@ -36,6 +36,7 @@ nav:
   - Install: installation.md
   - Architecture: architecture.md
   - Workflow: workflow.md
+  - Optimization workflow: optimization_workflow.md
   - AEDT integration: aedt_integration.md
   - Runtime safety: safety.md
   - Agent skill: skill.md

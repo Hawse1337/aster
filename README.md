@@ -152,6 +152,24 @@ result = run_approved_campaign(case, config, budget=2)
 print(result["gate"])
 ```
 
+## Standard optimisation workflow
+
+`aster.opt_workflow` fixes the process around a study while leaving the algorithm
+selectable. A machine-readable plan is validated against the `CaseSpec`; the runner then enforces:
+
+```text
+definition -> baseline -> screening -> search -> acceptance -> delivery
+```
+
+- screening: LHS/DoE (or a small lattice) through `ApprovedBuilderExecutor`;
+- search: NSGA-II/III through the same guard-approved builder;
+- every stage writes artifacts to `optimization_workflow.json`;
+- screening cannot run before a baseline; search cannot run before screening evidence;
+- acceptance and delivery require explicit evidence, never invented metrics.
+
+Example plan: [`examples/optimization_workflow_plan.json`](examples/optimization_workflow_plan.json).
+Details: [`docs/optimization_workflow.md`](docs/optimization_workflow.md).
+
 ## Drop it into an agent
 
 The skill lives in [`skills/aster/`](skills/aster/): `SKILL.md` plus `references/` (API map, AEDT
