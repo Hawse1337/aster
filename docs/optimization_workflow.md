@@ -1,4 +1,4 @@
-# Standard optimisation workflow
+﻿# Standard optimisation workflow
 
 `aster.opt_workflow` fixes the *process* around an optimisation study.  The
 algorithm remains selectable, but an agent cannot silently skip baseline,
@@ -90,6 +90,22 @@ The screening and search paths use `ApprovedBuilderExecutor` and the
 - screening vs search vs acceptance are distinct;
 - an algorithm can be changed explicitly in the plan, not silently improvised.
 
+
+### Projects that need a real solve
+
+The stock `ApprovedBuilderExecutor` only calls the approved builder (build/save). For a project that
+must submit a guarded HFSS solve and export native results, inject a solve-capable executor:
+
+```python
+runner = WorkflowRunner(
+    case, config, plan,
+    executor_factory=lambda c, cfg: SolveExecutor(c, cfg, bridge=bridge),
+)
+```
+
+`run_approved_campaign(..., executor=...)` accepts the same object for direct campaigns. This keeps
+the workflow/evidence contract in aster while the environment-specific solve+export adapter stays
+replaceable.
 ## Current scope
 
 - Screening (LHS / small lattice) is exercised offline.
@@ -113,3 +129,4 @@ The screening and search paths use `ApprovedBuilderExecutor` and the
 - An interrupted externally submitted stage is recorded as `in_flight`. Consult
   the guard ledger and stage manifest before allocating the unused budget to a
   new campaign revision. Process termination does not cancel an external solve.
+

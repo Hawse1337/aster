@@ -284,6 +284,9 @@ class ApprovedBuilderExecutor:
         status = "COMPLETED" if not missing else "MEASUREMENT_MISSING"
         if status != "COMPLETED":
             feasible = False
+        saved = result.get("saved")
+        if not saved and isinstance(result.get("result"), Mapping):
+            saved = result["result"].get("saved")
         return Evaluation(
             candidate_id=candidate_id,
             family_id=self.case.family.family_id,
@@ -298,8 +301,11 @@ class ApprovedBuilderExecutor:
                 "provenance": provenance,
                 "attempt_dir": str(outdir),
                 "guard_result": {
-                    key: result.get(key)
-                    for key in ("saved", "artifacts", "artifact_warning", "launched_session")
+                    "saved": saved,
+                    "artifacts": result.get("artifacts"),
+                    "artifact_warning": result.get("artifact_warning"),
+                    "launched_session": result.get("launched_session"),
+                    "result": result.get("result"),
                 },
                 "evidence": evidence,
                 "wall_s": round(time.monotonic() - started, 2),
@@ -316,6 +322,7 @@ def run_approved_campaign(
     candidates: Iterable[Mapping[str, Any]] | None = None,
     bridge: Any = None,
     require_acceptance: bool = True,
+    executor: Any = None,
 ) -> dict[str, Any]:
     """Run a small approved-builder campaign and write the completion gate.
 
@@ -339,7 +346,8 @@ def run_approved_campaign(
         params_list = []
     campaign_dir = Path(config.campaign_dir)
     campaign_dir.mkdir(parents=True, exist_ok=True)
-    executor = ApprovedBuilderExecutor(case, config, bridge=bridge)
+    if executor is None:
+        executor = ApprovedBuilderExecutor(case, config, bridge=bridge)
     guard_config = GuardConfig(
         campaign_dir=str(campaign_dir),
         project_name=config.project_path,

@@ -9,6 +9,11 @@
   full-model evidence can be replayed from guard/worker ledgers with recipe and builder identity.
   Added `workflow_space.py`, `workflow_evidence.py`, and workflow regression tests.
   Offline suite: 904 passed, 2 skipped, 100 subtests.
+- **Solve-capable executor injection.** `WorkflowRunner` accepts an `executor_factory` and
+  `run_approved_campaign(..., executor=...)` accepts a custom executor, so a project can use an
+  approved builder plus `submit_guarded_run`/native export without forking the workflow. Also
+  preserves nested `result.saved`, adds screening `front_size`/`evaluations`, and fixes optional
+  `report_name` plumbing.
 - Synced the latest algorithm working tree: conservative band/pattern acceptance,
   aperture field diagnostics, measured coarse/fine validation, paired multifidelity
   correction and the 10 GHz lens case update. Packaged GUI is intentionally excluded.

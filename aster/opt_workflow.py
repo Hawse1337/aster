@@ -28,7 +28,7 @@ import time
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 from .approved_builder import (
     ApprovedBuilderConfig,
@@ -195,8 +195,10 @@ class WorkflowRunner:
         bridge: Any = None,
         state_path: str | Path | None = None,
         native_checks: Mapping[str, Any] | None = None,
+        executor_factory: Callable[[CaseSpec, ApprovedBuilderConfig], Any] | None = None,
     ):
         self.config = config
+        self.executor_factory = executor_factory
         self.plan = plan if isinstance(plan, OptimizationPlan) else OptimizationPlan.from_dict(plan)
         self.plan.validate(case)
         self.case = effective_case(case, self.plan)
@@ -246,6 +248,11 @@ class WorkflowRunner:
             raise WorkflowGateError(f"{name} has already run in this campaign")
         self.state["in_flight"] = name
         self._save()
+
+    def _make_executor(self, config: ApprovedBuilderConfig) -> Any:
+        if self.executor_factory is None:
+            return None
+        return self.executor_factory(self.case, config)
 
     def _require(self, key: str) -> Any:
         value = (self.state.get("artifacts") or {}).get(key)
@@ -358,15 +365,19 @@ class WorkflowRunner:
             candidates=points,
             bridge=self.bridge,
             require_acceptance=False,
+            executor=self._make_executor(screening_config),
         )
+        campaign_manifest = result.get("manifest") or {}
         artifact = {
             "campaign_dir": str(screening_config.campaign_dir),
             "manifest": str(Path(screening_config.campaign_dir) / "optimization_manifest.json"),
             "gate": str(Path(screening_config.campaign_dir) / "optimization_gate.json"),
             "candidates": points,
+            "front_size": len(campaign_manifest.get("pareto") or []),
+            "evaluations": len(campaign_manifest.get("runs") or []),
             "result": {
                 "gate": result.get("gate"),
-                "status": (result.get("manifest") or {}).get("status"),
+                "status": campaign_manifest.get("status"),
             },
             "recorded_at": _now(),
         }
@@ -424,7 +435,9 @@ class WorkflowRunner:
             campaign_dir=str(Path(self.config.campaign_dir) / "search"),
             outdir_root=str(Path(self.config.outdir_root) / "search"),
         )
-        executor = ApprovedBuilderExecutor(self.case, search_config, bridge=self.bridge)
+        executor = self._make_executor(search_config) or ApprovedBuilderExecutor(
+            self.case, search_config, bridge=self.bridge
+        )
         runner = run_nsga2 if optimizer == "nsga2" else run_nsga3
         try:
             self._start_solve_stage("search")
