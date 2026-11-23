@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **Astra audit fixes (2026-11-23).** Repaired the standard workflow and campaign plumbing:
+  plan bounds are compiled into an effective case; screening seeds initialize NSGA-II/III;
+  real evaluation budgets are enforced; stage state is locked and bound to the plan; gate files
+  are never mistaken for dicts; completion and electromagnetic acceptance are separated; and
+  full-model evidence can be replayed from guard/worker ledgers with recipe and builder identity.
+  Added `workflow_space.py`, `workflow_evidence.py`, and workflow regression tests.
+  Offline suite: 904 passed, 2 skipped, 100 subtests.
 - Synced the latest algorithm working tree: conservative band/pattern acceptance,
   aperture field diagnostics, measured coarse/fine validation, paired multifidelity
   correction and the 10 GHz lens case update. Packaged GUI is intentionally excluded.

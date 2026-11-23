@@ -59,6 +59,9 @@ from aster.approved_builder import ApprovedBuilderConfig
 from aster.opt_workflow import WorkflowRunner, load_plan
 
 plan = load_plan(r"examples/optimization_workflow_plan.json", case=case)
+# final_profile is the case owner's measured band and/or angular coverage
+# specification, with the approved full-model recipe_id from the guard history.
+plan.verification_profile = final_profile
 config = ApprovedBuilderConfig(
     campaign_id="lens-20261123",
     campaign_dir=r"C:\...\campaign",
@@ -69,10 +72,10 @@ config = ApprovedBuilderConfig(
     design="Trunc_10GHz",
 )
 runner = WorkflowRunner(case, config, plan)
-runner.record_baseline("baseline-run-id", {"project": r"C:\...\baseline.aedt"})
+runner.record_baseline("baseline-run-id", {"campaign_dir": r"C:\...\baseline-campaign"})
 screening = runner.run_screening()       # LHS/DoE through the approved builder
 search = runner.run_search()             # NSGA-II through the approved builder
-runner.record_acceptance({"passed": True, "source": "full-model replay"})
+runner.record_acceptance({"campaign_dir": r"C:\...\full-model-campaign", "run_id": full_model_run_id})
 runner.record_delivery(r"C:\...\report.md")
 print(runner.gate())
 ```
@@ -82,7 +85,7 @@ The screening and search paths use `ApprovedBuilderExecutor` and the
 
 ## What this fixes
 
-- the agent cannot call a hand-written loop and call it an optimization;
+- the runner relates its own search records to an explicit campaign and plan;
 - every stage leaves a file the GUI/operator can inspect;
 - screening vs search vs acceptance are distinct;
 - an algorithm can be changed explicitly in the plan, not silently improvised.
@@ -92,6 +95,21 @@ The screening and search paths use `ApprovedBuilderExecutor` and the
 - Screening (LHS / small lattice) is exercised offline.
 - Search wraps `optimizer.nsga2` / `nsga3`; it requires `pymoo` and a real
   approved builder session for measured runs.
-- Acceptance and delivery are evidence-recording gates; they do not invent
-  acceptance data. Use `band_acceptance` / `pattern_acceptance` or an explicit
-  full-model replay before recording them.
+- A project-specific plan can declare `verification_profile` with the exact
+  full-model `recipe_id`, optional `builder_sha256`, and `band` and/or `coverage`
+  using the band and angular acceptance specifications. A registered project
+  `native_check` can implement a discrete-frequency or project-specific pattern
+  requirement. Every declared check must pass. A positive verdict
+  needs a completed matching geometry, guarded run and worker record. The
+  recipe identity must identify the intended physical model. The acceptance
+  operation reads an existing full-model campaign and spends no solver budget.
+- A negative or incomplete result may be delivered as a diagnostic report.
+  `gate()["workflow_complete"]` describes process evidence and `gate()["passed"]`
+  also requires the baseline guard evidence and a reproducible positive replay.
+  `optimizer="none"` permits a screening-only study to verify a screened point.
+- The approved adapter reads exports produced during one builder attempt.
+  A builder that returns only a saved project needs an additional guarded
+  solve/export recipe before it can supply measured outcomes.
+- An interrupted externally submitted stage is recorded as `in_flight`. Consult
+  the guard ledger and stage manifest before allocating the unused budget to a
+  new campaign revision. Process termination does not cancel an external solve.

@@ -16,7 +16,11 @@ the candidate is recorded as failed rather than guessed.
 from __future__ import annotations
 
 import json
+import inspect
+import math
+import tempfile
 import time
+from itertools import islice
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -61,12 +65,12 @@ def _all_artifacts(result: Mapping[str, Any], outdir: Path) -> list[Path]:
             path = Path(str(item))
         except (TypeError, ValueError):
             continue
-        if path.is_file():
+        if path.is_file() and path.resolve().is_relative_to(outdir.resolve()):
             found.append(path)
     if outdir.is_dir():
         for path in outdir.rglob("*"):
             try:
-                if path.is_file():
+                if path.is_file() and path.resolve().is_relative_to(outdir.resolve()):
                     found.append(path)
             except OSError:
                 continue
@@ -115,7 +119,7 @@ def _s11_metric(case: CaseSpec, touchstone: Path) -> tuple[float | None, dict[st
     }
     if missing or not samples:
         return None, details
-    return max(db for _freq, db in samples), details
+    return details["worst_db"], details
 
 
 def _farfield_metrics(artifacts: Iterable[Path]) -> tuple[dict[str, float | None], dict[str, Any]]:
@@ -156,16 +160,16 @@ def _result_metrics(result: Mapping[str, Any], case: CaseSpec) -> dict[str, Any]
             candidates.append(inner["metrics"])
     if isinstance(result.get("metrics"), Mapping):
         candidates.append(result["metrics"])
-    kinds = {constraint.kind for constraint in case.constraints}
+    kinds = {m.kind for m in (*case.constraints, *case.objectives)}
+    measured = {}
     for payload in candidates:
         metrics = {
             kind: float(payload[kind])
             for kind in kinds
-            if isinstance(payload.get(kind), (int, float))
+            if type(payload.get(kind)) in (int, float) and math.isfinite(payload[kind])
         }
-        if metrics:
-            return metrics
-    return {}
+        measured.update(metrics)
+    return measured
 
 
 def metrics_from_artifacts(
@@ -189,9 +193,10 @@ def metrics_from_artifacts(
     explicit = _result_metrics(result, case)
     for key, value in explicit.items():
         metrics.setdefault(key, value)
-    # Ensure all constrained kinds exist in the mapping; missing ones remain None.
-    for constraint in case.constraints:
-        metrics.setdefault(constraint.kind, None)
+    for requirement in (*case.constraints, *case.objectives):
+        value = metrics.get(requirement.kind)
+        if type(value) not in (int, float) or not math.isfinite(value):
+            metrics[requirement.kind] = None
     return metrics, evidence
 
 
@@ -221,8 +226,9 @@ class ApprovedBuilderExecutor:
     def evaluate(self, candidate: Any) -> Evaluation:
         candidate_id = str(getattr(candidate, "candidate_id", "candidate"))
         started = time.monotonic()
-        outdir = Path(self.config.outdir_root) / candidate_id
-        outdir.mkdir(parents=True, exist_ok=True)
+        candidate_dir = Path(self.config.outdir_root) / candidate_id
+        candidate_dir.mkdir(parents=True, exist_ok=True)
+        outdir = Path(tempfile.mkdtemp(prefix="attempt-", dir=candidate_dir))
         provenance = {
             "campaign_id": self.config.campaign_id,
             "campaign_dir": self.config.campaign_dir,
@@ -233,29 +239,15 @@ class ApprovedBuilderExecutor:
         }
         params = self._builder_params(dict(candidate.params))
         try:
-            try:
-                result = self.bridge.run_approved_builder(
-                    builder_id=self.config.builder_id,
-                    project_path=self.config.project_path,
-                    outdir=str(outdir),
-                    params=params,
-                    pid=self.config.pid,
-                    port=self.config.port,
-                    timeout=self.config.timeout_s,
-                    provenance=provenance,
-                )
-            except TypeError:
-                # Old bridge/guard without provenance still works; provenance
-                # remains absent rather than failing the run.
-                result = self.bridge.run_approved_builder(
-                    builder_id=self.config.builder_id,
-                    project_path=self.config.project_path,
-                    outdir=str(outdir),
-                    params=params,
-                    pid=self.config.pid,
-                    port=self.config.port,
-                    timeout=self.config.timeout_s,
-                )
+            build = self.bridge.run_approved_builder
+            arguments = dict(builder_id=self.config.builder_id, project_path=self.config.project_path,
+                             outdir=str(outdir), params=params, pid=self.config.pid,
+                             port=self.config.port, timeout=self.config.timeout_s)
+            signature = inspect.signature(build)
+            if "provenance" in signature.parameters or any(
+                    p.kind == inspect.Parameter.VAR_KEYWORD for p in signature.parameters.values()):
+                arguments["provenance"] = provenance
+            result = build(**arguments)
         except Exception as exc:  # noqa: BLE001
             return Evaluation(
                 candidate_id=candidate_id,
@@ -269,7 +261,9 @@ class ApprovedBuilderExecutor:
                 status="MODEL_FAILED",
                 origin={"provenance": provenance, "error": "%s: %s" % (type(exc).__name__, exc)},
             )
-        if not isinstance(result, Mapping) or result.get("refused") or result.get("error"):
+        pending = isinstance(result, Mapping) and (result.get("approval_required") or
+                   str(result.get("status", "")).upper() == "APPROVAL_REQUIRED")
+        if not isinstance(result, Mapping) or pending or result.get("refused") or result.get("error"):
             return Evaluation(
                 candidate_id=candidate_id,
                 family_id=self.case.family.family_id,
@@ -279,14 +273,14 @@ class ApprovedBuilderExecutor:
                 violations={},
                 total_violation=1e3,
                 run_id=str(result.get("run_id") or "") if isinstance(result, Mapping) else None,
-                status="MODEL_FAILED",
+                status="APPROVAL_REQUIRED" if pending else "MODEL_FAILED",
                 origin={"provenance": provenance, "guard_result": result},
             )
         metrics, evidence = metrics_from_artifacts(self.case, result, outdir)
         feasible, violations, total = evaluate_constraints(metrics, self.case)
         # If required measurements were missing, evaluate_constraints marks them
         # infeasible; never fabricate a pass from an absent artifact.
-        missing = [name for name, value in metrics.items() if value is None]
+        missing = [m.kind for m in (*self.case.constraints, *self.case.objectives) if metrics.get(m.kind) is None]
         status = "COMPLETED" if not missing else "MEASUREMENT_MISSING"
         if status != "COMPLETED":
             feasible = False
@@ -298,10 +292,11 @@ class ApprovedBuilderExecutor:
             feasible=feasible,
             violations=violations,
             total_violation=total,
-            run_id=str(result.get("run_id") or candidate_id),
+            run_id=str(result["run_id"]) if result.get("run_id") else None,
             status=status,
             origin={
                 "provenance": provenance,
+                "attempt_dir": str(outdir),
                 "guard_result": {
                     key: result.get(key)
                     for key in ("saved", "artifacts", "artifact_warning", "launched_session")
@@ -331,6 +326,17 @@ def run_approved_campaign(
     from .campaign import CampaignRunner  # noqa: PLC0415
     from .executor import GuardConfig  # noqa: PLC0415
 
+    if type(budget) is not int or budget < 0:
+        raise ValueError("budget must be a nonnegative integer")
+    if candidates is not None:
+        params_list = [dict(point) for point in islice(candidates, budget + 1)]
+        if len(params_list) > budget:
+            raise ValueError("candidate list exceeds budget")
+    elif budget:
+        plan = plan_doe(case.family.param_space, case.case_id, count=budget, seed=seed)
+        params_list = [dict(point) for point in plan.points]
+    else:
+        params_list = []
     campaign_dir = Path(config.campaign_dir)
     campaign_dir.mkdir(parents=True, exist_ok=True)
     executor = ApprovedBuilderExecutor(case, config, bridge=bridge)
@@ -358,11 +364,6 @@ def run_approved_campaign(
         source="aster",
     )
     write_manifest(campaign_dir, manifest)
-    if candidates is None:
-        plan = plan_doe(case.family.param_space, case.case_id, count=max(1, int(budget)), seed=seed)
-        params_list = [dict(point) for point in plan.points]
-    else:
-        params_list = [dict(point) for point in candidates]
     for params in params_list:
         record = runner.evaluate(params)
         row = record.to_dict()
@@ -384,7 +385,7 @@ def run_approved_campaign(
         campaign_dir,
         require_optimizer=True,
         min_completed_runs=1,
-        require_pareto=True,
+        require_pareto=require_acceptance,
         require_acceptance=require_acceptance,
     )
     manifest["gate"] = gate

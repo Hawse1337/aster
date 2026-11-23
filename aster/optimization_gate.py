@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -22,11 +23,18 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def _atomic(path: Path, payload: dict[str, Any]) -> None:
+def write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, path)
+    fd, name = tempfile.mkstemp(dir=path.parent, prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as stream:
+            json.dump(payload, stream, ensure_ascii=False, indent=2, allow_nan=False)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(name, path)
+    finally:
+        Path(name).unlink(missing_ok=True)
 
 
 def new_manifest(
@@ -58,7 +66,7 @@ def new_manifest(
 def write_manifest(campaign_dir: str | Path, manifest: dict[str, Any]) -> Path:
     path = Path(campaign_dir) / MANIFEST_NAME
     manifest["updated_at"] = _now()
-    _atomic(path, manifest)
+    write_json_atomic(path, manifest)
     return path
 
 
@@ -88,7 +96,7 @@ def campaign_gate(
             "missing": ["optimization_manifest.json"],
             "manifest_path": str(manifest_path),
         }
-        _atomic(campaign / GATE_NAME, result)
+        write_json_atomic(campaign / GATE_NAME, result)
         return result
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -111,9 +119,7 @@ def campaign_gate(
         checks["pareto_present"] = bool(manifest.get("pareto"))
     if require_acceptance:
         acceptance = manifest.get("acceptance")
-        checks["acceptance_present"] = bool(acceptance) and (
-            not isinstance(acceptance, dict) or bool(acceptance.get("passed"))
-        )
+        checks["acceptance_present"] = isinstance(acceptance, dict) and acceptance.get("passed") is True
     for name, passed in checks.items():
         if not passed:
             missing.append(name)
@@ -127,7 +133,7 @@ def campaign_gate(
         "manifest_path": str(manifest_path),
         "gate_path": str(campaign / GATE_NAME),
     }
-    _atomic(campaign / GATE_NAME, result)
+    write_json_atomic(campaign / GATE_NAME, result)
     return result
 
 

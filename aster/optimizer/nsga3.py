@@ -20,7 +20,7 @@ from typing import Any
 import numpy as np
 
 from ..core import CaseSpec
-from .nsga2 import CachedEvaluator, _case_problem
+from .nsga2 import CachedEvaluator, _case_problem, _seeded_sampling
 
 
 def reference_directions(n_obj: int, pop_size: int) -> np.ndarray:
@@ -55,6 +55,7 @@ def run_nsga3(
     generations: int = 4,
     seed: int = 0,
     budget: int | None = None,
+    initial_params=None,
 ) -> dict[str, Any]:
     """Run NSGA-III and return the evaluated archive plus generation history."""
     try:
@@ -69,7 +70,8 @@ def run_nsga3(
 
     problem = _case_problem(case, evaluator)
     directions = reference_directions(len(objectives), int(pop_size))
-    algorithm = NSGA3(pop_size=int(pop_size), ref_dirs=directions)
+    algorithm = NSGA3(pop_size=int(pop_size), ref_dirs=directions,
+                      **_seeded_sampling(case, initial_params, int(pop_size), seed))
     result = minimize(
         problem,
         algorithm,

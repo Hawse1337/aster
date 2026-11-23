@@ -88,6 +88,28 @@ def _case_problem(case: CaseSpec, evaluator: CachedEvaluator):
                        xl=np.zeros(len(space)), xu=np.ones(len(space)))
 
 
+def _seeded_sampling(case, initial_params, population, seed):
+    """Mix verified screening geometries with seeded random exploration.
+
+    Supplying no warm start leaves pymoo's original sampling untouched.
+    """
+    space = case.family.param_space
+    points = []
+    for params in initial_params or ():
+        clean = space.validate(dict(params))
+        vector = space.to_vector(clean)
+        # Some legacy explicit points lie between the case's discrete steps.
+        # Rounding them would seed a different antenna geometry.
+        if space.from_vector(vector) == clean and vector not in points:
+            points.append(vector)
+        if len(points) >= max(1, population // 2):
+            break
+    if not points:
+        return {}
+    random_points = np.random.default_rng(seed).random((population - len(points), len(space)))
+    return {"sampling": np.vstack([np.asarray(points, dtype=float), random_points])}
+
+
 def run_nsga2(
     case: CaseSpec,
     executor: Any,
@@ -96,6 +118,7 @@ def run_nsga2(
     generations: int = 4,
     seed: int = 0,
     budget: int | None = None,
+    initial_params=None,
 ) -> dict[str, Any]:
     """Run NSGA-II and return the evaluated archive plus generation history."""
     try:
@@ -108,7 +131,7 @@ def run_nsga2(
     history: list[dict[str, Any]] = []
 
     problem = _case_problem(case, evaluator)
-    algorithm = NSGA2(pop_size=int(pop_size))
+    algorithm = NSGA2(pop_size=int(pop_size), **_seeded_sampling(case, initial_params, int(pop_size), seed))
     result = minimize(
         problem,
         algorithm,
