@@ -9,6 +9,10 @@
   full-model evidence can be replayed from guard/worker ledgers with recipe and builder identity.
   Added `workflow_space.py`, `workflow_evidence.py`, and workflow regression tests.
   Offline suite: 904 passed, 2 skipped, 100 subtests.
+- **Optional `GuardedSolveExecutor`.** `aster.solve_adapter` adds a generic build → guarded
+  solve → export adapter for projects whose approved builder only builds/saves. It submits through
+  the guard bridge, waits for a terminal run, copies S11/far-field artifacts, and records the guard
+  campaign/run in `Evaluation.origin`. See `docs/optimization_workflow.md`.
 - **Solve-capable executor injection.** `WorkflowRunner` accepts an `executor_factory` and
   `run_approved_campaign(..., executor=...)` accepts a custom executor, so a project can use an
   approved builder plus `submit_guarded_run`/native export without forking the workflow. Also

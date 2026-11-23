@@ -94,18 +94,29 @@ The screening and search paths use `ApprovedBuilderExecutor` and the
 ### Projects that need a real solve
 
 The stock `ApprovedBuilderExecutor` only calls the approved builder (build/save). For a project that
-must submit a guarded HFSS solve and export native results, inject a solve-capable executor:
+must submit a guarded HFSS solve and export native results, use the optional
+`aster.solve_adapter.GuardedSolveExecutor`:
 
 ```python
+from aster.solve_adapter import GuardedSolveConfig, GuardedSolveExecutor
+
+solve = GuardedSolveConfig(
+    guard_dir=r"C:\ProgramData\ansys-aedt-mcp",
+    design="Trunc_10GHz",
+    fixed_params={"gap_mm": 0.384},
+    frequencies_ghz=(5.0, 8.0),
+    num_tasks=1,
+)
 runner = WorkflowRunner(
     case, config, plan,
-    executor_factory=lambda c, cfg: SolveExecutor(c, cfg, bridge=bridge),
+    executor_factory=lambda c, cfg: GuardedSolveExecutor(c, cfg, solve, bridge=bridge),
 )
 ```
 
-`run_approved_campaign(..., executor=...)` accepts the same object for direct campaigns. This keeps
-the workflow/evidence contract in aster while the environment-specific solve+export adapter stays
-replaceable.
+The adapter still goes through `submit_guarded_run`/the guard bridge, waits for a terminal run,
+copies `result.s1p` and far-field files, and records the guard campaign/run identity in
+`Evaluation.origin`. A project-specific spec/metric mapping can be supplied with
+`spec_factory`/`metric_hook`. `run_approved_campaign(..., executor=...)` accepts the same object.
 ## Current scope
 
 - Screening (LHS / small lattice) is exercised offline.
@@ -129,4 +140,5 @@ replaceable.
 - An interrupted externally submitted stage is recorded as `in_flight`. Consult
   the guard ledger and stage manifest before allocating the unused budget to a
   new campaign revision. Process termination does not cancel an external solve.
+
 
