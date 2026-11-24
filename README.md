@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
   <img src="assets/banner.svg" alt="aster — an antenna design bench, evidence first" width="100%">
 </p>
 
@@ -183,6 +183,22 @@ aster skill path               # print the destination
 Or copy `skills/aster/` into your agent's skill directory by hand. The skill does **not** cover the
 GUI, which is not published.
 
+## Latest workflow additions (2026-11-24)
+
+- `OptimizationPlan` is compiled into an effective bounded case; plan bounds can only tighten
+  registered limits, and integer/step lattices are canonical across LHS, grid and NSGA.
+- screening points seed the NSGA-II/III initial population and are re-evaluated against the real
+  budget; screening is no longer just a paper trail.
+- `GuardedSolveExecutor` adds an optional build -> guarded solve -> native export stage for projects
+  whose approved builder only builds/saves.
+- `GuardedSolveConfig.run_params` carries `symmetry`/recipe identity into the guarded submit;
+  `workflow_evidence.attach_run` registers a real run without hand-writing `real_runs.jsonl`.
+- `CampaignRecord`/manifest retain the guard origin (`guard_campaign`, `guard_run_id`) so a
+  selected full-model run can be replayed.
+- Long solves that wedge the AEDT gRPC status endpoint can still complete from present
+  `result.s1p`/far-field artifacts (explicitly recorded, never fabricated).
+
+The current tree is ahead of the v1.54.0 wheel; use `main` until the next release is cut.
 ## Repository map
 
 ```text
@@ -191,6 +207,10 @@ aster/        the library
   core.py        parameter spaces, objectives, constraints
   optimize.py    evaluations, dominance, Pareto archive
   campaign.py    campaign recipes
+  opt_workflow.py standard plan/stage runner
+  workflow_space.py plan -> effective bounded case
+  workflow_evidence.py evidence replay + attach_run
+  solve_adapter.py build -> guarded solve -> export
   runtime/       measured-run manager + job store (no web server)
   worker.py      command-line measured campaign worker
   aedt_host.py   AEDT process helpers
@@ -206,7 +226,7 @@ mkdocs.yml     documentation site
 
 ## Status
 
-- Offline suite: **880 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
+- Offline suite: **909 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
 - Wheel and sdist: [v1.54.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.54.0);
@@ -216,3 +236,5 @@ mkdocs.yml     documentation site
 
 MIT — see [LICENSE](LICENSE). If you build a study on top of this bench, keep the artifacts; a bench
 without evidence is just furniture.
+
+
