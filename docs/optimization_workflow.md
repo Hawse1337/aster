@@ -117,6 +117,23 @@ The adapter still goes through `submit_guarded_run`/the guard bridge, waits for 
 copies `result.s1p` and far-field files, and records the guard campaign/run identity in
 `Evaluation.origin`. A project-specific spec/metric mapping can be supplied with
 `spec_factory`/`metric_hook`. `run_approved_campaign(..., executor=...)` accepts the same object.
+## Evidence registration and native sampling
+
+For a guarded run that was launched by a project adapter, record it with
+`workflow_evidence.attach_run(...)` instead of hand-writing `real_runs.jsonl`.
+It writes the real-job identity, the pre-solve `case_contract` recipe, builder
+SHA and an archive entry; `replay_selected` remains the authority for the
+verdict.
+
+`GuardedSolveConfig.run_params` is copied into the guarded submit `params`
+(e.g. `symmetry="none"` plus recipe/design metadata). Put geometry-fixed values
+in `fixed_params` for the builder and the same identity fields in `run_params`
+for the guard run; a project-native check can then verify the full-model
+geometry from `run.json`.
+
+True native 5° patterns require the builder's far-field sampling parameter
+(`ff_step_deg`) to be approved once and then supplied as a normal builder
+parameter. Exported reports cannot turn a 10° solved sphere into true 5° data.
 ## Current scope
 
 - Screening (LHS / small lattice) is exercised offline.
@@ -140,5 +157,6 @@ copies `result.s1p` and far-field files, and records the guard campaign/run iden
 - An interrupted externally submitted stage is recorded as `in_flight`. Consult
   the guard ledger and stage manifest before allocating the unused budget to a
   new campaign revision. Process termination does not cancel an external solve.
+
 
 

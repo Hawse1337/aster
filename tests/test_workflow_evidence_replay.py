@@ -6,6 +6,7 @@ import pytest
 
 from aster.approved_builder import ApprovedBuilderExecutor, run_approved_campaign
 from aster.opt_workflow import OptimizationPlan, WorkflowError, WorkflowGateError, WorkflowRunner
+from aster.workflow_evidence import attach_run
 from test_design_history import campaign  # fixture creates both guarded ledgers
 from test_opt_workflow import _case, _config, _FakeBridge
 
@@ -34,6 +35,25 @@ def test_replay_from_both_ledgers_and_reopen_after_delivery(campaign):
     assert reopened.gate()["passed"]
     (folder / "result.s1p").write_text("# GHZ S DB R 50\n24 -9 0\n25 -15 0\n")
     assert not reopened.gate()["passed"]
+
+
+def test_attach_run_writes_formal_replay_ledger(campaign):
+    root, case, job, _folder = campaign
+    recipe = {"design_name": "Trunc_10GHz", "setup_name": "Setup1"}
+    result = attach_run(
+        root, case, guard_run_id="guard-attached", params={"x": 5.0},
+        recipe=recipe, builder_sha256="a" * 64, run_id="attached-1",
+        candidate_id="candidate-1",
+    )
+    lines = (root / "real_runs.jsonl").read_text(encoding="utf-8").splitlines()
+    assert lines
+    attached = json.loads(lines[-1])
+    assert attached["guard_run_id"] == "guard-attached"
+    assert attached["params"] == {"x": 5.0}
+    assert attached["telemetry"]["learning_contract"]["identity"] == result["contract"]["identity"]
+    archive = json.loads(Path(result["archive"]).read_text(encoding="utf-8"))
+    assert archive["entries"][0]["params"] == {"x": 5.0}
+    assert archive["entries"][0]["status"] == "COMPLETED"
 
 
 def test_search_gate_lives_on_disk_and_diagnostics_can_close(tmp_path):

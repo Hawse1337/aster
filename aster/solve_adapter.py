@@ -48,6 +48,10 @@ class GuardedSolveConfig:
     frequencies_ghz: tuple[float, ...] = ()
     cuts: tuple[str, ...] = ()
     fixed_params: dict[str, Any] = field(default_factory=dict)
+    # Parameters recorded on the guarded run itself (not just the builder):
+    # e.g. symmetry="none", design_name/setup_name, or recipe metadata used by a
+    # project native check. These are merged over candidate.params.
+    run_params: dict[str, Any] = field(default_factory=dict)
     metric_aliases: dict[str, str] = field(default_factory=dict)
     spec_factory: Callable[[str, str], dict[str, Any]] | None = None
     metric_hook: Callable[[Path, CaseSpec], dict[str, Any]] | None = None
@@ -140,7 +144,8 @@ class GuardedSolveExecutor(ApprovedBuilderExecutor):
         result = fn(*args, **kwargs)
         return asyncio.run(result) if asyncio.iscoroutine(result) else result
 
-    def _run_guarded(self, project: str, design: str, attempt: Path) -> dict[str, Any]:
+    def _run_guarded(self, project: str, design: str, attempt: Path,
+                     run_params: Mapping[str, Any] | None = None) -> dict[str, Any]:
         campaign = attempt / "guard_campaign"
         campaign.mkdir(parents=True, exist_ok=True)
         spec = (self.solve.spec_factory(project, design) if self.solve.spec_factory
@@ -154,6 +159,7 @@ class GuardedSolveExecutor(ApprovedBuilderExecutor):
             sweep_name=self.solve.sweep_name,
             frequencies_ghz=list(self.solve.frequencies_ghz) or None,
             cuts=list(self.solve.cuts),
+            params=dict(run_params or {}),
             pid=self.config.pid,
             port=self.config.port,
             num_cores=self.solve.num_cores,
@@ -179,10 +185,24 @@ class GuardedSolveExecutor(ApprovedBuilderExecutor):
             )
 
         terminal = {"COMPLETED", "FAILED", "RECOVERY_REQUIRED", "TIMEOUT", "CANCELLED"}
+        fallback_artifacts = campaign / "runs" / run_id / "artifacts"
         deadline = time.monotonic() + self.solve.timeout_s
         status: dict[str, Any] = {}
         while time.monotonic() < deadline:
-            status = self._call(self.bridge.status, str(campaign), run_id)
+            try:
+                status = self._call(self.bridge.status, str(campaign), run_id)
+            except Exception as exc:  # noqa: BLE001 - long solves can wedge gRPC
+                # Full-model solves can finish and save while the AEDT gRPC
+                # endpoint can no longer answer GetSetups/GetSolutionType.
+                if (fallback_artifacts / "result.s1p").is_file():
+                    status = {
+                        "status": "COMPLETED",
+                        "terminal": True,
+                        "artifact_dir": str(fallback_artifacts),
+                        "note": "artifacts present; status poll failed: %s" % (type(exc).__name__,),
+                    }
+                    break
+                status = {"status": "POLL_ERROR", "error": "%s: %s" % (type(exc).__name__, exc)}
             if status.get("status") in terminal or status.get("terminal"):
                 break
             time.sleep(self.solve.poll_interval_s)
@@ -191,8 +211,11 @@ class GuardedSolveExecutor(ApprovedBuilderExecutor):
                 process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 process.kill()
-        artifact_dir = Path(status.get("artifact_dir") or
-                            (campaign / "runs" / run_id / "artifacts"))
+        if not status.get("status") and (fallback_artifacts / "result.s1p").is_file():
+            status = {"status": "COMPLETED", "terminal": True,
+                      "artifact_dir": str(fallback_artifacts),
+                      "note": "artifacts present after timeout"}
+        artifact_dir = Path(status.get("artifact_dir") or fallback_artifacts)
         return {"run_id": run_id, "status": status, "artifact_dir": artifact_dir,
                 "campaign_dir": str(campaign)}
 
@@ -245,8 +268,10 @@ class GuardedSolveExecutor(ApprovedBuilderExecutor):
             build.status = "MODEL_FAILED"
             build.origin["error"] = "solve config has no design name"
             return build
+        run_params = {**dict(candidate.params), **self.solve.run_params}
         try:
-            solved = self._run_guarded(str(Path(saved).resolve()), design, attempt)
+            solved = self._run_guarded(str(Path(saved).resolve()), design, attempt,
+                                       run_params=run_params)
             collected = self._collect(attempt, solved["artifact_dir"])
         except Exception as exc:  # noqa: BLE001
             build.status = "SOLVE_FAILED"

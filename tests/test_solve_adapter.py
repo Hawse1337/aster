@@ -102,6 +102,7 @@ def test_solve_adapter_submits_and_returns_measured_evaluation(tmp_path: Path):
         frequencies_ghz=(5.0, 8.0),
         num_tasks=1,
         run_daemon=False,
+        run_params={"symmetry": "none", "setup_name": "Setup1"},
     )
     executor = GuardedSolveExecutor(_case(project), config, solve, bridge=bridge)
     from types import SimpleNamespace
