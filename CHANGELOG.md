@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.55.0 — 2026-11-26
 
 - **Astra audit fixes (2026-11-23).** Repaired the standard workflow and campaign plumbing:
   plan bounds are compiled into an effective case; screening seeds initialize NSGA-II/III;
@@ -8,7 +8,7 @@
   are never mistaken for dicts; completion and electromagnetic acceptance are separated; and
   full-model evidence can be replayed from guard/worker ledgers with recipe and builder identity.
   Added `workflow_space.py`, `workflow_evidence.py`, and workflow regression tests.
-  Offline suite: 904 passed, 2 skipped, 100 subtests.
+  Offline suite: 909 passed, 2 skipped, 100 subtests.
 - **Optional `GuardedSolveExecutor`.** `aster.solve_adapter` adds a generic build → guarded
   solve → export adapter for projects whose approved builder only builds/saves. It submits through
   the guard bridge, waits for a terminal run, copies S11/far-field artifacts, and records the guard

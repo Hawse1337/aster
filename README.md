@@ -1,4 +1,4 @@
-﻿<p align="center">
+<p align="center">
   <img src="assets/banner.svg" alt="aster — an antenna design bench, evidence first" width="100%">
 </p>
 
@@ -198,7 +198,7 @@ GUI, which is not published.
 - Long solves that wedge the AEDT gRPC status endpoint can still complete from present
   `result.s1p`/far-field artifacts (explicitly recorded, never fabricated).
 
-The current tree is ahead of the v1.54.0 wheel; use `main` until the next release is cut.
+The tree documented here is released as v1.55.0 (wheel and sdist below).
 ## Repository map
 
 ```text
@@ -229,7 +229,7 @@ mkdocs.yml     documentation site
 - Offline suite: **909 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
-- Wheel and sdist: [v1.54.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.54.0);
+- Wheel and sdist: [v1.55.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.55.0);
   documentation: [hawse1337.github.io/aster](https://hawse1337.github.io/aster/).
 
 ## License
