@@ -198,7 +198,7 @@ GUI, which is not published.
 - Long solves that wedge the AEDT gRPC status endpoint can still complete from present
   `result.s1p`/far-field artifacts (explicitly recorded, never fabricated).
 
-The tree documented here is released as v1.55.0 (wheel and sdist below).
+The tree documented here is released as v1.55.1 (wheel and sdist below).
 ## Repository map
 
 ```text
@@ -226,15 +226,17 @@ mkdocs.yml     documentation site
 
 ## Status
 
-- Offline suite: **909 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
+- Offline suite: **912 passed, 2 skipped, 100 subtests**; CI runs it on Windows / CPython 3.12.
 - Measured runs are exercised on AEDT 2026 R1 through the guard; any solver number quoted from a
   study must be accompanied by its run artifacts.
-- Wheel and sdist: [v1.55.0 release](https://github.com/Hawse1337/aster/releases/tag/v1.55.0);
+- Wheel and sdist: [v1.55.1 release](https://github.com/Hawse1337/aster/releases/tag/v1.55.1);
   documentation: [hawse1337.github.io/aster](https://hawse1337.github.io/aster/).
 
 ## License
 
 MIT — see [LICENSE](LICENSE). If you build a study on top of this bench, keep the artifacts; a bench
 without evidence is just furniture.
+
+
 
 

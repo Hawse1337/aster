@@ -14,7 +14,7 @@ py -3.10 -m venv .venv
 ## From a wheel
 
 ```powershell
-python -m pip install aster-1.52.0-py3-none-any.whl[optimizer,surrogate]
+python -m pip install aster-1.55.1-py3-none-any.whl[optimizer,surrogate]
 ```
 
 ## Optional dependencies
@@ -30,10 +30,11 @@ python -m pip install aster-1.52.0-py3-none-any.whl[optimizer,surrogate]
 ## Verify the install
 
 ```powershell
-python -m aster version        # 1.52.0
+python -m aster version        # 1.55.1
 python -m pytest tests -q       # offline suite, no AEDT needed
 ```
 
 For measured runs you additionally need an AEDT installation and the companion
 [ansys-aedt-mcp](https://github.com/Hawse1337/ansys-aedt-mcp) guard, including its virtual
 environment with PyAEDT 1.10.0 (see [AEDT integration](aedt_integration.md)).
+

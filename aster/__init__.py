@@ -27,8 +27,10 @@ from .optimize import (
     hypervolume_2d,
     pareto_archive,
 )
+from .version import __version__
 
 __all__ = [
+    "__version__",
     "Candidate",
     "CaseSpec",
     "Constraint",

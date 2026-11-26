@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.55.1 — 2026-11-27
+
+- Fixed the version reported by the installed package: `aster/version.py` and
+  `CITATION.cff` now match `pyproject.toml` (1.55.1).
+- `python -m aster version` / `aster doctor` now report the release version instead of 1.54.0.
+- Updated installation examples and release links to v1.55.1.
+- Offline suite: 912 passed, 2 skipped, 100 subtests.
+
 ## 1.55.0 — 2026-11-26
 
 - **Astra audit fixes (2026-11-23).** Repaired the standard workflow and campaign plumbing:
@@ -1353,3 +1361,4 @@ call and restores the environment; see `user_doc/safety.md`). Version/tag unchan
 ## 0.1.0 — 2026-11-10
 
 - feat: aster design system foundation (S0) + parametric layer (S1 start)
+
